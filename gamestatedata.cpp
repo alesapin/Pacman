@@ -91,6 +91,11 @@ AgentState& GameStateData::getPacmanState()
     return agentStates[0];
 }
 
+AgentState &GameStateData::getGhostState(int index)
+{
+    return agentStates[index];
+}
+
 Layout& GameStateData::getLayout()
 {
     return layout;
@@ -110,6 +115,16 @@ std::vector<QPointF> GameStateData::getFoodAsList()
         }
     }
     return result;
+}
+
+std::vector<QPointF> GameStateData::getCapsules()
+{
+    return capsules;
+}
+
+std::vector<AgentState> GameStateData::getAgentStates()
+{
+    return agentStates;
 }
 
 void GameStateData::addScore(int num)
@@ -156,5 +171,10 @@ bool GameStateData::getWin()
 bool GameStateData::getLose()
 {
     return lose;
+}
+
+void GameStateData::setAgentState(int intex, AgentState state)
+{
+    agentStates[intex]=state;
 }
 

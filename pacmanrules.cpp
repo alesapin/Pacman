@@ -2,7 +2,7 @@
 #include "util.cpp"
 #include <QDebug>
 
-const double PacmanRules::PACMAN_SPEED = 0.25;
+const double PacmanRules::PACMAN_SPEED = 1.0;
 std::vector<Direction> PacmanRules::getLegalActions(GameState& state)
 {
     AgentState pacmanState = state.getPacmanState();

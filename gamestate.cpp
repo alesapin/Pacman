@@ -1,5 +1,7 @@
 #include "gamestate.h"
 #include "pacmanrules.h"
+#include "ghostrules.h"
+
 #include <QDebug>
 
 GameState::GameState(GameState *prevstate)
@@ -33,8 +35,7 @@ std::vector<Direction> GameState::getLegalAction(int agentNum)
     if(agentNum == 0){
         return PacmanRules::getLegalActions(*this);
     } else {
-        //TODO: GHOSTS
-        return std::vector<Direction> ();
+       return GhostRules::getLegalActions(*this,agentNum);
     }
 }
 
@@ -44,9 +45,13 @@ GameState* GameState::generateSuccessor(int agentIndex, Direction dir)
     GameState* state=new GameState(*this);
     if(agentIndex == 0){
         PacmanRules::applyAction(*state,dir);
+    }else{
+        GhostRules::applyAction(*state,dir,agentIndex);
     }
     if(agentIndex == 0){
         state->getData().addScore(-1);
+    }else{
+        GhostRules::decrementTimer(state->getGhostState(agentIndex));
     }
     return state;
 }
@@ -71,6 +76,11 @@ int GameState::getScore()
     return data.getScore();
 }
 
+void GameState::setGhostState(int index, AgentState state)
+{
+    data.setAgentState(index,state);
+}
+
 AgentState& GameState::getPacmanState()
 {
     return data.getPacmanState();
@@ -79,6 +89,16 @@ AgentState& GameState::getPacmanState()
 GameStateData& GameState::getData()
 {
     return data;
+}
+
+AgentState &GameState::getGhostState(int index)
+{
+    return data.getGhostState(index);
+}
+
+std::vector<AgentState> GameState::getAgentStates()
+{
+    return data.getAgentStates();
 }
 
 QPointF GameState::getEaten()
@@ -101,6 +121,11 @@ std::vector<QPointF> GameState::getFoodAsList()
     return data.getFoodAsList();
 }
 
+void GameState::setLose()
+{
+    data.setLose();
+}
+
 bool GameState::isLose()
 {
     return data.getLose();
@@ -109,4 +134,14 @@ bool GameState::isLose()
 bool GameState::isWin()
 {
     return data.getWin();
+}
+
+std::vector<QPointF> GameState::getCapsules()
+{
+    return data.getCapsules();
+}
+
+void GameState::addScore(int i)
+{
+    data.addScore(i);
 }

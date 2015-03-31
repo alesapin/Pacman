@@ -12,6 +12,9 @@ public:
     Direction getDireciton();
     Configuration &getConfiguration();
     void setConfiguration(Configuration conf);
+    int getScarryTimer();
+    void setScarryTimer(int time);
+    Configuration getStartConfiguration();
 private:
     Configuration start;
     Configuration current;

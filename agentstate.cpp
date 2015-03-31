@@ -24,7 +24,23 @@ Configuration& AgentState::getConfiguration()
 
 void AgentState::setConfiguration(Configuration conf)
 {
-    current = conf;
+    current = Configuration(conf);
+
+}
+
+int AgentState::getScarryTimer()
+{
+    return scarryTimer;
+}
+
+void AgentState::setScarryTimer(int time)
+{
+    scarryTimer = time;
+}
+
+Configuration AgentState::getStartConfiguration()
+{
+    return start;
 }
 
 bool AgentState::operator==(const AgentState &other)

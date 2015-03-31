@@ -9,15 +9,14 @@
 #include <QGraphicsItem>
 #include <QVariant>
 #include <QGraphicsScene>
-#include "reflectagent.h"
 class PacmanItem:public QGraphicsEllipseItem
 {
 public:
-    PacmanItem(ReflectAgent& agent,QPointF pos,int cs);
+    PacmanItem(Agent& agent,QPointF pos,int cs);
     QRectF boundingRect() const;
     Direction getAction(GameState& state);
 private:
-    ReflectAgent* agent;
+    Agent* agent;
     QPointF startPosition;
     int cellSize;
 };

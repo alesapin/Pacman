@@ -1,5 +1,11 @@
-HEADERS += gamestate.h
-SOURCES += gamestate.cpp
+HEADERS += gamestate.h \
+    ghostrules.h \
+    ghostagent.h \
+    randomghostagent.h
+SOURCES += gamestate.cpp \
+    ghostrules.cpp \
+    ghostagent.cpp \
+    randomghostagent.cpp
 HEADERS += gamestatedata.h
 SOURCES += gamestatedata.cpp
 

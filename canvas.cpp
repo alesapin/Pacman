@@ -16,32 +16,56 @@ Canvas::Canvas(Layout* lay)
     wallPainter = new WallItem(layout->getWalls(),layout->getCellSize(),Qt::blue,layout->getCellSize()/10);
     cellSize = layout->getCellSize();
     getFoodMap(layout->getFood());
-    //ReflectAgent* ref = new ReflectAgent();
-    pacman = new PacmanKeyboardItem(lay->getPacmanPosition(),layout->getCellSize());
+    getCapsuleMap();
+    ReflectAgent* ref = new ReflectAgent();
+    pacman = new PacmanItem(*ref,lay->getPacmanPosition(),layout->getCellSize());
+    std::vector<QPointF> agentPositions = lay->getAgentsPositions();
+    for(int i = 0;i< agentPositions.size();++i){
+        RandomGhostAgent* agent = new RandomGhostAgent(i+1);
+
+        GhostItem* ghost = new GhostItem(*agent,agentPositions[i],layout->getCellSize());
+        scene()->addItem(ghost);
+        ghosts.push_back(ghost);
+    }
     scene()->addItem(pacman);
     scene()->addItem(wallPainter);
-    pacman->setParentItem(wallPainter);
+    //pacman->setParentItem(wallPainter);
     for (auto iter = foodMap.begin();iter!=foodMap.end();++iter){
        scene()->addItem(iter->second);
     }
-
+    for(auto iter = capsuleMap.begin();iter!=capsuleMap.end();++iter){
+        scene()->addItem(iter->second);
+    }
     timer = new QTimer();
     connect(timer,SIGNAL(timeout()),this,SLOT(gameLoop()));
     timer->start(30);
+    currentMover = 0;
 }
 
 
 void Canvas::drawMoving()
 {
-    currentGameState = currentGameState.generatePacmanSuccessor(pacman->getAction(currentGameState));
-    qDebug() << "Score:"<<currentGameState.getScore();
-    if(currentGameState.isWin() || currentGameState.isLose()) timer->stop();
-    QPointF pos = currentGameState.getPacmanPosition();
-    pacman->setRect(QRectF(pos.y()*cellSize,pos.x()*cellSize,cellSize,cellSize));
-    QPointF eaten =currentGameState.getEaten();
-    if(foodMap.find(eaten)!=foodMap.end()){
-        scene()->removeItem(foodMap[eaten]);
+    if(currentMover == 0) {
+        currentGameState = currentGameState.generatePacmanSuccessor(pacman->getAction(currentGameState));
+        if(currentGameState.isWin() || currentGameState.isLose()) timer->stop();
+        QPointF pos = currentGameState.getPacmanPosition();
+        pacman->setRect(QRectF(pos.y()*cellSize,pos.x()*cellSize,cellSize,cellSize));
+        QPointF eaten =currentGameState.getEaten();
+        if(foodMap.find(eaten)!=foodMap.end()){
+            scene()->removeItem(foodMap[eaten]);
+        }
+    }else{
+        GhostItem* ghost = ghosts[currentMover-1];
+
+        currentGameState = currentGameState.generateSuccessor(currentMover,ghost->getAction(currentGameState));
+        if(currentGameState.isWin() || currentGameState.isLose()) timer->stop();
+        QPointF pos = currentGameState.getGhostState(currentMover).getPosition();
+        qDebug() << pos.x() << " "<<pos.y();
+        ghost->setRect(QRectF(pos.y()*cellSize,pos.x()*cellSize,cellSize,cellSize));
     }
+    currentMover = (currentMover+1)%(ghosts.size()+1);
+    //qDebug() << "Score:"<<currentGameState.getScore();
+
 }
 
 void Canvas::gameLoop()
@@ -49,6 +73,19 @@ void Canvas::gameLoop()
 
     drawMoving();
     scene()->update(scene()->sceneRect());
+}
+
+void Canvas::drawGhosts()
+{
+
+}
+
+void Canvas::getCapsuleMap()
+{
+    for(auto p:currentGameState.getCapsules()){
+        capsuleMap[p] = new QGraphicsEllipseItem(p.y()*cellSize,p.x()*cellSize,cellSize,cellSize);
+        capsuleMap[p]->setBrush(* new QBrush(Qt::white));
+    }
 }
 
 

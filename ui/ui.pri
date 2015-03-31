@@ -1,5 +1,7 @@
-HEADERS += canvas.h
-SOURCES += canvas.cpp
+HEADERS += canvas.h \
+    ghostitem.h
+SOURCES += canvas.cpp \
+    ghostitem.cpp
 
 HEADERS += pacmanitem.h
 SOURCES += pacmanitem.cpp

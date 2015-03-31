@@ -14,6 +14,8 @@
 #include <QObject>
 #include "pacmanitem.h"
 #include "reflectagent.h"
+#include "ghostitem.h"
+#include "randomghostagent.h"
 struct PointComparator {
     bool operator()(const QPointF& p1, const QPointF& p2) const {
        return  p1.x() < p2.x() ||
@@ -30,18 +32,22 @@ public slots:
     void gameLoop();
 private:
     std::map<QPointF,QGraphicsEllipseItem*,PointComparator> foodMap;
+    std::map<QPointF,QGraphicsEllipseItem*,PointComparator> capsuleMap;
     Layout* layout; //пока рисуем лейоутом, потом будем рисовать гейм стейтом
     WallItem* wallPainter;
     GameState currentGameState;
-    PacmanKeyboardItem* pacman;
+    PacmanItem* pacman;
+    std::vector<GhostItem*> ghosts;
     void removeFood(QPointF foodPoint);
     void drawFood();
     void drawWalls();
-    void drawCapsules();
+    void drawGhosts();
+    void getCapsuleMap();
     void getFoodMap(std::vector<std::vector <bool> > foodTable);
     int cellSize;
     QGraphicsScene * myScene;
     QTimer * timer;
+    int currentMover;
 };
 
 #endif // CANVAS_H

@@ -13,9 +13,12 @@ public:
     void intitialize(Layout* lay,int numAgents);
     GameStateData( GameStateData& other);
     AgentState& getPacmanState();
+    AgentState& getGhostState(int index);
     Layout& getLayout();
     std::vector< std::vector<bool> > getFood();
     std::vector< QPointF> getFoodAsList();
+    std::vector< QPointF> getCapsules();
+    std::vector<AgentState> getAgentStates();
     void addScore(int num);
     void setFood(int i,int j,bool val);
     int getScore();
@@ -24,6 +27,7 @@ public:
     void setLose();
     bool getWin();
     bool getLose();
+    void setAgentState(int intex,AgentState state);
 private:
     std::vector< std::vector<bool> > food;
     Layout layout;
