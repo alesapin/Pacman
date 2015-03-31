@@ -2,7 +2,7 @@
 #include "util.cpp"
 #include <QDebug>
 
-const double PacmanRules::PACMAN_SPEED = 1.0;
+const double PacmanRules::PACMAN_SPEED = 0.25;
 std::vector<Direction> PacmanRules::getLegalActions(GameState& state)
 {
     AgentState pacmanState = state.getPacmanState();
@@ -22,7 +22,7 @@ void PacmanRules::applyAction(GameState& state, Direction dir)
         bool nflag = false;
         bool wflag = false;
         bool eflag = false;
-        for(int i =0;i<legal.size()-1;++i){
+        for(auto i =0;i<legal.size()-1;++i){
             switch(legal[i]){
             case SOUTH:
                 sflag = true;
@@ -35,6 +35,8 @@ void PacmanRules::applyAction(GameState& state, Direction dir)
                 break;
             case WEST:
                 wflag = true;
+                break;
+            default:
                 break;
             }
         }

@@ -33,7 +33,7 @@ private:
     Layout* layout; //пока рисуем лейоутом, потом будем рисовать гейм стейтом
     WallItem* wallPainter;
     GameState currentGameState;
-    PacmanItem* pacman;
+    PacmanKeyboardItem* pacman;
     void removeFood(QPointF foodPoint);
     void drawFood();
     void drawWalls();

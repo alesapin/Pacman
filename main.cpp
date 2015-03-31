@@ -7,7 +7,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    Layout* l = new Layout("/home/alesapin/Code/multiagent/layouts/smallClassic.lay",50);
+    Layout* l = new Layout("/home/alesapin/Code/multiagent/layouts/originalClassic.lay",30);
     qDebug() << "layout createad";
     Canvas v(l);
     v.show();

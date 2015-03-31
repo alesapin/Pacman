@@ -5,7 +5,7 @@
 class Agent
 {
 public:
-     Direction getAction(GameState state);
+     virtual Direction getAction(GameState& state) = 0;
 protected:
     int index;
 };

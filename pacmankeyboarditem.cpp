@@ -10,7 +10,6 @@ PacmanKeyboardItem::PacmanKeyboardItem(QPointF origin, int cellSize):
 {
     setBrush(*(new QBrush(Qt::yellow)));
     setRect(origin.y()*cellSize,origin.x()*cellSize,cellSize,cellSize);
-    index = 0;
     currentDirection = STOP;
     setFlag(QGraphicsItem::ItemIsFocusable);
     setFocus();
@@ -23,12 +22,7 @@ QRectF PacmanKeyboardItem::boundingRect() const
 
 Direction PacmanKeyboardItem::getAction(GameState state)
 {
-    std::vector<Direction> legal = state.getLegalPacmanAction();
-    if(std::find(legal.begin(),legal.end(),currentDirection) != legal.end()){
-        return currentDirection;
-    }
-    return currentDirection = STOP;
-
+    return currentDirection;
 }
 
 void PacmanKeyboardItem::keyPressEvent(QKeyEvent *event)
@@ -44,8 +38,5 @@ void PacmanKeyboardItem::keyPressEvent(QKeyEvent *event)
     }
 }
 
-Direction PacmanKeyboardItem::getDirection()
-{
-    return currentDirection;
-}
+
 

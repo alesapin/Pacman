@@ -16,8 +16,8 @@ Canvas::Canvas(Layout* lay)
     wallPainter = new WallItem(layout->getWalls(),layout->getCellSize(),Qt::blue,layout->getCellSize()/10);
     cellSize = layout->getCellSize();
     getFoodMap(layout->getFood());
-    ReflectAgent* ref = new ReflectAgent();
-    pacman = new PacmanItem(*ref,lay->getPacmanPosition(),layout->getCellSize());
+    //ReflectAgent* ref = new ReflectAgent();
+    pacman = new PacmanKeyboardItem(lay->getPacmanPosition(),layout->getCellSize());
     scene()->addItem(pacman);
     scene()->addItem(wallPainter);
     pacman->setParentItem(wallPainter);

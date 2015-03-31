@@ -9,7 +9,7 @@
 #include <QGraphicsItem>
 #include <QVariant>
 #include <QGraphicsScene>
-class PacmanKeyboardItem:public QGraphicsEllipseItem, public Agent
+class PacmanKeyboardItem:public QGraphicsEllipseItem
 
 {
 public:
@@ -17,7 +17,6 @@ public:
     QRectF boundingRect() const;
     Direction getAction(GameState state);
     void keyPressEvent(QKeyEvent *event);
-    Direction getDirection();
 
 private:
     QPointF currentPosition;
