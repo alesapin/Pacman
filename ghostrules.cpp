@@ -73,10 +73,10 @@ void GhostRules::checkDeath(GameState &state, int agentIndex)
 
 void GhostRules::collide(GameState &state, AgentState &ghostState, int agentIndex)
 {
-    if(ghostState.getScarryTimer() >0){
+    if(ghostState.getScarryTimer() > 0){
         state.addScore(200);
-        GhostRules::placeGhost(state,ghostState);
         ghostState.setScarryTimer(0);
+        GhostRules::placeGhost(state,ghostState,agentIndex);
     } else{
         if(!state.getData().getWin()){
             state.addScore(-500);
@@ -90,9 +90,10 @@ bool GhostRules::canKill(QPointF pacmanPosition, QPointF ghostPosition)
     return manhattanDistance(ghostPosition,pacmanPosition) <= GhostRules::COLLISION_TOLERANCE;
 }
 
-void GhostRules::placeGhost(GameState &state, AgentState& ghostState)
+void GhostRules::placeGhost(GameState &state, AgentState& ghostState,int index)
 {
     ghostState.setConfiguration(ghostState.getStartConfiguration());
+    state.setGhostState(index,ghostState);
 }
 
 

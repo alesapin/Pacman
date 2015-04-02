@@ -50,25 +50,6 @@ void WallItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     }
 }
 
-//void WallItem::drawWalls()
-//{
-//    painter->setPen(QPen(color,penWidth,Qt::SolidLine,Qt::FlatCap,Qt::RoundJoin));
-
-//    painter->translate(walls[0].size()*cellSize,0);
-//    painter->rotate(90);
-//    ElemPainter* elemPainter = new ElemPainter(cellSize,cellSize,painter);
-
-//    for (int i = 0;i<walls.size();++i){
-//        for (int j=0;j<walls[0].size();++j){
-//            elemPainter->drawElem(i*cellSize,j*cellSize,checkCell(i,j));
-//        }
-//    }
-//}
-
-//void WallItem::setPainter(QPainter *p)
-//{
-//    painter = p;
-//}
 
 ElemType WallItem::checkCell(int i,int j)
 {

@@ -70,11 +70,17 @@ void PacmanRules::consume(QPointF pos, GameState& state)
     if(state.getData().getFood()[x][y]){
         state.getData().addScore(10);
         state.getData().setFood(x,y,false);
-        state.setEaten(QPointF(x,y));
+        state.setEatenFood(QPointF(x,y));
         int numFood = state.getNumFood();
         if (numFood == 0 && !state.getData().getLose()){
             state.getData().addScore(500);
             state.getData().setWin();
         }
+    }
+    std::vector<QPointF> capsules = state.getCapsules();
+    if(std::find(capsules.begin(),capsules.end(),pos)!=capsules.end()){
+        state.setEatenCapsule(pos);
+        state.removeCapsule(pos);
+        state.scaryGhosts(GhostRules::SCARED_TIME);
     }
 }

@@ -36,7 +36,7 @@ private:
     Layout* layout; //пока рисуем лейоутом, потом будем рисовать гейм стейтом
     WallItem* wallPainter;
     GameState currentGameState;
-    PacmanItem* pacman;
+    PacmanKeyboardItem* pacman;
     std::vector<GhostItem*> ghosts;
     void removeFood(QPointF foodPoint);
     void drawFood();

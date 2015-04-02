@@ -4,7 +4,7 @@
 #include <algorithm>
 #include "gamestate.h"
 #include "actions.h"
-
+#include "ghostrules.h"
 class PacmanRules
 {
 public:

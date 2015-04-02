@@ -3,11 +3,11 @@
 
 Canvas::Canvas(Layout* lay)
 {
-    setCacheMode(QGraphicsView::CacheBackground);
-    setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
+    setRenderHints(QPainter::Antialiasing | QPainter::HighQualityAntialiasing);
+        setCacheMode(QGraphicsView::CacheNone);
+//    setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
     setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-    setRenderHint(QPainter::Antialiasing);
     myScene = new QGraphicsScene();
     this->setStyleSheet("background-color: black;");
     setScene(myScene);
@@ -18,7 +18,7 @@ Canvas::Canvas(Layout* lay)
     getFoodMap(layout->getFood());
     getCapsuleMap();
     ReflectAgent* ref = new ReflectAgent();
-    pacman = new PacmanItem(*ref,lay->getPacmanPosition(),layout->getCellSize());
+    pacman = new PacmanKeyboardItem(lay->getPacmanPosition(),layout->getCellSize());
     std::vector<QPointF> agentPositions = lay->getAgentsPositions();
     for(int i = 0;i< agentPositions.size();++i){
         RandomGhostAgent* agent = new RandomGhostAgent(i+1);
@@ -38,7 +38,7 @@ Canvas::Canvas(Layout* lay)
     }
     timer = new QTimer();
     connect(timer,SIGNAL(timeout()),this,SLOT(gameLoop()));
-    timer->start(30);
+    timer->start(10);
     currentMover = 0;
 }
 
@@ -46,13 +46,18 @@ Canvas::Canvas(Layout* lay)
 void Canvas::drawMoving()
 {
     if(currentMover == 0) {
+
         currentGameState = currentGameState.generatePacmanSuccessor(pacman->getAction(currentGameState));
         if(currentGameState.isWin() || currentGameState.isLose()) timer->stop();
         QPointF pos = currentGameState.getPacmanPosition();
         pacman->setRect(QRectF(pos.y()*cellSize,pos.x()*cellSize,cellSize,cellSize));
-        QPointF eaten =currentGameState.getEaten();
+        QPointF eaten =currentGameState.getEatenFood();
         if(foodMap.find(eaten)!=foodMap.end()){
             scene()->removeItem(foodMap[eaten]);
+        }
+        QPointF eatenCapsule = currentGameState.getEatenCapsule();
+        if(capsuleMap.find(eatenCapsule)!=capsuleMap.end()){
+            scene()->removeItem(capsuleMap[eatenCapsule]);
         }
     }else{
         GhostItem* ghost = ghosts[currentMover-1];
@@ -60,7 +65,13 @@ void Canvas::drawMoving()
         currentGameState = currentGameState.generateSuccessor(currentMover,ghost->getAction(currentGameState));
         if(currentGameState.isWin() || currentGameState.isLose()) timer->stop();
         QPointF pos = currentGameState.getGhostState(currentMover).getPosition();
-        qDebug() << pos.x() << " "<<pos.y();
+       // qDebug() << pos.x() << " "<<pos.y();
+        if(currentGameState.isScared(currentMover)) {
+            ghost->setBrush(QBrush(Qt::green));
+        } else {
+            ghost->setBrush(QBrush(Qt::red));
+        }
+
         ghost->setRect(QRectF(pos.y()*cellSize,pos.x()*cellSize,cellSize,cellSize));
     }
     currentMover = (currentMover+1)%(ghosts.size()+1);

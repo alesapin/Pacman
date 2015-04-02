@@ -127,6 +127,20 @@ std::vector<AgentState> GameStateData::getAgentStates()
     return agentStates;
 }
 
+void GameStateData::scarryGhosts(int time)
+{
+    for(int i = 1;i<agentStates.size();++i){
+        agentStates[i].setScarryTimer(time);
+    }
+}
+
+void GameStateData::removeCapsule(QPointF capsPos)
+{
+    auto remPos = std::find(capsules.begin(),capsules.end(),capsPos);
+    capsules.erase(remPos);
+
+}
+
 void GameStateData::addScore(int num)
 {
     score+=num;

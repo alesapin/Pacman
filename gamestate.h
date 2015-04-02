@@ -18,8 +18,13 @@ public:
     GameStateData& getData();
     AgentState &getGhostState(int index);
     std::vector<AgentState> getAgentStates();
-    QPointF getEaten();
-    QPointF setEaten(QPointF);
+    QPointF getEatenFood();
+    QPointF setEatenFood(QPointF);
+    QPointF getEatenCapsule();
+    QPointF setEatenCapsule(QPointF);
+    void removeCapsule(QPointF pos);
+    void scaryGhosts(int time);
+    bool isScared(int num);
     int getNumFood();
     std::vector<std::vector<bool> > getFood();
     std::vector<QPointF> getFoodAsList();
@@ -33,7 +38,8 @@ public:
     void addScore(int i);
 private:
     GameStateData data;
-    QPointF eaten;
+    QPointF eatenFood;
+    QPointF eatenCapsule;
 
 };
 

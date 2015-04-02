@@ -11,13 +11,14 @@ GameState::GameState(GameState *prevstate)
     } else{
         data = GameStateData();
      }
-    eaten = QPointF(-1,-1);
+    eatenFood = QPointF(-1,-1);
+    eatenCapsule = QPointF(-1,-1);
 }
 
 GameState::GameState( GameState &o)
 {
     data = GameStateData(o.getData());
-    eaten = QPointF(-1,-1);
+    eatenFood = QPointF(-1,-1);
 
 }
 
@@ -25,7 +26,7 @@ GameState::GameState( Layout &lay)
 {
     data = GameStateData();
     data.intitialize(&lay,1);
-    eaten = QPointF(-1,-1);
+    eatenFood = QPointF(-1,-1);
 
 }
 
@@ -53,6 +54,7 @@ GameState* GameState::generateSuccessor(int agentIndex, Direction dir)
     }else{
         GhostRules::decrementTimer(state->getGhostState(agentIndex));
     }
+    GhostRules::checkDeath(*state,agentIndex);
     return state;
 }
 
@@ -101,14 +103,40 @@ std::vector<AgentState> GameState::getAgentStates()
     return data.getAgentStates();
 }
 
-QPointF GameState::getEaten()
+QPointF GameState::getEatenFood()
 {
-    return eaten;
+    return eatenFood;
 }
 
-QPointF GameState::setEaten(QPointF e)
+QPointF GameState::setEatenFood(QPointF e)
 {
-    eaten = e;
+    eatenFood = e;
+}
+
+QPointF GameState::getEatenCapsule()
+{
+    return eatenCapsule;
+}
+
+QPointF GameState::setEatenCapsule(QPointF caps)
+{
+    eatenCapsule = caps;
+}
+
+void GameState::removeCapsule(QPointF pos)
+{
+    data.removeCapsule(pos);
+}
+
+void GameState::scaryGhosts(int time)
+{
+    data.scarryGhosts(time);
+}
+
+bool GameState::isScared(int num)
+{
+    AgentState ghost = data.getAgentStates()[num];
+    return ghost.getScarryTimer() > 0;
 }
 
 int GameState::getNumFood()

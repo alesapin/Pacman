@@ -2,6 +2,7 @@
 #define GHOSTAGENT_H
 #include "agent.h"
 #include "gamestate.h"
+#include <cstdlib>
 #include <map>
 class GhostAgent: public Agent
 {

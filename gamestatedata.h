@@ -19,6 +19,8 @@ public:
     std::vector< QPointF> getFoodAsList();
     std::vector< QPointF> getCapsules();
     std::vector<AgentState> getAgentStates();
+    void scarryGhosts(int time);
+    void removeCapsule(QPointF capsPos);
     void addScore(int num);
     void setFood(int i,int j,bool val);
     int getScore();
