@@ -1,5 +1,4 @@
 #include "pacmanrules.h"
-#include "util.cpp"
 #include <QDebug>
 
 const double PacmanRules::PACMAN_SPEED = 1.0;
@@ -58,7 +57,7 @@ void PacmanRules::applyAction(GameState& state, Direction dir)
     int nearestX = (int)(next.x()+0.5);
     int nearestY = (int)(next.y()+0.5);
     QPointF nearest(nearestX,nearestY);
-    if (manhattanDistance(next,nearest) <= 0.5){
+    if (Util::manhattanDistance(next,nearest) <= 0.5){
         PacmanRules::consume(nearest,state);
     }
 }

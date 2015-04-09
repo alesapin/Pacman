@@ -1,5 +1,4 @@
 #include "wallitem.h"
-#include "ui_wallpainter.h"
 #include "elempainter.h"
 #include <QDebug>
 #include <QPen>
@@ -22,7 +21,6 @@ WallItem::WallItem(std::vector<std::vector<bool> > w, double cs, QColor c, doubl
     if (pw == -1) {
         penWidth = cellSize / 26;
     }
-
 
 }
 
@@ -48,6 +46,7 @@ void WallItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
             elemPainter->drawElem(i*cellSize,j*cellSize,checkCell(i,j));
         }
     }
+    delete elemPainter;
 }
 
 

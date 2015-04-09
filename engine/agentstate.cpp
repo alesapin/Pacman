@@ -17,7 +17,7 @@ Direction AgentState::getDireciton()
     return current.getDirection();
 }
 
-Configuration& AgentState::getConfiguration()
+Configuration AgentState::getConfiguration() const
 {
     return current;
 }

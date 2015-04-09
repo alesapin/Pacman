@@ -13,6 +13,7 @@ TEMPLATE = app
 
 include(engine/engine.pri)
 include(ui/ui.pri)
+include(agents/agents.pri)
 SOURCES += main.cpp
 #    elempainter.cpp \
 #    layout.cpp \
@@ -52,5 +53,7 @@ OTHER_FILES += \
     ../Code/multiagent/layouts/smallClassic.lay
 QMAKE_CXXFLAGS_DEBUG += -pg
 QMAKE_LFLAGS_DEBUG += -pg
+
+HEADERS +=
 
 

@@ -8,7 +8,7 @@ PacmanItem::PacmanItem(Agent &agent, QPointF pos, int cs):
     startPosition(pos),
     cellSize(cs)
 {
-    setBrush(*(new QBrush(Qt::yellow)));
+    setBrush(QBrush(Qt::yellow));
     setRect(pos.y()*cellSize,pos.x()*cellSize,cellSize,cellSize);
 }
 

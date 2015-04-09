@@ -5,6 +5,7 @@
 #include "gamestate.h"
 #include "actions.h"
 #include "ghostrules.h"
+#include "util.h"
 class PacmanRules
 {
 public:

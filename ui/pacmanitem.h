@@ -1,7 +1,7 @@
 #ifndef PACMANITEM_H
 #define PACMANITEM_H
 #include <QGraphicsEllipseItem>
-#include "agent.h"
+#include "engine/agent.h"
 #include <QKeyEvent>
 #include <QRectF>
 #include <algorithm>

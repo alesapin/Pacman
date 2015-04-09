@@ -27,16 +27,16 @@ Direction ReflectAgent::getAction(GameState &state)
 
 double ReflectAgent::evaluationFunction(GameState &currentGameState, Direction dir)
 {
-    GameState next = currentGameState.generatePacmanSuccessor(dir);
-    QPointF newPos = next.getPacmanPosition();
-    int foodLen = next.getNumFood();
+    GameState* next = currentGameState.generatePacmanSuccessor(dir);
+    QPointF newPos = next->getPacmanPosition();
+    int foodLen = next->getNumFood();
     int oldFoodLen = currentGameState.getNumFood();
-    std::vector<QPointF> newFood = next.getFoodAsList();
+    std::vector<QPointF> newFood = next->getFoodAsList();
     double minDistToFood = 110;
     if(newFood.size()>0){
-        minDistToFood = manhattanDistance(newFood[0],newPos);
+        minDistToFood = Util::manhattanDistance(newFood[0],newPos);
         for(auto p:newFood){
-            minDistToFood = std::min(minDistToFood,manhattanDistance(p,newPos));
+            minDistToFood = std::min(minDistToFood,Util::manhattanDistance(p,newPos));
         }
         minDistToFood *= -1;
     }

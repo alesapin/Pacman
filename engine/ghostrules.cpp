@@ -87,7 +87,7 @@ void GhostRules::collide(GameState &state, AgentState &ghostState, int agentInde
 
 bool GhostRules::canKill(QPointF pacmanPosition, QPointF ghostPosition)
 {
-    return manhattanDistance(ghostPosition,pacmanPosition) <= GhostRules::COLLISION_TOLERANCE;
+    return Util::manhattanDistance(ghostPosition,pacmanPosition) <= GhostRules::COLLISION_TOLERANCE;
 }
 
 void GhostRules::placeGhost(GameState &state, AgentState& ghostState,int index)

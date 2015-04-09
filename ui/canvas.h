@@ -4,18 +4,18 @@
 #include "wallitem.h"
 #include <QGraphicsEllipseItem>
 #include <QGraphicsView>
-#include "gamestate.h"
+#include "engine/gamestate.h"
 #include <map>
-#include "layout.h"
+#include "engine/layout.h"
 #include <vector>
 #include <QGraphicsScene>
 #include "pacmankeyboarditem.h"
 #include <QTimer>
 #include <QObject>
 #include "pacmanitem.h"
-#include "reflectagent.h"
+#include "agents/expectimaxagent.h"
 #include "ghostitem.h"
-#include "randomghostagent.h"
+#include "engine/randomghostagent.h"
 struct PointComparator {
     bool operator()(const QPointF& p1, const QPointF& p2) const {
        return  p1.x() < p2.x() ||
@@ -35,8 +35,8 @@ private:
     std::map<QPointF,QGraphicsEllipseItem*,PointComparator> capsuleMap;
     Layout* layout; //пока рисуем лейоутом, потом будем рисовать гейм стейтом
     WallItem* wallPainter;
-    GameState currentGameState;
-    PacmanKeyboardItem* pacman;
+    GameState* currentGameState;
+    PacmanItem* pacman;
     std::vector<GhostItem*> ghosts;
     void removeFood(QPointF foodPoint);
     void drawFood();

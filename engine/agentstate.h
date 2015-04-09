@@ -10,7 +10,7 @@ public:
     AgentState(const AgentState& other);
     QPointF getPosition();
     Direction getDireciton();
-    Configuration &getConfiguration();
+    Configuration getConfiguration() const;
     void setConfiguration(Configuration conf);
     int getScarryTimer();
     void setScarryTimer(int time);

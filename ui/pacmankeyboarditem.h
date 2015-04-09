@@ -1,7 +1,7 @@
 #ifndef PACMANKEYBOARDITEM_H
 #define PACMANKEYBOARDITEM_H
 #include <QGraphicsEllipseItem>
-#include "agent.h"
+#include "engine/agent.h"
 #include <QKeyEvent>
 #include <QRectF>
 #include <algorithm>

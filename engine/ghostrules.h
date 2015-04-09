@@ -1,9 +1,11 @@
+
 #ifndef GHOSTRULES_H
 #define GHOSTRULES_H
 #include <vector>
 #include <algorithm>
 #include "gamestate.h"
 #include "actions.h"
+#include "util.h"
 class GhostRules
 {
 public:

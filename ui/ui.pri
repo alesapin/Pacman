@@ -1,13 +1,13 @@
-HEADERS += canvas.h \
-    ghostitem.h
-SOURCES += canvas.cpp \
-    ghostitem.cpp
+HEADERS += ui/canvas.h \
+    ui/ghostitem.h
+SOURCES += ui/canvas.cpp \
+    ui/ghostitem.cpp
 
-HEADERS += pacmanitem.h
-SOURCES += pacmanitem.cpp
-HEADERS += elempainter.h
-SOURCES += elempainter.cpp
-HEADERS += wallitem.h
-SOURCES += wallitem.cpp
-HEADERS += pacmankeyboarditem.h
-SOURCES += pacmankeyboarditem.cpp
+HEADERS += ui/pacmanitem.h
+SOURCES += ui/pacmanitem.cpp
+HEADERS += ui/elempainter.h
+SOURCES += ui/elempainter.cpp
+HEADERS += ui/wallitem.h
+SOURCES += ui/wallitem.cpp
+HEADERS += ui/pacmankeyboarditem.h
+SOURCES += ui/pacmankeyboarditem.cpp

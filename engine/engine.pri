@@ -1,25 +1,28 @@
-HEADERS += gamestate.h \
-    ghostrules.h \
-    ghostagent.h \
-    randomghostagent.h
-SOURCES += gamestate.cpp \
-    ghostrules.cpp \
-    ghostagent.cpp \
-    randomghostagent.cpp
-HEADERS += gamestatedata.h
-SOURCES += gamestatedata.cpp
+HEADERS += engine/gamestate.h \
+    engine/ghostrules.h \
+    engine/ghostagent.h \
+    engine/randomghostagent.h \
+    engine/util.h
+SOURCES += engine/gamestate.cpp \
+    engine/ghostrules.cpp \
+    engine/ghostagent.cpp \
+    engine/randomghostagent.cpp \
+    engine/util.cpp
+HEADERS += engine/gamestatedata.h
+SOURCES += engine/gamestatedata.cpp
 
-HEADERS += agent.h
-SOURCES += agent.cpp
-HEADERS += agentstate.h
-SOURCES += agentstate.cpp
-HEADERS += configuration.h
-SOURCES += configuration.cpp
-HEADERS += layout.h
-SOURCES += layout.cpp
-HEADERS += pacmanrules.h
-SOURCES += pacmanrules.cpp
-HEADERS += reflectagent.h
-SOURCES += reflectagent.cpp
-HEADERS += actions.h
-SOURCES += actions.cpp
+HEADERS += engine/agent.h
+SOURCES += engine/agent.cpp
+HEADERS += engine/agentstate.h
+SOURCES += engine/agentstate.cpp
+HEADERS += engine/configuration.h
+SOURCES += engine/configuration.cpp
+HEADERS += engine/layout.h
+SOURCES += engine/layout.cpp
+HEADERS += engine/pacmanrules.h
+SOURCES += engine/pacmanrules.cpp
+HEADERS += engine/reflectagent.h
+SOURCES += engine/reflectagent.cpp
+HEADERS += engine/actions.h
+SOURCES += engine/actions.cpp
+

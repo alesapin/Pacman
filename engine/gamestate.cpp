@@ -68,9 +68,9 @@ std::vector<Direction> GameState::getLegalPacmanAction()
     return getLegalAction(0);
 }
 
-GameState& GameState::generatePacmanSuccessor(Direction dir)
+GameState* GameState::generatePacmanSuccessor(Direction dir)
 {
-    return *generateSuccessor(0,dir);
+    return generateSuccessor(0,dir);
 }
 
 int GameState::getScore()
@@ -172,4 +172,8 @@ std::vector<QPointF> GameState::getCapsules()
 void GameState::addScore(int i)
 {
     data.addScore(i);
+}
+
+GameState::~GameState()
+{
 }

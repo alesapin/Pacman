@@ -11,7 +11,7 @@ public:
     GameState* generateSuccessor(int agentIndex,Direction dir);
     QPointF getPacmanPosition();
     std::vector<Direction> getLegalPacmanAction();
-    GameState& generatePacmanSuccessor(Direction dir);
+    GameState* generatePacmanSuccessor(Direction dir);
     int getScore();
     void setGhostState(int index,AgentState state);
     AgentState& getPacmanState();
@@ -36,6 +36,7 @@ public:
     bool isWin();
     std::vector<QPointF> getCapsules();
     void addScore(int i);
+    ~GameState();
 private:
     GameStateData data;
     QPointF eatenFood;

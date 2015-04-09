@@ -192,3 +192,8 @@ void GameStateData::setAgentState(int intex, AgentState state)
     agentStates[intex]=state;
 }
 
+GameStateData::~GameStateData()
+{
+
+}
+

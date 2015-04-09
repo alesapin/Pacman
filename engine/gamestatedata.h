@@ -30,6 +30,7 @@ public:
     bool getWin();
     bool getLose();
     void setAgentState(int intex,AgentState state);
+    ~GameStateData();
 private:
     std::vector< std::vector<bool> > food;
     Layout layout;

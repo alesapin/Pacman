@@ -2,6 +2,7 @@
 #define REFLECTAGENT_H
 #include "agent.h"
 #include <cmath>
+#include "util.h"
 class ReflectAgent:public Agent
 {
 public:
