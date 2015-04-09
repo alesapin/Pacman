@@ -10,7 +10,7 @@ const double GhostRules::SCARED_TIME = 40;
 std::vector<Direction> GhostRules::getLegalActions(GameState &state, int ghostIndex)
 {
         Configuration conf = state.getGhostState(ghostIndex).getConfiguration();
-        Layout lay = state.getData().getLayout();
+        Layout lay = state.getLayout();
         std::vector<Direction> legal = Actions::getPossibleActions(conf,lay.getWalls());
         Direction reverse = Actions::reverseDirection(conf.getDirection());
         auto stopPosition = std::find(legal.begin(),legal.end(),STOP);
@@ -78,7 +78,7 @@ void GhostRules::collide(GameState &state, AgentState &ghostState, int agentInde
         ghostState.setScarryTimer(0);
         GhostRules::placeGhost(state,ghostState,agentIndex);
     } else{
-        if(!state.getData().getWin()){
+        if(!state.isWin()){
             state.addScore(-500);
             state.setLose();
         }

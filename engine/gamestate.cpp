@@ -17,7 +17,7 @@ GameState::GameState(GameState *prevstate)
 
 GameState::GameState( GameState &o)
 {
-    data = GameStateData(o.getData());
+    data = GameStateData(o.data);
     eatenFood = QPointF(-1,-1);
 
 }
@@ -50,7 +50,7 @@ GameState* GameState::generateSuccessor(int agentIndex, Direction dir)
         GhostRules::applyAction(*state,dir,agentIndex);
     }
     if(agentIndex == 0){
-        state->getData().addScore(-1);
+        state->addScore(-1);
     }else{
         GhostRules::decrementTimer(state->getGhostState(agentIndex));
     }
@@ -83,14 +83,9 @@ void GameState::setGhostState(int index, AgentState state)
     data.setAgentState(index,state);
 }
 
-AgentState& GameState::getPacmanState()
+AgentState GameState::getPacmanState()
 {
     return data.getPacmanState();
-}
-
-GameStateData& GameState::getData()
-{
-    return data;
 }
 
 AgentState &GameState::getGhostState(int index)
@@ -144,6 +139,11 @@ int GameState::getNumFood()
     return data.getNumFood();
 }
 
+std::vector<std::vector<bool> > GameState::getFood()
+{
+    return data.getFood();
+}
+
 std::vector<QPointF> GameState::getFoodAsList()
 {
     return data.getFoodAsList();
@@ -154,6 +154,16 @@ void GameState::setLose()
     data.setLose();
 }
 
+void GameState::setFood(int x, int y, bool val)
+{
+    data.setFood(x,y,val);
+}
+
+void GameState::setWin()
+{
+    data.setWin();
+}
+
 bool GameState::isLose()
 {
     return data.getLose();
@@ -162,6 +172,11 @@ bool GameState::isLose()
 bool GameState::isWin()
 {
     return data.getWin();
+}
+
+Layout &GameState::getLayout()
+{
+    return data.getLayout();
 }
 
 std::vector<QPointF> GameState::getCapsules()
@@ -176,4 +191,9 @@ void GameState::addScore(int i)
 
 GameState::~GameState()
 {
+}
+
+void GameState::setPacmanState(AgentState state)
+{
+    data.setAgentState(0,state);
 }

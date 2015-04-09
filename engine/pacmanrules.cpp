@@ -6,7 +6,7 @@ std::vector<Direction> PacmanRules::getLegalActions(GameState& state)
 {
     AgentState pacmanState = state.getPacmanState();
     Configuration pacConf= pacmanState.getConfiguration();
-    Layout pacLay = state.getData().getLayout();
+    Layout pacLay = state.getLayout();
     return Actions::getPossibleActions(pacConf,pacLay.getWalls());
 }
 
@@ -49,11 +49,11 @@ void PacmanRules::applyAction(GameState& state, Direction dir)
             dir = STOP;
         }
     }
-    AgentState* pacmanState = &state.getPacmanState();
+    AgentState pacmanState = state.getPacmanState();
     QPointF vect = Actions::directionToVector(dir,PacmanRules::PACMAN_SPEED);
-    pacmanState->setConfiguration(pacmanState->getConfiguration().generateSuccessor(vect));
-
-    QPointF next = pacmanState->getPosition();
+    pacmanState.setConfiguration(pacmanState.getConfiguration().generateSuccessor(vect));
+    state.setPacmanState(pacmanState);
+    QPointF next = pacmanState.getPosition();
     int nearestX = (int)(next.x()+0.5);
     int nearestY = (int)(next.y()+0.5);
     QPointF nearest(nearestX,nearestY);
@@ -66,14 +66,16 @@ void PacmanRules::consume(QPointF pos, GameState& state)
 {
     double x =pos.x();
     double y = pos.y();
-    if(state.getData().getFood()[x][y]){
-        state.getData().addScore(10);
-        state.getData().setFood(x,y,false);
+    if(state.getFood()[x][y]){
+        state.addScore(10);
+
+        state.setFood(x,y,false);
         state.setEatenFood(QPointF(x,y));
         int numFood = state.getNumFood();
-        if (numFood == 0 && !state.getData().getLose()){
-            state.getData().addScore(500);
-            state.getData().setWin();
+        if (numFood == 0 && !state.isLose()){
+            state.addScore(500);
+            state.setWin();
+
         }
     }
     std::vector<QPointF> capsules = state.getCapsules();

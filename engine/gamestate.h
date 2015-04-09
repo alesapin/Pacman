@@ -14,8 +14,7 @@ public:
     GameState* generatePacmanSuccessor(Direction dir);
     int getScore();
     void setGhostState(int index,AgentState state);
-    AgentState& getPacmanState();
-    GameStateData& getData();
+    AgentState getPacmanState();
     AgentState &getGhostState(int index);
     std::vector<AgentState> getAgentStates();
     QPointF getEatenFood();
@@ -32,11 +31,15 @@ public:
     void setLose();
     bool hasFood(int x,int y);
     bool hasWall(int x,int y);
+    void setFood(int x,int y,bool val);
+    void setWin();
     bool isLose();
     bool isWin();
+    Layout& getLayout();
     std::vector<QPointF> getCapsules();
     void addScore(int i);
     ~GameState();
+    void setPacmanState(AgentState state);
 private:
     GameStateData data;
     QPointF eatenFood;
