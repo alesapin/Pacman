@@ -34,13 +34,13 @@ Layout::Layout(std::string path,int cellSize):
     processLayoutText(layoutText);
 }
 
-Layout::Layout(Layout &l)
+Layout::Layout(const Layout& l)
 {
     totalFood = l.totalFood;
     numAgents = l.numAgents;
     cellSize = l.cellSize;
-    walls = std::vector<std::vector<bool > >(l.getWalls());
-    food = std::vector<std::vector<bool> >(l.getFood());
+    walls = std::vector<std::vector<bool > >(l.walls);
+    food = std::vector<std::vector<bool> >(l.food);
     width = l.width;
     height = l.height;
 }
@@ -91,7 +91,7 @@ void Layout::processLayoutText(std::string text)
     }
 }
 
-std::vector<std::vector<bool> >& Layout::getWalls()
+const std::vector<std::vector<bool> >& Layout::getWalls()
 {
     return walls;
 }

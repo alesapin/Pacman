@@ -41,13 +41,14 @@ void GhostRules::applyAction(GameState &state, Direction dir, int ghostIndex)
     state.setGhostState(ghostIndex,ghostState);
 }
 
-void GhostRules::decrementTimer(AgentState& ghostState)
+AgentState GhostRules::decrementTimer(AgentState ghostState)
 {
     int timer = ghostState.getScarryTimer();
     if (timer == 1){
         //Пока не совсем ясно зачем;
     }
     ghostState.setScarryTimer(std::max(0,timer-1));
+    return ghostState;
 }
 
 void GhostRules::checkDeath(GameState &state, int agentIndex)
@@ -71,7 +72,7 @@ void GhostRules::checkDeath(GameState &state, int agentIndex)
     }
 }
 
-void GhostRules::collide(GameState &state, AgentState &ghostState, int agentIndex)
+void GhostRules::collide(GameState &state, AgentState ghostState, int agentIndex)
 {
     if(ghostState.getScarryTimer() > 0){
         state.addScore(200);

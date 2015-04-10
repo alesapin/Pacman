@@ -9,13 +9,13 @@ class Layout
 {
 public:
     Layout(std::string path,int cellSize);
-    Layout(Layout& l);
+    Layout(const Layout& l);
     Layout();
     bool isWall(QPointF point);
     QPointF getRandomLegalPosition();
     void processLayoutChar(int i,int j,char character);
     void processLayoutText(std::string text);
-    std::vector <std::vector <bool> >& getWalls();
+    const std::vector <std::vector <bool> >& getWalls();
     std::vector <std::vector <bool> > getFood();
     std::vector <QPointF> getCapsules();
     std::vector <QPointF> getAgentsPositions();

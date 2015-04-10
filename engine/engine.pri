@@ -8,8 +8,8 @@ SOURCES += engine/gamestate.cpp \
     engine/ghostagent.cpp \
     engine/randomghostagent.cpp \
     engine/util.cpp
-HEADERS += engine/gamestatedata.h
-SOURCES += engine/gamestatedata.cpp
+HEADERS +=
+SOURCES +=
 
 HEADERS += engine/agent.h
 SOURCES += engine/agent.cpp

@@ -66,7 +66,7 @@ void PacmanRules::consume(QPointF pos, GameState& state)
 {
     double x =pos.x();
     double y = pos.y();
-    if(state.getFood()[x][y]){
+    if(state.hasFood(x,y)){
         state.addScore(10);
 
         state.setFood(x,y,false);

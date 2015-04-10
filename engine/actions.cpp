@@ -49,7 +49,7 @@ QPointF Actions::directionToVector(Direction dir, double speed)
     return QPointF(dx*speed,dy*speed);
 }
 
-std::vector<Direction> Actions::getPossibleActions(Configuration& config, std::vector<std::vector<bool> >& walls)
+std::vector<Direction> Actions::getPossibleActions(Configuration& config,const std::vector<std::vector<bool> >& walls)
 {
     std::vector<Direction> result;
     QPointF pos = config.getPosition();

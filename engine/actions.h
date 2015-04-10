@@ -43,7 +43,7 @@ public:
      * @param walls стены
      * @return список направлений
      */
-    static std::vector<Direction> getPossibleActions(Configuration& config,std::vector <std::vector <bool> >& walls);
+    static std::vector<Direction> getPossibleActions(Configuration& config,const std::vector <std::vector <bool> >& walls);
     static std::vector<QPointF> getLegalNeighbours(QPointF position,std::vector <std::vector <bool> > walls);
     /**
      * @brief getSuccessor возвращает вектор полученый в резултатте
