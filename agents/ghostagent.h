@@ -1,7 +1,7 @@
 #ifndef GHOSTAGENT_H
 #define GHOSTAGENT_H
 #include "agent.h"
-#include "gamestate.h"
+#include "engine/gamestate.h"
 #include <cstdlib>
 #include <map>
 class GhostAgent: public Agent

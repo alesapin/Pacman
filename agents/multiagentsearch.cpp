@@ -1,5 +1,5 @@
 #include "multiagentsearch.h"
-
+#include <QDebug>
 MultiAgentSearch::MultiAgentSearch(int depth)
 {
     this->depth = depth;
@@ -22,12 +22,16 @@ double MultiAgentSearch::evaluationFunction(GameState &state)
     std::vector<QPointF> newFood = state.getFoodAsList();
     std::vector<AgentState> ghostStates = state.getAgentStates();
     double score =  state.getScore();
-    if(newFood.size() > 0){
+    if (newFood.size() > 0) {
         double dist = std::numeric_limits<double>::infinity();
-        for(QPointF pos : newFood){
+        for (QPointF pos : newFood) {
             dist = std::min(dist,Util::manhattanDistance(pos,currentPacmanPos));
         }
-        score += -dist;
+        if(dist == 1.0){
+            score += 1;
+        }else{
+            score -= dist;
+        }
     }
     double ghostDist = Util::manhattanDistance(currentPacmanPos,state.getGhostState(1).getPosition());
     for(int i =2 ;i<ghostStates.size();++i){
@@ -46,6 +50,7 @@ double MultiAgentSearch::evaluationFunction(GameState &state)
     if(state.isWin()){
         score += 10000;
     }
+    qDebug() << "scr:" << score;
     return score;
 }
 

@@ -15,7 +15,7 @@
 #include "pacmanitem.h"
 #include "agents/expectimaxagent.h"
 #include "ghostitem.h"
-#include "engine/randomghostagent.h"
+#include "agents/randomghostagent.h"
 struct PointComparator {
     bool operator()(const QPointF& p1, const QPointF& p2) const {
        return  p1.x() < p2.x() ||

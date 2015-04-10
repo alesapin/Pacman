@@ -1,7 +1,7 @@
 #ifndef AGENT_H
 #define AGENT_H
-#include "gamestate.h"
-#include "configuration.h"
+#include "engine/gamestate.h"
+#include "engine/configuration.h"
 class Agent
 {
 public:

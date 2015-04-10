@@ -75,7 +75,7 @@ void Canvas::drawMoving()
         ghost->setRect(QRectF(pos.y()*cellSize,pos.x()*cellSize,cellSize,cellSize));
     }
     currentMover = (currentMover+1)%(ghosts.size()+1);
-    qDebug() << "Score:"<<currentGameState->getScore();
+    //qDebug() << "Score:"<<currentGameState->getScore();
 
 }
 

@@ -1,6 +1,6 @@
 #ifndef MULTIAGENTSEARCH_H
 #define MULTIAGENTSEARCH_H
-#include "engine/agent.h"
+#include "agent.h"
 #include "engine/util.h"
 class MultiAgentSearch : public Agent
 {

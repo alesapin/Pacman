@@ -1,7 +1,7 @@
 #ifndef ACTIONS_H
 #define ACTIONS_H
 #include <map>
-#include "agent.h"
+#include "agents/agent.h"
 #include <QPointF>
 #include "configuration.h"
 /**

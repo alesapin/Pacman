@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QGraphicsRectItem>
 #include <QBrush>
-#include "engine/ghostagent.h"
+#include "agents/ghostagent.h"
 
 class GhostItem : public QGraphicsRectItem
 {
