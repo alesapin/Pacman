@@ -51,7 +51,7 @@ GameState* GameState::generateSuccessor(int agentIndex, Direction dir)
     if(agentIndex == 0){
         state->addScore(-1);
     }else{
-        state->setGhostState(agentIndex,GhostRules::decrementTimer(state->getGhostState(agentIndex)));
+        state->setAgentState(agentIndex,GhostRules::decrementTimer(state->getAgentState(agentIndex)));
     }
     GhostRules::checkDeath(*state,agentIndex);
     return state;
@@ -77,7 +77,7 @@ int GameState::getScore()
     return data.score;
 }
 
-void GameState::setGhostState(int index, AgentState state)
+void GameState::setAgentState(int index, AgentState state)
 {
     data.agentStates[index] = state;
 }
@@ -87,10 +87,15 @@ AgentState GameState::getPacmanState()
     return data.agentStates[0];
 }
 
-AgentState GameState::getGhostState(int index)
+AgentState GameState::getAgentState(int index)
 {
-    //TODO: Призраки тоже должны быть с 0
+    //TODO: Призраки тоже должны быть с 0, пока норм
     return data.agentStates[index];
+}
+
+QPointF GameState::getAgentPosition(int index)
+{
+    return data.agentStates[index].getPosition();
 }
 
 std::vector<AgentState> GameState::getAgentStates()

@@ -2,8 +2,7 @@
 #include <QDebug>
 
 
-GhostItem::GhostItem(GhostAgent &agent, QPointF pos, int cs):
-    agent(&agent),
+GhostItem::GhostItem(QPointF pos, int cs):
     startPosition(pos),
     cellSize(cs)
 {
@@ -16,8 +15,5 @@ QRectF GhostItem::boundingRect() const
     return QRectF(startPosition.x(),startPosition.y(),cellSize,cellSize);
 }
 
-Direction GhostItem::getAction(GameState &state)
-{
-    return agent->getAction(state);
-}
+
 

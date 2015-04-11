@@ -16,6 +16,9 @@
 #include "agents/expectimaxagent.h"
 #include "ghostitem.h"
 #include "agents/randomghostagent.h"
+#include "agents/alphabetaagent.h"
+#include "agents/rushghostagent.h"
+#include "engine/game.h"
 struct PointComparator {
     bool operator()(const QPointF& p1, const QPointF& p2) const {
        return  p1.x() < p2.x() ||
@@ -25,29 +28,25 @@ struct PointComparator {
 class Canvas:  public QGraphicsView {
         Q_OBJECT
 public:
-    Canvas(Layout* layout);
-    void drawStaticContent();
-    void drawMoving();
+    Canvas(std::string path,int cellSize);
+    void drawState(GameState* state);
 public slots:
     void gameLoop();
 private:
     std::map<QPointF,QGraphicsEllipseItem*,PointComparator> foodMap;
     std::map<QPointF,QGraphicsEllipseItem*,PointComparator> capsuleMap;
-    Layout* layout; //пока рисуем лейоутом, потом будем рисовать гейм стейтом
+    //Layout* layout; //Убрать
     WallItem* wallPainter;
-    GameState* currentGameState;
+    //GameState* currentGameState; //Убрать
+    Game* game;
     PacmanItem* pacman;
     std::vector<GhostItem*> ghosts;
     void removeFood(QPointF foodPoint);
-    void drawFood();
-    void drawWalls();
-    void drawGhosts();
-    void getCapsuleMap();
-    void getFoodMap(std::vector<std::vector <bool> > foodTable);
+    void getCapsuleMap(std::vector<QPointF> caps);
+    void getFoodMap(std::vector<std::vector <bool> > foodTable); // Оставить без параметров
     int cellSize;
     QGraphicsScene * myScene;
     QTimer * timer;
-    int currentMover;
 };
 
 #endif // CANVAS_H

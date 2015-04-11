@@ -7,10 +7,9 @@
  * @param path
  * @param cellSize
  */
-Layout::Layout(std::string path,int cellSize):
+Layout::Layout(std::string path):
     totalFood(0),
-    numAgents(0),
-    cellSize(cellSize)
+    numAgents(0)
 {
     std::ifstream file(path);
     std::string tmp;
@@ -38,7 +37,6 @@ Layout::Layout(const Layout& l)
 {
     totalFood = l.totalFood;
     numAgents = l.numAgents;
-    cellSize = l.cellSize;
     walls = std::vector<std::vector<bool > >(l.walls);
     food = std::vector<std::vector<bool> >(l.food);
     width = l.width;
@@ -49,8 +47,7 @@ Layout::Layout():
     width(0),
     height(0),
     totalFood(0),
-    numAgents(0),
-    cellSize(0)
+    numAgents(0)
 {
 
 }
@@ -116,7 +113,3 @@ QPointF Layout::getPacmanPosition()
     return pacmanPosition;
 }
 
-int Layout::getCellSize()
-{
-    return cellSize;
-}

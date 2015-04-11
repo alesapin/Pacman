@@ -3,8 +3,7 @@
 
 
 
-PacmanItem::PacmanItem(Agent &agent, QPointF pos, int cs):
-    agent(&agent),
+PacmanItem::PacmanItem(QPointF pos, int cs):
     startPosition(pos),
     cellSize(cs)
 {
@@ -17,7 +16,4 @@ QRectF PacmanItem::boundingRect() const
     return QRectF(startPosition.x(),startPosition.y(),cellSize,cellSize);
 }
 
-Direction PacmanItem::getAction(GameState& state)
-{
-    return agent->getAction(state);
-}
+

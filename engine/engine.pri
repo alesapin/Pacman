@@ -1,9 +1,11 @@
 HEADERS += engine/gamestate.h \
     engine/ghostrules.h \
-    engine/util.h
+    engine/util.h \
+    engine/game.h
 SOURCES += engine/gamestate.cpp \
     engine/ghostrules.cpp \
-    engine/util.cpp
+    engine/util.cpp \
+    engine/game.cpp
 
 HEADERS += engine/agentstate.h
 SOURCES += engine/agentstate.cpp

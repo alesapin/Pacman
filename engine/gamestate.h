@@ -31,8 +31,9 @@ public:
     QPointF getPacmanPosition();
     AgentState getPacmanState();
     void setPacmanState(AgentState state);
-    void setGhostState(int index,AgentState state);
-    AgentState getGhostState(int index);
+    void setAgentState(int index,AgentState state);
+    AgentState getAgentState(int index);
+    QPointF getAgentPosition(int index);
     int getScore();
     int getNumFood();
     std::vector<QPointF> getFoodAsList();

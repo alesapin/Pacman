@@ -8,7 +8,7 @@
 class Layout
 {
 public:
-    Layout(std::string path,int cellSize);
+    Layout(std::string path);
     Layout(const Layout& l);
     Layout();
     bool isWall(QPointF point);
@@ -20,20 +20,17 @@ public:
     std::vector <QPointF> getCapsules();
     std::vector <QPointF> getAgentsPositions();
     QPointF getPacmanPosition();
-    int getCellSize();
 private:
     int width;
     int height;
     int totalFood;
     int numAgents;
-    int cellSize;
     std::vector<std::vector <bool> > walls;
     std::vector<std::vector <bool> > food;
     std::vector<QPointF> capsules;
     QPointF pacmanPosition;
     std::vector<QPointF> agentsPositions;
     std::string layoutText;
-
 };
 
 #endif // LAYOUT_H

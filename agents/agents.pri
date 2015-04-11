@@ -4,7 +4,9 @@ HEADERS += \
     agents/randomghostagent.h \
     agents/ghostagent.h \
     agents/reflectagent.h \
-    agents/agent.h
+    agents/agent.h \
+    agents/alphabetaagent.h \
+    agents/rushghostagent.h
 
 SOURCES += \
     agents/multiagentsearch.cpp \
@@ -12,5 +14,7 @@ SOURCES += \
     agents/randomghostagent.cpp \
     agents/ghostagent.cpp \
     agents/reflectagent.cpp \
-    agents/agent.cpp
+    agents/agent.cpp \
+    agents/alphabetaagent.cpp \
+    agents/rushghostagent.cpp
 

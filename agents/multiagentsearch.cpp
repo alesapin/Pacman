@@ -33,9 +33,9 @@ double MultiAgentSearch::evaluationFunction(GameState &state)
             score -= dist;
         }
     }
-    double ghostDist = Util::manhattanDistance(currentPacmanPos,state.getGhostState(1).getPosition());
+    double ghostDist = Util::manhattanDistance(currentPacmanPos,state.getAgentState(1).getPosition());
     for(int i =2 ;i<ghostStates.size();++i){
-        ghostDist = std::min(ghostDist,Util::manhattanDistance(currentPacmanPos,state.getGhostState(i).getPosition()));
+        ghostDist = std::min(ghostDist,Util::manhattanDistance(currentPacmanPos,state.getAgentState(i).getPosition()));
 
     }
     std::vector<QPointF> capsules = state.getCapsules();
@@ -50,7 +50,7 @@ double MultiAgentSearch::evaluationFunction(GameState &state)
     if(state.isWin()){
         score += 10000;
     }
-    qDebug() << "scr:" << score;
+    //qDebug() << "scr:" << score;
     return score;
 }
 

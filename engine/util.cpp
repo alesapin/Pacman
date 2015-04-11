@@ -21,3 +21,10 @@ int Util::maxIndex(std::vector<double> vect)
     }
     return maxIndex;
 }
+
+void Util::normalize(std::map<Direction, double> &dict)
+{
+    for(auto it=dict.begin();it != dict.end();++it){
+        it->second /= dict.size();
+    }
+}

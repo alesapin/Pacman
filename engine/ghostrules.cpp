@@ -9,7 +9,7 @@ const double GhostRules::SCARED_TIME = 40;
 
 std::vector<Direction> GhostRules::getLegalActions(GameState &state, int ghostIndex)
 {
-        Configuration conf = state.getGhostState(ghostIndex).getConfiguration();
+        Configuration conf = state.getAgentState(ghostIndex).getConfiguration();
         Layout lay = state.getLayout();
         std::vector<Direction> legal = Actions::getPossibleActions(conf,lay.getWalls());
         Direction reverse = Actions::reverseDirection(conf.getDirection());
@@ -31,14 +31,14 @@ void GhostRules::applyAction(GameState &state, Direction dir, int ghostIndex)
         qDebug() << "Illegal ghost Direction";
         throw 2;
     }
-    AgentState ghostState = state.getGhostState(ghostIndex);
+    AgentState ghostState = state.getAgentState(ghostIndex);
     double speed = GhostRules::GHOST_SPEED;
     if (ghostState.getScarryTimer()){
         speed /= 2.0;
     }
     QPointF vect = Actions::directionToVector(dir,speed);
     ghostState.setConfiguration(ghostState.getConfiguration().generateSuccessor(vect));
-    state.setGhostState(ghostIndex,ghostState);
+    state.setAgentState(ghostIndex,ghostState);
 }
 
 AgentState GhostRules::decrementTimer(AgentState ghostState)
@@ -64,7 +64,7 @@ void GhostRules::checkDeath(GameState &state, int agentIndex)
             }
         }
     }else{
-        AgentState ghostState = state.getGhostState(agentIndex);
+        AgentState ghostState = state.getAgentState(agentIndex);
         QPointF ghostPosition = ghostState.getConfiguration().getPosition();
         if(GhostRules::canKill(pacmanPos,ghostPosition)){
             GhostRules::collide(state,ghostState,agentIndex);
@@ -94,7 +94,7 @@ bool GhostRules::canKill(QPointF pacmanPosition, QPointF ghostPosition)
 void GhostRules::placeGhost(GameState &state, AgentState& ghostState,int index)
 {
     ghostState.setConfiguration(ghostState.getStartConfiguration());
-    state.setGhostState(index,ghostState);
+    state.setAgentState(index,ghostState);
 }
 
 

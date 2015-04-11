@@ -12,11 +12,9 @@
 class PacmanItem:public QGraphicsEllipseItem
 {
 public:
-    PacmanItem(Agent& agent,QPointF pos,int cs);
+    PacmanItem(QPointF pos,int cs);
     QRectF boundingRect() const;
-    Direction getAction(GameState& state);
 private:
-    Agent* agent;
     QPointF startPosition;
     int cellSize;
 };
