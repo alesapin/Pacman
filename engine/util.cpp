@@ -24,7 +24,11 @@ int Util::maxIndex(std::vector<double> vect)
 
 void Util::normalize(std::map<Direction, double> &dict)
 {
+    double sum = 0;
+    for(auto it = dict.begin();it!=dict.end();++it){
+        sum+= it->second;
+    }
     for(auto it=dict.begin();it != dict.end();++it){
-        it->second /= dict.size();
+        dict[it->first] = it->second / sum;
     }
 }

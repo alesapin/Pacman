@@ -29,7 +29,7 @@ GameState::GameState( Layout &lay)
     data.eatenCapsule = QPointF(-1,-1);
 }
 
-std::vector<Direction> GameState::getLegalAction(int agentNum)
+std::vector<Direction> GameState::getLegalActions(int agentNum)
 {
     if (isWin() || isLose()) return std::vector<Direction>();
     if(agentNum == 0){
@@ -41,6 +41,8 @@ std::vector<Direction> GameState::getLegalAction(int agentNum)
 
 GameState* GameState::generateSuccessor(int agentIndex, Direction dir)
 {
+    QPointF agentPos = this->getAgentPosition(agentIndex);
+    //qDebug()<<"(" << agentPos.x() <<"," << agentPos.y() << ")";
     if(isWin() || isLose()) qDebug()<< "Terminal state,lose/win(gamestate.cpp - 20)";
     GameState* state=new GameState(*this);
     if(agentIndex == 0){
@@ -64,7 +66,7 @@ QPointF GameState::getPacmanPosition()
 
 std::vector<Direction> GameState::getLegalPacmanAction()
 {
-    return getLegalAction(0);
+    return getLegalActions(0);
 }
 
 GameState* GameState::generatePacmanSuccessor(Direction dir)

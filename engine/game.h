@@ -5,6 +5,8 @@
 #include "agents/ghostagent.h"
 #include "agents/alphabetaagent.h"
 #include "agents/rushghostagent.h"
+#include "agents/expectimaxagent.h"
+#include "agents/randomghostagent.h"
 #include <vector>
 
 class Game

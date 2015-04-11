@@ -28,7 +28,7 @@ double ExpectimaxAgent::expectimax(GameState &state, int dpth, int agentIndex)
 double ExpectimaxAgent::maxVal(GameState &state, int dpth, int agentIndex)
 {
     double v = -std::numeric_limits<double>::infinity();
-    std::vector<Direction> availableActions = state.getLegalAction(agentIndex);
+    std::vector<Direction> availableActions = state.getLegalActions(agentIndex);
     int nextAgent = (agentIndex+1)%state.getAgentStates().size();
     if (nextAgent == 0){
         dpth+=1;
@@ -47,7 +47,7 @@ double ExpectimaxAgent::maxVal(GameState &state, int dpth, int agentIndex)
 double ExpectimaxAgent::expectVal(GameState &state, int dpth, int agentIndex)
 {
     double v = 0;
-    std::vector<Direction> availableActions = state.getLegalAction(agentIndex);
+    std::vector<Direction> availableActions = state.getLegalActions(agentIndex);
     int nextAgent = (agentIndex+1)%state.getAgentStates().size();
     if (nextAgent == 0){
         dpth+=1;

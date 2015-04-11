@@ -1,7 +1,8 @@
 #include "ghostagent.h"
+#include <QDebug>
 
-
-GhostAgent::GhostAgent(int ind)
+GhostAgent::GhostAgent(int ind):
+    distribution(0.0,1.0)
 {
     index = ind;
 }
@@ -13,18 +14,24 @@ int GhostAgent::getIndex()
 
 Direction GhostAgent::getAction(GameState &state)
 {
-    std::map<Direction,double> dist = getDistribution(state);
-    //choose element with max value
-    auto pr = std::max_element(dist.begin(), dist.end(),
-          [](const std::pair<Direction, double>& p1, const std::pair<Direction, double>& p2) {
-            return p1.second < p2.second; });
-    std::vector<Direction> maxVector;
-    for(auto iter=dist.begin();iter!=dist.end();++iter){
-        if(iter->second==pr->second) maxVector.push_back(iter->first);
+    QPointF agentPosition = state.getAgentPosition(index);
+    if(std::floor(agentPosition.x())!= agentPosition.x() || std::floor(agentPosition.y() != agentPosition.y())){
+        return state.getAgentState(index).getDireciton();
     }
-    int index = rand() % maxVector.size();
+    //TODO выбор не максимального элемента
+    std::map<Direction,double> dist = getDistribution(state);
+    std::vector<std::pair<Direction,double> >listRepr;
+    std::copy(dist.begin(),dist.end(),std::back_inserter(listRepr));
 
-    return maxVector[index];
+    std::sort(listRepr.begin(),listRepr.end(),PairComparator());
+
+    double choice = distribution(generator);
+    int i =0;
+    double total = listRepr[i].second;
+    while(total < choice){
+        total += listRepr[++i].second;
+    }
+    return listRepr[i].first;
 }
 
 

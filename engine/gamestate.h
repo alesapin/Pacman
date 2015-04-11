@@ -13,7 +13,7 @@ public:
     GameState( Layout& lay);
     ~GameState();
     //Action methods
-    std::vector<Direction> getLegalAction(int agentNum);
+    std::vector<Direction> getLegalActions(int agentNum);
     GameState* generateSuccessor(int agentIndex,Direction dir);
     std::vector<Direction> getLegalPacmanAction();
     GameState* generatePacmanSuccessor(Direction dir);

@@ -13,7 +13,7 @@ RandomGhostAgent::RandomGhostAgent(int ind):
 std::map<Direction, double> RandomGhostAgent::getDistribution(GameState &state)
 {
     std::map<Direction,double> result;
-    for(auto act: state.getLegalAction(index)){
+    for(Direction act: state.getLegalActions(index)){
         result[act] = 1.;
     }
     return result;

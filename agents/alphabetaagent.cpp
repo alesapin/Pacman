@@ -1,10 +1,17 @@
 #include "alphabetaagent.h"
-
+#include <QDebug>
 Direction AlphaBetaAgent::getAction(GameState &state)
 {
+    QPointF pos = state.getPacmanPosition();
+    if(std::floor(pos.x()) != pos.x() || std::floor(pos.y())!= pos.y()){
+        return state.getPacmanState().getDireciton();
+    }
     double alpha = -std::numeric_limits<double>::infinity();
     double beta = std::numeric_limits<double>::infinity();
     std::tuple<Direction,double> result = minimax(state,0,0,alpha,beta);
+//    qDebug()<< "В результате:";
+//    qDebug() << std::get<0>(result);
+//    qDebug() << std::get<1>(result);
     return std::get<0>(result);
 }
 
@@ -23,7 +30,7 @@ std::tuple<Direction, double> AlphaBetaAgent::minimax(GameState &state, int dpth
 std::tuple<Direction, double> AlphaBetaAgent::maxVal(GameState &state, int dpth, int agentNum, double alpha, double beta)
 {
     std::tuple<Direction,double> v  =   std::make_tuple(STOP,-std::numeric_limits<double>::infinity());
-    std::vector<Direction> availableActions = state.getLegalAction(agentNum);
+    std::vector<Direction> availableActions = state.getLegalActions(agentNum);
     if( availableActions.size() == 0 ){
         std::get<1>(v) = evaluationFunction(state);
         return v;
@@ -50,7 +57,7 @@ std::tuple<Direction, double> AlphaBetaAgent::maxVal(GameState &state, int dpth,
 std::tuple<Direction, double> AlphaBetaAgent::minVal(GameState &state, int dpth, int agentNum, double alpha, double beta)
 {
     std::tuple<Direction,double> v  =   std::make_tuple(STOP,std::numeric_limits<double>::infinity());
-    std::vector<Direction> availableActions = state.getLegalAction(agentNum);
+    std::vector<Direction> availableActions = state.getLegalActions(agentNum);
     if( availableActions.size() == 0 ){
         std::get<1>(v) = evaluationFunction(state);
         return v;

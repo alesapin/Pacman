@@ -45,6 +45,7 @@ void Canvas::drawState(GameState *state)
     }
 
     QPointF pos = state->getAgentPosition(0);
+    //qDebug() << '(' << pos.y() << ',' <<pos.x() << ')';
     pacman->setRect(QRectF(pos.y()*cellSize,pos.x()*cellSize,cellSize,cellSize));
     for(int i = 0;i<ghosts.size();++i){
         GhostItem* currentGhost = ghosts[i];

@@ -20,7 +20,7 @@ RushGhostAgent::RushGhostAgent(int ind, double probAtack, double probScaried):
 std::map<Direction, double> RushGhostAgent::getDistribution(GameState &state)
 {
     AgentState ghostState = state.getAgentState(index);
-    std::vector<Direction> legalActions = state.getLegalAction(index);
+    std::vector<Direction> legalActions = state.getLegalActions(index);
     QPointF position = ghostState.getPosition();
     double speed = state.isScared(index) ? 0.5:1;
 

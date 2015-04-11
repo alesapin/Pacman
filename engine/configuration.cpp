@@ -18,7 +18,7 @@ Configuration::Configuration(const Configuration &config)
 
 bool Configuration::isInteger()
 {
-    return std::floor(position.x())==position.x() && std::floor(position.y())==position.y();
+    return std::floor(position.x())==position.x() && std::floor(position.y()) == position.y();
 }
 
 Direction Configuration::getDirection()
