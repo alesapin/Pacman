@@ -4,10 +4,12 @@
 #include <QDebug>
 #include "ui/canvas.h"
 #include <QGraphicsScene>
+#include <cstdlib>
 int main(int argc, char *argv[])
 {
+    srand(time(NULL));
     QApplication a(argc, argv);
-    Canvas v("/home/alesapin/Code/multiagent/layouts/smallClassic.lay",30);
+    Canvas v(":/smallClassic.lay",30);
     qDebug() << "layout createad";
     v.show();
     return a.exec();

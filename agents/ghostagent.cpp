@@ -1,8 +1,7 @@
 #include "ghostagent.h"
 #include <QDebug>
 
-GhostAgent::GhostAgent(int ind):
-    distribution(0.0,1.0)
+GhostAgent::GhostAgent(int ind)
 {
     index = ind;
 }
@@ -25,7 +24,7 @@ Direction GhostAgent::getAction(GameState &state)
 
     std::sort(listRepr.begin(),listRepr.end(),PairComparator());
 
-    double choice = distribution(generator);
+    double choice = Util::rand();
     int i =0;
     double total = listRepr[i].second;
     while(total < choice){

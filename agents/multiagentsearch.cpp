@@ -33,7 +33,6 @@ double MultiAgentSearch::evaluationFunction(GameState &state)
         }else{
             score -= dist;
         }
-        //qDebug() << dist;
     }
     double ghostDist = 1000;
     if(!state.isScared(1)){
@@ -55,7 +54,7 @@ double MultiAgentSearch::evaluationFunction(GameState &state)
         score += 10000;
     }
     score-=score/state.getFoodAsList().size();
-    score+= state.getLegalPacmanAction().size();
+    score+= state.getLegalPacmanActions().size();
     //qDebug() << "scr:" << score;
     return score;
 }

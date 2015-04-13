@@ -50,7 +50,8 @@ SOURCES += main.cpp
 CONFIG += c++11
 
 OTHER_FILES += \
-    ../Code/multiagent/layouts/smallClassic.lay
+    ../Code/multiagent/layouts/smallClassic.lay \
+    smallClassic.lay
 QMAKE_CXXFLAGS_DEBUG += -pg
 QMAKE_LFLAGS_DEBUG += -pg
 

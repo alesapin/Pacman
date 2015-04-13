@@ -15,7 +15,7 @@ public:
     //Action methods
     std::vector<Direction> getLegalActions(int agentNum);
     GameState* generateSuccessor(int agentIndex,Direction dir);
-    std::vector<Direction> getLegalPacmanAction();
+    std::vector<Direction> getLegalPacmanActions();
     GameState* generatePacmanSuccessor(Direction dir);
 
     //service methods

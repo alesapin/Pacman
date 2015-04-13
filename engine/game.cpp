@@ -41,7 +41,7 @@ Game::~Game()
 
 void Game::setAgents()
 {
-    agents.push_back(new AlphaBetaAgent(4));
+    agents.push_back(new AlphaBetaAgent(3));
     for(int i = 1; i < currentGameState->getAgentStates().size();++i){
         agents.push_back(new RushGhostAgent(i));
     }

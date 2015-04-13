@@ -1,5 +1,7 @@
 #include "util.h"
 
+std::uniform_real_distribution<double> Util::distribution = std::uniform_real_distribution<double>(0.,1.);
+ std::default_random_engine Util::generator = std::default_random_engine();
 
 double Util::manhattanDistance(QPointF f, QPointF s)
 {
@@ -31,4 +33,15 @@ void Util::normalize(std::map<Direction, double> &dict)
     for(auto it=dict.begin();it != dict.end();++it){
         dict[it->first] = it->second / sum;
     }
+}
+
+bool Util::tossCoin(double prob)
+{
+    double r = Util::rand();
+    return r < prob;
+}
+
+double Util::rand()
+{
+    return  distribution(generator);
 }

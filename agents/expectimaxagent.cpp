@@ -3,7 +3,7 @@
 
 Direction ExpectimaxAgent::getAction(GameState &state)
 {
-    std::vector<Direction> legalActions = state.getLegalPacmanAction();
+    std::vector<Direction> legalActions = state.getLegalPacmanActions();
     std::vector<double> expectimaxValues;
     for (auto action:legalActions) {
         GameState* nextState = state.generatePacmanSuccessor(action);

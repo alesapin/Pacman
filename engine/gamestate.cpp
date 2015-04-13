@@ -64,7 +64,7 @@ QPointF GameState::getPacmanPosition()
     return data.agentStates[0].getPosition();
 }
 
-std::vector<Direction> GameState::getLegalPacmanAction()
+std::vector<Direction> GameState::getLegalPacmanActions()
 {
     return getLegalActions(0);
 }

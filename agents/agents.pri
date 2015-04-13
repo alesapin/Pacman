@@ -6,7 +6,9 @@ HEADERS += \
     agents/reflectagent.h \
     agents/agent.h \
     agents/alphabetaagent.h \
-    agents/rushghostagent.h
+    agents/rushghostagent.h \
+    agents/learningagent.h \
+    agents/pacmanlearningagent.h
 
 SOURCES += \
     agents/multiagentsearch.cpp \
@@ -16,5 +18,7 @@ SOURCES += \
     agents/reflectagent.cpp \
     agents/agent.cpp \
     agents/alphabetaagent.cpp \
-    agents/rushghostagent.cpp
+    agents/rushghostagent.cpp \
+    agents/learningagent.cpp \
+    agents/pacmanlearningagent.cpp
 

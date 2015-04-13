@@ -2,7 +2,7 @@
 #define CONFIGURATION_H
 #include <QPointF>
 enum Direction{
-    NORTH,SOUTH,EAST,WEST,STOP
+    NORTH,SOUTH,EAST,WEST,STOP,NOACTION
 };
 class Configuration
 {

@@ -8,7 +8,7 @@ ReflectAgent::ReflectAgent()
 
 Direction ReflectAgent::getAction(GameState &state)
 {
-    std::vector<Direction> legal = state.getLegalPacmanAction();
+    std::vector<Direction> legal = state.getLegalPacmanActions();
     std::vector<double> scores;
     for (Direction dir:legal){
         scores.push_back(evaluationFunction(state,dir));

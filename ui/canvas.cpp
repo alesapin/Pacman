@@ -67,6 +67,7 @@ void Canvas::drawState(GameState *state)
         scene()->removeItem(capsuleMap[eatenCapsule]);
         delete capsuleMap[eatenCapsule];
     }
+    qDebug() << state->getScore();
 }
 
 void Canvas::gameLoop()
