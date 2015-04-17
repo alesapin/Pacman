@@ -1,11 +1,13 @@
 HEADERS += engine/gamestate.h \
     engine/ghostrules.h \
     engine/util.h \
-    engine/game.h
+    engine/game.h \
+    engine/featureextractor.h
 SOURCES += engine/gamestate.cpp \
     engine/ghostrules.cpp \
     engine/util.cpp \
-    engine/game.cpp
+    engine/game.cpp \
+    engine/featureextractor.cpp
 
 HEADERS += engine/agentstate.h
 SOURCES += engine/agentstate.cpp

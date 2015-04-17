@@ -21,7 +21,10 @@ WallItem::WallItem(std::vector<std::vector<bool> > w, double cs, QColor c, doubl
     if (pw == -1) {
         penWidth = cellSize / 26;
     }
-
+    for(int i=0;i<w.size();++i){
+        std::reverse(w[i].begin(),w[i].end());
+    }
+    walls = std::vector<std::vector<bool>>(w);
 }
 
 WallItem::~WallItem()
@@ -37,7 +40,8 @@ void WallItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 {
     painter->setPen(QPen(color,penWidth,Qt::SolidLine,Qt::FlatCap,Qt::RoundJoin));
 
-    painter->translate(walls[0].size()*cellSize-cellSize,0);
+//
+    painter->translate((walls[0].size())*cellSize,0);
     painter->rotate(90);
     ElemPainter* elemPainter = new ElemPainter(cellSize,cellSize,painter);
 

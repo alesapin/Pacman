@@ -6,7 +6,12 @@
 #include "configuration.h"
 #include <cstdlib>
 
-
+struct PointComparator {
+    bool operator()(const QPointF& p1, const QPointF& p2) const {
+       return  p1.x() < p2.x() ||
+                          (p1.x() == p2.x() && p1.y() < p2.y());
+    }
+};
 class Util
 {
 public:
@@ -17,6 +22,7 @@ public:
     static double rand();
     static std::default_random_engine generator; //move to util
     static std::uniform_real_distribution<double> distribution;
+    static void setSeed();
 };
 
 #endif // UTIL_H

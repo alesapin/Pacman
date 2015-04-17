@@ -1,53 +1,53 @@
 #include "pacmanlearningagent.h"
+#include <QDebug>
 
 
-
-PacmanLearningAgent::PacmanLearningAgent(int numTrain, double eps, double alp, double gam):
+PacmanLearningAgent::PacmanLearningAgent(GameState& startState,int numTrain, double eps, double alp, double gam):
     LearningAgent(numTrain,eps,alp,gam)
 {
-
+    index = 0;
 }
 
 double PacmanLearningAgent::getQValue(GameState &state, Direction action)
 {
-    std::tuple<GameState*,Direction> key = std::make_tuple(&state,action);
-
-    if(qValues.find(key)==qValues.end()){
-        return 0;
-     }
-    return qValues[key];
+    return qValues[std::make_tuple(state,action)];
 }
 
 Direction PacmanLearningAgent::getAction(GameState &state)
 {
+
     std::vector<Direction> legalActions = state.getLegalPacmanActions();
+    Direction action = NOACTION;
     if(Util::tossCoin(epsilon)){
         int index = rand() % legalActions.size();
-        return legalActions[index];
+        action =  legalActions[index];
     }else{
-        return computeActionFromQValues(state);
+        action =  computeActionFromQValues(state);
     }
+    doAction(state,action);
+    return action;
 }
 
 void PacmanLearningAgent::update(GameState &state, Direction action, GameState &nextState, double reward)
 {
     std::vector<Direction> legalActions = nextState.getLegalPacmanActions();
     std::vector<double> qvals;
-    std::tuple<GameState*,Direction> key = std::make_tuple(&state,action);
-
+    std::tuple<GameState,Direction> key = std::make_tuple(state,action);
     for(Direction act:legalActions){
-        qvals.push_back(qValues[std::make_tuple(&nextState,act)]);
-        if(qvals.size() > 0){
-            qValues[key] =  (1 - alpha) * qValues[key] + alpha*(reward + discount*(* std::max(qvals.begin(),qvals.end())));
-        }else{
-            qValues[key] =  (1 - alpha) * qValues[key] + alpha*(reward);
-        }
+        qvals.push_back(getQValue(nextState,act));
+    }
+    double qVal = getQValue(state,action);
+    if(qvals.size() > 0){
+        double value = *std::max_element(qvals.begin(),qvals.end());
+        qValues[key] =  (1 - alpha) * qVal + alpha*(reward + discount*value);
+    }else{
+        qValues[key] =   (1 - alpha)*qVal + alpha*reward;
     }
 }
 
 double PacmanLearningAgent::computeValueFromQValues(GameState &state)
 {
-    std::vector<Direction> legalActions = getLegalAction(state); // упразднить
+    std::vector<Direction> legalActions = state.getLegalPacmanActions(); // упразднить
     if(legalActions.empty()){
         return 0;
     }
@@ -55,7 +55,7 @@ double PacmanLearningAgent::computeValueFromQValues(GameState &state)
     for(Direction dir:legalActions){
         currentValues.push_back(getQValue(state,dir));
     }
-    return *std::max(currentValues.begin(),currentValues.end());
+    return *std::max_element(currentValues.begin(),currentValues.end());
 }
 
 Direction PacmanLearningAgent::computeActionFromQValues(GameState &state)
@@ -84,4 +84,20 @@ double PacmanLearningAgent::getValue(GameState &state)
 Direction PacmanLearningAgent::getPolicyAction(GameState &state)
 {
     return computeActionFromQValues(state);
+}
+
+void PacmanLearningAgent::final(GameState &finalState)
+{
+    double deltaReward = finalState.getScore() - lastState.getScore();
+
+    observeOneAction(lastState,lastAction,finalState,deltaReward);
+    sumOfTrainRewards += finalState.getScore();
+
+    qDebug() <<"Прошло:" <<episodesPast;
+    endEpisode();
+
+    //qDebug() << qValues.size();
+    if (episodesPast == numTraining){
+        qDebug() << "Обучено! ";
+    }
 }

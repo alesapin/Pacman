@@ -46,6 +46,6 @@ Configuration Configuration::generateSuccessor(QPointF vectorTo)
     if (dir == STOP){
         dir = direction;
     }
-    return Configuration(QPointF(x+dx/4,y+dy/4),dir); //TODO
+    return Configuration(QPointF(x+dx,y+dy),dir); //TODO
 }
 

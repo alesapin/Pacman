@@ -1,5 +1,5 @@
 #include "learningagent.h"
-
+#include <QDebug>
 
 
 LearningAgent::LearningAgent(int numTrain, double eps, double alp, double gam):
@@ -11,7 +11,7 @@ LearningAgent::LearningAgent(int numTrain, double eps, double alp, double gam):
     alpha(alp),
     discount(gam)
 {
-
+    lastAction = NOACTION;
 }
 
 bool LearningAgent::isTraining()
@@ -24,22 +24,23 @@ bool LearningAgent::isTesting()
     return !isTraining();
 }
 
-void LearningAgent::startEpisode()
+void LearningAgent::startEpisode(GameState& state)
 {
+    qDebug() <<"EPISODE START";
     lastAction = NOACTION;
-    lastState = 0;
     episodeRewards = 0;
 }
 
 void LearningAgent::endEpisode()
 {
+    qDebug() << "EPISODE END";
     if(episodesPast < numTraining){
         sumOfTrainRewards += episodeRewards;
     } else{
         sumOfTestRewards += episodeRewards;
     }
     episodesPast++;
-    if( episodesPast > numTraining){
+    if( episodesPast >= numTraining){
         epsilon = 0;
         alpha = 0;
     }
@@ -47,7 +48,7 @@ void LearningAgent::endEpisode()
 
 void LearningAgent::doAction(GameState &state, Direction dir)
 {
-    lastState = &state;
+    lastState = GameState(state);
     lastAction = dir;
 }
 
@@ -64,9 +65,9 @@ std::vector<Direction> LearningAgent::getLegalAction(GameState &state)
 
 GameState *LearningAgent::observationFuction(GameState &state)
 {
-    if(lastState){
-        double reward = state.getScore() - lastState->getScore();
-        observeOneAction(*lastState,lastAction,state,reward);
+    if(lastAction!=NOACTION){
+        double reward = state.getScore() - lastState.getScore();
+        observeOneAction(lastState,lastAction,state,reward);
     }
     return &state;
 }

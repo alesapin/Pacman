@@ -17,7 +17,7 @@ Layout::Layout(std::string path):
     while (std::getline(file, tmp))
     {
         width+=1;
-        layoutText += tmp;
+        layoutText+=tmp;
         qDebug() << layoutText.c_str();
         layoutText.push_back('\n');
     }
@@ -88,12 +88,12 @@ void Layout::processLayoutText(std::string text)
     }
 }
 
-const std::vector<std::vector<bool> >& Layout::getWalls()
+const std::vector<std::vector<bool> >& Layout::getWalls() const
 {
     return walls;
 }
 
-std::vector<std::vector<bool> > Layout::getFood()
+std::vector<std::vector<bool> > Layout::getFood() const
 {
     return food;
 }

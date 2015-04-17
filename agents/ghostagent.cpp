@@ -14,9 +14,6 @@ int GhostAgent::getIndex()
 Direction GhostAgent::getAction(GameState &state)
 {
     QPointF agentPosition = state.getAgentPosition(index);
-    if(std::floor(agentPosition.x())!= agentPosition.x() || std::floor(agentPosition.y() != agentPosition.y())){
-        return state.getAgentState(index).getDireciton();
-    }
     //TODO выбор не максимального элемента
     std::map<Direction,double> dist = getDistribution(state);
     std::vector<std::pair<Direction,double> >listRepr;

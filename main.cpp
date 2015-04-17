@@ -7,9 +7,9 @@
 #include <cstdlib>
 int main(int argc, char *argv[])
 {
-    srand(time(NULL));
+    srand(time(0));
     QApplication a(argc, argv);
-    Canvas v(":/smallClassic.lay",30);
+    Canvas v("/home/alesapin/Code/multiagent/layouts/originalClassic.lay",30);
     qDebug() << "layout createad";
     v.show();
     return a.exec();

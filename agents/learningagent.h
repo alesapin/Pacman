@@ -7,10 +7,12 @@ public:
     LearningAgent(int numTrain,double eps,double alp,double gam);
     bool isTraining();
     bool isTesting();
-    void startEpisode();
+    void startEpisode(GameState& state);
     void endEpisode();
     void finish(GameState& state);
     Direction getAction(GameState &state) = 0;
+    GameState *observationFuction(GameState& state);
+
 protected:
     virtual void update(GameState& state,Direction action,GameState& nextState,double reward) = 0;
     virtual double getQValue(GameState& state,Direction action) = 0;
@@ -19,7 +21,6 @@ protected:
     void doAction(GameState& state,Direction dir);
     void observeOneAction(GameState& state,Direction action,GameState& nextState,double deltaReward);
     std::vector<Direction> getLegalAction(GameState& state);
-    GameState *observationFuction(GameState& state);
 
 
    int numTraining;
@@ -31,7 +32,7 @@ protected:
    double sumOfTestRewards;
    double episodeRewards;
    Direction lastAction;
-   GameState* lastState;
+   GameState lastState;
 };
 
 #endif // LEARNINGAGENT_H

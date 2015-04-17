@@ -15,7 +15,7 @@ GameState::GameState(GameState *prevstate)
     data.eatenCapsule = QPointF(-1,-1);
 }
 
-GameState::GameState( GameState &o)
+GameState::GameState(const GameState &o)
 {
     data = GameData(o.data);
     data.eatenFood = QPointF(-1,-1);
@@ -74,7 +74,7 @@ GameState* GameState::generatePacmanSuccessor(Direction dir)
     return generateSuccessor(0,dir);
 }
 
-int GameState::getScore()
+int GameState::getScore() const
 {
     return data.score;
 }
@@ -149,7 +149,7 @@ bool GameState::hasFood(int x, int y)
     return data.food[x][y];
 }
 
-int GameState::getNumFood()
+int GameState::getNumFood() const
 {
     int result = 0;
     for (std::size_t i = 0;i<data.food.size();++i){
@@ -170,6 +170,11 @@ std::vector<QPointF> GameState::getFoodAsList()
         }
     }
     return result;
+}
+
+const std::vector<std::vector<bool> > &GameState::getFood() const
+{
+    return data.food;
 }
 
 void GameState::setLose()
@@ -199,7 +204,7 @@ bool GameState::isWin()
 
 const Layout& GameState::getLayout()
 {
-    return data.layout;
+    return *data.layout;
 }
 
 std::vector<QPointF> GameState::getCapsules()
@@ -214,6 +219,37 @@ void GameState::addScore(int i)
 
 GameState::~GameState()
 {
+}
+
+bool GameState::operator==(const GameState &other)const
+{
+    if(data.score!=other.data.score) return false;
+    if(data.food.size()!=other.data.food.size()) return false;
+    if(data.food[0].size()!=other.data.food[0].size()) return false;
+    for(int i = 0;i<data.food.size();++i){
+        for(int j =0;j<data.food[0].size();++j){
+            if(data.food[i][j]!=other.data.food[i][j]) return false;
+        }
+    }
+    if(data.agentStates.size()!=other.data.agentStates.size()) return false;
+    for(int i =0;i<data.agentStates.size();++i){
+        AgentState our = data.agentStates[i];
+        AgentState their = other.data.agentStates[i];
+        if(our.getPosition()!= their.getPosition()) return false;
+        if(our.getDireciton()!=their.getDireciton()) return false;
+    }
+    if(data.capsules.size()!=other.data.capsules.size()) return false;
+    for(int i=0;i<data.capsules.size();++i){
+        if(data.capsules[i]!=other.data.capsules[i])return false;
+    }
+    return true;
+}
+
+bool GameState::operator<(const GameState &other) const
+{
+    if(getScore() < other.getScore()) return true;
+    if(getNumFood() < other.getNumFood()) return true;
+    return false;
 }
 
 void GameState::setPacmanState(AgentState state)
@@ -239,15 +275,16 @@ GameState::GameData::GameData(Layout &lay)
     score =0;
     lose = false;
     win = false;
-    layout = Layout(lay);
+    layout =&lay;
 }
 
 GameState::GameData::GameData(const GameState::GameData &other)
 {
+
     food = std::vector< std::vector<bool> >(other.food);
     capsules = std::vector<QPointF>(other.capsules);
     agentStates = std::vector<AgentState>(other.agentStates);
-    layout = Layout(other.layout);
+    layout = other.layout;
     eaten = std::vector<QPointF>(other.eaten);
     score = other.score;
     lose = other.lose;

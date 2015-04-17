@@ -15,8 +15,8 @@ public:
     QPointF getRandomLegalPosition();
     void processLayoutChar(int i,int j,char character);
     void processLayoutText(std::string text);
-    const std::vector <std::vector <bool> >& getWalls();
-    std::vector <std::vector <bool> > getFood();
+    const std::vector <std::vector <bool> >& getWalls() const;
+    std::vector <std::vector <bool> > getFood() const;
     std::vector <QPointF> getCapsules();
     std::vector <QPointF> getAgentsPositions();
     QPointF getPacmanPosition();

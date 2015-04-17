@@ -75,7 +75,7 @@ std::vector<Direction> Actions::getPossibleActions(Configuration& config,const s
     return result;
 }
 
-std::vector<QPointF> Actions::getLegalNeighbours(QPointF position, std::vector<std::vector<bool> > walls)
+std::vector<QPointF> Actions::getLegalNeighbours(QPointF position, const std::vector<std::vector<bool> >& walls)
 {
     double x =position.x();
     double y = position.y();

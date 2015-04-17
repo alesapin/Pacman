@@ -9,14 +9,27 @@
 #include <QGraphicsItem>
 #include <QVariant>
 #include <QGraphicsScene>
-class PacmanItem:public QGraphicsEllipseItem
-{
+#include <QThread>
+#include <unistd.h>
+#include <QGraphicsView>
+#include <QTimer>
+#include <QObject>
+
+class PacmanItem:public QObject,public QGraphicsEllipseItem {
+        Q_OBJECT
 public:
-    PacmanItem(QPointF pos,int cs);
+    PacmanItem(QPointF pos,int cs,QGraphicsView*);
     QRectF boundingRect() const;
+    void moveToPoint(QPointF moveTo);
+public slots:
+    void moved();
 private:
     QPointF startPosition;
     int cellSize;
+    QPointF currentTarget;
+    QTimer* timer;
+    QPointF convertCoordinates(QPointF global);
+    QGraphicsView* viewew;
 };
 
 #endif // PACMANITEM_H

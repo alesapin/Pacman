@@ -9,9 +9,11 @@ class GameState
 public:
     //Constructors/destructors
     GameState(GameState* prevstate=0);
-    GameState( GameState&);
+    GameState(const GameState&);
     GameState( Layout& lay);
     ~GameState();
+    bool operator==(const GameState& other) const;
+    bool operator<(const GameState& other) const;
     //Action methods
     std::vector<Direction> getLegalActions(int agentNum);
     GameState* generateSuccessor(int agentIndex,Direction dir);
@@ -34,9 +36,10 @@ public:
     void setAgentState(int index,AgentState state);
     AgentState getAgentState(int index);
     QPointF getAgentPosition(int index);
-    int getScore();
-    int getNumFood();
+    int getScore() const;
+    int getNumFood() const;
     std::vector<QPointF> getFoodAsList();
+    const std::vector<std::vector<bool> > &getFood() const;
     void setFood(int x,int y,bool val);
     void setWin();
     bool isLose();
@@ -57,7 +60,7 @@ private:
         GameData(Layout&);
         GameData(const GameData&);
         GameData();
-        Layout layout;
+        Layout* layout;
         std::vector< std::vector<bool> > food;
         std::vector< AgentState> agentStates;
         std::vector<QPointF> capsules;

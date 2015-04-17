@@ -8,6 +8,7 @@ Canvas::Canvas(std::string path,int cs):
     setCacheMode(QGraphicsView::CacheNone);
     setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+    //this->setViewportUpdateMode(QGraphicsView::NoViewportUpdate);
     myScene = new QGraphicsScene();
     this->setStyleSheet("background-color: black;");
     setScene(myScene);
@@ -17,7 +18,8 @@ Canvas::Canvas(std::string path,int cs):
 
     getFoodMap(layout->getFood());
     getCapsuleMap(layout->getCapsules());
-    pacman = new PacmanItem(layout->getPacmanPosition(),cellSize);
+    pacman = new PacmanItem(layout->getPacmanPosition(),cellSize,this);
+
     std::vector<QPointF> agentPositions = layout->getAgentsPositions();
     for(int i = 0; i< agentPositions.size();++i){
         GhostItem* ghost = new GhostItem(agentPositions[i],cellSize);
@@ -32,21 +34,24 @@ Canvas::Canvas(std::string path,int cs):
     for(auto iter = capsuleMap.begin();iter!=capsuleMap.end();++iter){
         scene()->addItem(iter->second);
     }
-    timer = new QTimer();
+    timer = new QTimer(this);
     connect(timer,SIGNAL(timeout()),this,SLOT(gameLoop()));
-    timer->start(10);
+    timer->start(100);
+    counter  = 0 ;
+    game->trainAgent();
 }
 
 void Canvas::drawState(GameState *state)
 
 {
+    std::vector<Direction> legal= state->getLegalPacmanActions();
+
     if(state->isWin() || state->isLose()){
         timer->stop();
     }
-
     QPointF pos = state->getAgentPosition(0);
-    //qDebug() << '(' << pos.y() << ',' <<pos.x() << ')';
-    pacman->setRect(QRectF(pos.y()*cellSize,pos.x()*cellSize,cellSize,cellSize));
+
+    pacman->moveToPoint(QPointF(pos.y()*cellSize,pos.x()*cellSize));
     for(int i = 0;i<ghosts.size();++i){
         GhostItem* currentGhost = ghosts[i];
         QPointF ghostPos = state->getAgentPosition(i+1);
@@ -68,13 +73,19 @@ void Canvas::drawState(GameState *state)
         delete capsuleMap[eatenCapsule];
     }
     qDebug() << state->getScore();
+
 }
 
 void Canvas::gameLoop()
 {
 
-    drawState(game->step());
-    scene()->update(scene()->sceneRect());
+//    if(game->isLearning()){
+ //       game->step();
+  //  }else{
+        drawState(game->step());
+        scene()->update(scene()->sceneRect());
+ //   }
+
 }
 
 

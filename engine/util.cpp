@@ -45,3 +45,8 @@ double Util::rand()
 {
     return  distribution(generator);
 }
+
+void Util::setSeed()
+{
+    generator.seed(time(0));
+}

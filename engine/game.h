@@ -7,6 +7,8 @@
 #include "agents/rushghostagent.h"
 #include "agents/expectimaxagent.h"
 #include "agents/randomghostagent.h"
+#include "agents/pacmanlearningagent.h"
+#include "agents/featurepacmanagent.h"
 #include <vector>
 
 class Game
@@ -16,11 +18,15 @@ public:
     GameState *step();
     Layout *getLayout();
     ~Game();
+    void restartGame();
+    bool isLearning();
+    void trainAgent();
  private:
     GameState* currentGameState;
     GameState* startState;
     int currentMover;
     Layout* layout;
+    PacmanLearningAgent* pacman;
     std::vector<Agent*> agents;
 
     void setAgents();
