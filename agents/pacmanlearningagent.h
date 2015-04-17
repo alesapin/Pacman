@@ -5,12 +5,7 @@
 #include "engine/util.h"
 #include <unordered_map>
 #include <utility>
-
-//struct TupleComparator {
-//    bool operator()( std::tuple<GameState,Direction>& p1,  std::tuple<GameState,Direction>& p2) const {
-//       return  std::get<0>(p1) == std::get<0>(p2) && std::get<1>(p1) == std::get<1>(p2);
-//    }
-//};
+#include "engine/featureextractor.h"
 struct key_hash : public std::unary_function<std::tuple<GameState,Direction>, std::size_t>
 {
    std::size_t operator()(const std::tuple<GameState,Direction>& k) const
@@ -53,7 +48,9 @@ protected:
      double getValue(GameState &state);
      Direction getPolicyAction(GameState &state);
 private:
-     std::unordered_map<std::tuple<GameState,Direction>,double,key_hash,key_equal> qValues;
+     //std::unordered_map<std::tuple<GameState,Direction>,double,key_hash,key_equal> qValues;
+     std::map<std::string,double> weights;
+     double difference;
 };
 
 #endif // PACMANLEARNINGAGENT_H

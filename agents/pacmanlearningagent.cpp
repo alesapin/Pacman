@@ -6,12 +6,20 @@ PacmanLearningAgent::PacmanLearningAgent(GameState& startState,int numTrain, dou
     LearningAgent(numTrain,eps,alp,gam)
 {
     index = 0;
+    difference = 0;
 }
 
 double PacmanLearningAgent::getQValue(GameState &state, Direction action)
 {
-    return qValues[std::make_tuple(state,action)];
+    double qVal = 0;
+    std::map<std::string,double> feature = FeatureExtractor::getFeatures(state,action);
+    for(auto iter=feature.begin();iter!=feature.end();++iter){
+
+        qVal += weights[iter->first]*iter->second;
+    }
+    return qVal;
 }
+
 
 Direction PacmanLearningAgent::getAction(GameState &state)
 {
@@ -30,20 +38,22 @@ Direction PacmanLearningAgent::getAction(GameState &state)
 
 void PacmanLearningAgent::update(GameState &state, Direction action, GameState &nextState, double reward)
 {
-    std::vector<Direction> legalActions = nextState.getLegalPacmanActions();
-    std::vector<double> qvals;
-    std::tuple<GameState,Direction> key = std::make_tuple(state,action);
-    for(Direction act:legalActions){
-        qvals.push_back(getQValue(nextState,act));
+
+    std::map<std::string,double> feature = FeatureExtractor::getFeatures(state,action);
+    std::vector<double> qVals;
+    for(Direction act:nextState.getLegalPacmanActions()){
+        qVals.push_back(getQValue(nextState,act));
     }
-    double qVal = getQValue(state,action);
-    if(qvals.size() > 0){
-        double value = *std::max_element(qvals.begin(),qvals.end());
-        qValues[key] =  (1 - alpha) * qVal + alpha*(reward + discount*value);
-    }else{
-        qValues[key] =   (1 - alpha)*qVal + alpha*reward;
+    if(qVals.empty()){
+        qVals.push_back(0);
+    }
+    double maxVal = *std::max_element(qVals.begin(),qVals.end());
+    difference =  reward+ discount*maxVal - getQValue(state,action);
+    for(auto iter=feature.begin();iter!=feature.end();++iter){
+        weights[iter->first] += alpha*difference*iter->second;
     }
 }
+
 
 double PacmanLearningAgent::computeValueFromQValues(GameState &state)
 {

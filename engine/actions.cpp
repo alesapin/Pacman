@@ -43,6 +43,9 @@ Direction Actions::vectorToDirection(QPointF vect)
 
 QPointF Actions::directionToVector(Direction dir, double speed)
 {
+//    if(dir == NOACTION){
+//        qDebug() <<"";
+//    }
     QPointF p = directions[dir];
     double dx = p.x();
     double dy = p.y();
@@ -51,10 +54,14 @@ QPointF Actions::directionToVector(Direction dir, double speed)
 
 std::vector<Direction> Actions::getPossibleActions(Configuration& config,const std::vector<std::vector<bool> >& walls)
 {
+//    QDebug debug = qDebug();
     std::vector<Direction> result;
     QPointF pos = config.getPosition();
     double x = pos.x();
     double y = pos.y();
+//    debug <<"X:"<< x;
+//    debug <<"Y:"<<y;
+//    debug<<"\n";
     int intx = (int)(x+0.5);
     int inty = (int)(y+0.5);
     if (std::abs(x-intx)+std::abs(y-inty) > TOLERANCE){
@@ -67,9 +74,14 @@ std::vector<Direction> Actions::getPossibleActions(Configuration& config,const s
         QPointF currentVector = iter->second;
         double dx = currentVector.x();
         double dy = currentVector.y();
-        double nextX = intx + dx;
-        double nextY = inty + dy;
-        if (!walls[nextX][nextY]) result.push_back(currentDirection);
+        double nextX = x + dx;
+        double nextY = y + dy;
+        double indX = (int)(nextX+0.5);
+        double indY = (int)(nextY+0.5);
+
+        if (nextX < 0 || nextX >= walls.size()) continue;
+        if(nextY < 0 || nextY >= walls[0].size()) continue;
+        if (!walls[indX][indY]) result.push_back(currentDirection);
     }
     result.push_back(STOP);
     return result;
@@ -86,10 +98,10 @@ std::vector<QPointF> Actions::getLegalNeighbours(QPointF position, const std::ve
         QPointF currentVector = iter->second;
         double dx = currentVector.x();
         double dy = currentVector.y();
-        double nextX = intx+dx;
-        if (nextX < 0 || nextX == walls.size()) continue;
-        double nextY = inty+dy;
-        if(nextY < 0 || nextY == walls[0].size()) continue;
+        int nextX = (int)(intx+dx);
+        if (nextX < 0 || nextX >= walls.size()) continue;
+        int nextY = (int)(inty+dy);
+        if(nextY < 0 || nextY >= walls[0].size()) continue;
         if (!walls[nextX][nextY]){
             result.push_back(QPointF(nextX,nextY));
         }

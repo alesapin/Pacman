@@ -18,7 +18,7 @@ std::vector<Direction> GhostRules::getLegalActions(GameState &state, int ghostIn
             legal.erase(stopPosition);
         }
         auto reversePosition = std::find(legal.begin(),legal.end(),reverse);
-        if (reversePosition != legal.end() && legal.size() > 1) {
+        if ((reversePosition != legal.end()) && legal.size() > 1) {
             legal.erase(reversePosition);
         }
         return legal;
@@ -37,7 +37,11 @@ void GhostRules::applyAction(GameState &state, Direction dir, int ghostIndex)
         speed /= 2.0;
     }
     QPointF vect = Actions::directionToVector(dir,speed);
+
     ghostState.setConfiguration(ghostState.getConfiguration().generateSuccessor(vect));
+//    if(ghostState.getPosition().x() >= 27 || ghostState.getPosition().x() < 0){
+//        qDebug()<<"";
+//    }
     state.setAgentState(ghostIndex,ghostState);
 }
 
@@ -45,7 +49,7 @@ AgentState GhostRules::decrementTimer(AgentState ghostState)
 {
     int timer = ghostState.getScarryTimer();
     if (timer == 1){
-        //Пока не совсем ясно зачем;
+        ghostState.setPosition(Util::nearestIntPoint(ghostState.getPosition()));
     }
     ghostState.setScarryTimer(std::max(0,timer-1));
     return ghostState;

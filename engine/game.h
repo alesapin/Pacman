@@ -8,7 +8,6 @@
 #include "agents/expectimaxagent.h"
 #include "agents/randomghostagent.h"
 #include "agents/pacmanlearningagent.h"
-#include "agents/featurepacmanagent.h"
 #include <vector>
 
 class Game

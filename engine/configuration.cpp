@@ -31,6 +31,11 @@ QPointF Configuration::getPosition()
     return position;
 }
 
+void Configuration::setPosition(QPointF p)
+{
+    position = p;
+}
+
 bool Configuration::operator==(const Configuration &other)
 {
     return direction==other.direction && position==other.position;
@@ -38,10 +43,12 @@ bool Configuration::operator==(const Configuration &other)
 
 Configuration Configuration::generateSuccessor(QPointF vectorTo)
 {
+    //QDebug debug = qDebug();
     double x =position.x();
     double y = position.y();
     double dx = vectorTo.x();
     double dy = vectorTo.y();
+
     Direction dir = Actions::vectorToDirection(vectorTo);
     if (dir == STOP){
         dir = direction;

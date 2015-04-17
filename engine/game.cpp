@@ -4,7 +4,6 @@
 
 Game::Game(std::string layoutPath)
 {
-    Util::setSeed();
     layout = new Layout(layoutPath);
     currentGameState = new GameState(*layout);
     startState = currentGameState;
@@ -82,8 +81,8 @@ void Game::trainAgent()
         currentGameState = newState;
         currentMover = (currentMover+1)%(agents.size()+1);
         if(newState->isLose() || newState->isWin()){
-//            qDebug() << "Пытаемся рестартнуть";
-//            qDebug() << "Набрали очков:"<<newState->getScore();
+            qDebug() << "Пытаемся рестартнуть";
+            qDebug() << "Набрали очков:"<<newState->getScore();
             restartGame();
         }
 
@@ -94,9 +93,8 @@ void Game::trainAgent()
 
 void Game::setAgents()
 {
-    //agents.push_back(new AlphaBetaAgent(3));
-    pacman= new FeaturePacmanAgent(*startState,100,0.05,0.2,0.8);
+    pacman= new PacmanLearningAgent(*startState,500,0.08,0.2,0.8);
     for(int i = 1; i < currentGameState->getAgentStates().size();++i){
-        agents.push_back(new RushGhostAgent(i));
+        agents.push_back(new RandomGhostAgent(i));
     }
 }

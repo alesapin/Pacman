@@ -17,6 +17,11 @@ Direction AgentState::getDireciton()
     return current.getDirection();
 }
 
+void AgentState::setPosition(QPointF pos)
+{
+    current.setPosition(pos);
+}
+
 Configuration AgentState::getConfiguration() const
 {
     return current;

@@ -19,10 +19,8 @@ public:
     static int maxIndex(std::vector<double> vect);
     static void normalize(std::map<Direction,double>&);
     static bool tossCoin(double prob);
-    static double rand();
-    static std::default_random_engine generator; //move to util
-    static std::uniform_real_distribution<double> distribution;
-    static void setSeed();
+    static double randDouble();
+    static QPointF nearestIntPoint(QPointF p);
 };
 
 #endif // UTIL_H

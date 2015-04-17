@@ -12,6 +12,7 @@ public:
     bool isInteger();
     Direction getDirection();
     QPointF getPosition();
+    void setPosition(QPointF p);
     bool operator==(const Configuration& other);
     Configuration generateSuccessor(QPointF vectorTo);
 private:

@@ -21,7 +21,7 @@ Direction GhostAgent::getAction(GameState &state)
 
     std::sort(listRepr.begin(),listRepr.end(),PairComparator());
 
-    double choice = Util::rand();
+    double choice = Util::randDouble();
     int i =0;
     double total = listRepr[i].second;
     while(total < choice){

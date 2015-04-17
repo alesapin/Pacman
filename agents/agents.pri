@@ -8,8 +8,7 @@ HEADERS += \
     agents/alphabetaagent.h \
     agents/rushghostagent.h \
     agents/learningagent.h \
-    agents/pacmanlearningagent.h \
-    agents/featurepacmanagent.h
+    agents/pacmanlearningagent.h
 
 SOURCES += \
     agents/multiagentsearch.cpp \
@@ -21,6 +20,5 @@ SOURCES += \
     agents/alphabetaagent.cpp \
     agents/rushghostagent.cpp \
     agents/learningagent.cpp \
-    agents/pacmanlearningagent.cpp \
-    agents/featurepacmanagent.cpp
+    agents/pacmanlearningagent.cpp
 

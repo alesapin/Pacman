@@ -36,7 +36,7 @@ Canvas::Canvas(std::string path,int cs):
     }
     timer = new QTimer(this);
     connect(timer,SIGNAL(timeout()),this,SLOT(gameLoop()));
-    timer->start(100);
+    timer->start(50);
     counter  = 0 ;
     game->trainAgent();
 }
