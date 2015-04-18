@@ -21,12 +21,12 @@ bool Configuration::isInteger()
     return std::floor(position.x())==position.x() && std::floor(position.y()) == position.y();
 }
 
-Direction Configuration::getDirection()
+Direction Configuration::getDirection() const
 {
     return direction;
 }
 
-QPointF Configuration::getPosition()
+QPointF Configuration::getPosition() const
 {
     return position;
 }

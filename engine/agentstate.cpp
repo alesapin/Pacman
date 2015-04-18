@@ -7,12 +7,12 @@ AgentState::AgentState(Configuration config, bool isPacman):
     this->isPacman = isPacman;
 }
 
-QPointF AgentState::getPosition()
+QPointF AgentState::getPosition() const
 {
     return current.getPosition();
 }
 
-Direction AgentState::getDireciton()
+Direction AgentState::getDireciton() const
 {
     return current.getDirection();
 }
@@ -33,7 +33,7 @@ void AgentState::setConfiguration(Configuration conf)
 
 }
 
-int AgentState::getScarryTimer()
+int AgentState::getScarryTimer() const
 {
     return scarryTimer;
 }
@@ -43,7 +43,7 @@ void AgentState::setScarryTimer(int time)
     scarryTimer = time;
 }
 
-Configuration AgentState::getStartConfiguration()
+Configuration AgentState::getStartConfiguration() const
 {
     return start;
 }

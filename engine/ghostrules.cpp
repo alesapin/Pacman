@@ -7,7 +7,7 @@ const double GhostRules::COLLISION_TOLERANCE= 0.7;
 const double GhostRules::GHOST_SPEED = 1.0;
 const double GhostRules::SCARED_TIME = 40;
 
-std::vector<Direction> GhostRules::getLegalActions(GameState &state, int ghostIndex)
+std::vector<Direction> GhostRules::getLegalActions(const GameState &state, int ghostIndex)
 {
         Configuration conf = state.getAgentState(ghostIndex).getConfiguration();
         Layout lay = state.getLayout();

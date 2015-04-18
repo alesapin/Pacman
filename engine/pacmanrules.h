@@ -9,7 +9,7 @@
 class PacmanRules
 {
 public:
-    static std::vector<Direction> getLegalActions(GameState& state);
+    static std::vector<Direction> getLegalActions(const GameState& state);
     static void applyAction(GameState& state,Direction dir);
     static void consume(QPointF pos,GameState& state);
 

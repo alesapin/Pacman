@@ -59,9 +59,7 @@ std::vector<Direction> Actions::getPossibleActions(Configuration& config,const s
     QPointF pos = config.getPosition();
     double x = pos.x();
     double y = pos.y();
-//    debug <<"X:"<< x;
-//    debug <<"Y:"<<y;
-//    debug<<"\n";
+
     int intx = (int)(x+0.5);
     int inty = (int)(y+0.5);
     if (std::abs(x-intx)+std::abs(y-inty) > TOLERANCE){

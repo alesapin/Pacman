@@ -10,8 +10,8 @@ public:
     Configuration(QPointF pos,Direction dir);
     Configuration(const Configuration& config);
     bool isInteger();
-    Direction getDirection();
-    QPointF getPosition();
+    Direction getDirection() const;
+    QPointF getPosition() const;
     void setPosition(QPointF p);
     bool operator==(const Configuration& other);
     Configuration generateSuccessor(QPointF vectorTo);

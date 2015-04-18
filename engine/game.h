@@ -9,17 +9,25 @@
 #include "agents/randomghostagent.h"
 #include "agents/pacmanlearningagent.h"
 #include <vector>
-
+#include "gameoptions.h"
 class Game
 {
 public:
-    Game(std::string layoutPath);
+    static const std::string LEARNING;
+    static const std::string MINIMAX;
+    static const std::string EPECTIMAX;
+    static const std::string RUSH;
+    static const std::string RANDOM;
+
+
+
     GameState *step();
     Layout *getLayout();
     ~Game();
     void restartGame();
     bool isLearning();
     void trainAgent();
+    static Game *parseOptions(GameOptions&);
  private:
     GameState* currentGameState;
     GameState* startState;
@@ -27,8 +35,9 @@ public:
     Layout* layout;
     PacmanLearningAgent* pacman;
     std::vector<Agent*> agents;
+    Game(std::vector<Agent*> agents,Layout* lay,bool learn);
+    bool learn;
 
-    void setAgents();
 };
 
 #endif // GAME_H

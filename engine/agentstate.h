@@ -8,14 +8,14 @@ public:
     bool operator==(const AgentState& other);
     bool operator!=(const AgentState& other);
     AgentState(const AgentState& other);
-    QPointF getPosition();
-    Direction getDireciton();
+    QPointF getPosition() const;
+    Direction getDireciton() const;
     void setPosition(QPointF);
     Configuration getConfiguration() const;
     void setConfiguration(Configuration conf);
-    int getScarryTimer();
+    int getScarryTimer() const;
     void setScarryTimer(int time);
-    Configuration getStartConfiguration();
+    Configuration getStartConfiguration() const;
 private:
     Configuration start;
     Configuration current;

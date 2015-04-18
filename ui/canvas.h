@@ -19,16 +19,11 @@
 #include "agents/alphabetaagent.h"
 #include "agents/rushghostagent.h"
 #include "engine/game.h"
-//struct PointComparator {
-//    bool operator()(const QPointF& p1, const QPointF& p2) const {
-//       return  p1.x() < p2.x() ||
-//                          (p1.x() == p2.x() && p1.y() < p2.y());
-//    }
-//};
+
 class Canvas:  public QGraphicsView {
         Q_OBJECT
 public:
-    Canvas(std::string path,int cellSize);
+    Canvas(GameOptions opts,int cellSize);
     void drawState(GameState* state);
 public slots:
     void gameLoop();

@@ -11,7 +11,7 @@ PacmanItem::PacmanItem(QPointF pos, int cs, QGraphicsView *v):
 
     startPosition = QPointF(pos.y()*cellSize,pos.x()*cellSize);
     setRect(startPosition.x(),startPosition.y(),cellSize,cellSize);
-    timer = new QTimer(viewew);
+    timer = new QTimer();
     connect(timer,SIGNAL(timeout()),this,SLOT(moved()));
 }
 
@@ -23,7 +23,7 @@ QRectF PacmanItem::boundingRect() const
 void PacmanItem::moveToPoint(QPointF moveTo)
 {
     currentTarget = convertCoordinates(moveTo);
-    timer->start(1);
+    timer->start(4);
 }
 
 void PacmanItem::moved()

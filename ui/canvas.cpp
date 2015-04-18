@@ -1,7 +1,7 @@
 #include "canvas.h"
 #include <QDebug>
 
-Canvas::Canvas(std::string path,int cs):
+Canvas::Canvas(GameOptions opts, int cs):
     cellSize(cs)
 {
     setRenderHints(QPainter::Antialiasing | QPainter::HighQualityAntialiasing);
@@ -12,7 +12,7 @@ Canvas::Canvas(std::string path,int cs):
     myScene = new QGraphicsScene();
     this->setStyleSheet("background-color: black;");
     setScene(myScene);
-    game = new Game(path);
+    game = Game::parseOptions(opts);
     Layout* layout = game->getLayout();
     wallPainter = new WallItem(layout->getWalls(),cellSize,Qt::blue,cellSize/10);
 
@@ -21,8 +21,8 @@ Canvas::Canvas(std::string path,int cs):
     pacman = new PacmanItem(layout->getPacmanPosition(),cellSize,this);
 
     std::vector<QPointF> agentPositions = layout->getAgentsPositions();
-    for(int i = 0; i< agentPositions.size();++i){
-        GhostItem* ghost = new GhostItem(agentPositions[i],cellSize);
+    for(int i = 1; i< agentPositions.size();++i){
+        GhostItem* ghost = new GhostItem(agentPositions[i-1],cellSize);
         scene()->addItem(ghost);
         ghosts.push_back(ghost);
     }
@@ -78,14 +78,8 @@ void Canvas::drawState(GameState *state)
 
 void Canvas::gameLoop()
 {
-
-//    if(game->isLearning()){
- //       game->step();
-  //  }else{
-        drawState(game->step());
-        scene()->update(scene()->sceneRect());
- //   }
-
+    drawState(game->step());
+    scene()->update(scene()->sceneRect());
 }
 
 

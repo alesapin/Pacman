@@ -2,7 +2,7 @@
 #include <QDebug>
 
 
-PacmanLearningAgent::PacmanLearningAgent(GameState& startState,int numTrain, double eps, double alp, double gam):
+PacmanLearningAgent::PacmanLearningAgent(int numTrain, double eps, double alp, double gam):
     LearningAgent(numTrain,eps,alp,gam)
 {
     index = 0;
@@ -23,16 +23,16 @@ double PacmanLearningAgent::getQValue(GameState &state, Direction action)
 
 Direction PacmanLearningAgent::getAction(GameState &state)
 {
-
-    std::vector<Direction> legalActions = state.getLegalPacmanActions();
+    GameState&  currentState = *(this->observationFuction(state));
+    std::vector<Direction> legalActions = currentState.getLegalPacmanActions();
     Direction action = NOACTION;
     if(Util::tossCoin(epsilon)){
         int index = rand() % legalActions.size();
         action =  legalActions[index];
     }else{
-        action =  computeActionFromQValues(state);
+        action =  computeActionFromQValues(currentState);
     }
-    doAction(state,action);
+    doAction(currentState,action);
     return action;
 }
 

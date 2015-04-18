@@ -24,16 +24,14 @@ bool LearningAgent::isTesting()
     return !isTraining();
 }
 
-void LearningAgent::startEpisode(GameState& state)
+void LearningAgent::startEpisode()
 {
-    qDebug() <<"EPISODE START";
     lastAction = NOACTION;
     episodeRewards = 0;
 }
 
 void LearningAgent::endEpisode()
 {
-    qDebug() << "EPISODE END";
     if(episodesPast < numTraining){
         sumOfTrainRewards += episodeRewards;
     } else{

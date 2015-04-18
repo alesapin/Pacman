@@ -70,7 +70,7 @@ void Layout::processLayoutChar(int i, int j, char character)
     }else if(character == 'o'){
         capsules.push_back(QPointF(i,j));
     }else if(character == 'P'){
-        pacmanPosition = QPointF(i,j);
+        agentsPositions.insert(agentsPositions.begin(),QPointF(i,j));
         numAgents++;
     }else if (character == 'G'){
         agentsPositions.push_back(QPointF(i,j));
@@ -98,18 +98,18 @@ std::vector<std::vector<bool> > Layout::getFood() const
     return food;
 }
 
-std::vector<QPointF> Layout::getCapsules()
+std::vector<QPointF> Layout::getCapsules() const
 {
     return capsules;
 }
 
-std::vector<QPointF> Layout::getAgentsPositions()
+std::vector<QPointF> Layout::getAgentsPositions() const
 {
     return agentsPositions;
 }
 
-QPointF Layout::getPacmanPosition()
+QPointF Layout::getPacmanPosition() const
 {
-    return pacmanPosition;
+    return agentsPositions[0];
 }
 

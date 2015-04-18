@@ -15,9 +15,9 @@ public:
     bool operator==(const GameState& other) const;
     bool operator<(const GameState& other) const;
     //Action methods
-    std::vector<Direction> getLegalActions(int agentNum);
+    std::vector<Direction> getLegalActions(int agentNum) const;
     GameState* generateSuccessor(int agentIndex,Direction dir);
-    std::vector<Direction> getLegalPacmanActions();
+    std::vector<Direction> getLegalPacmanActions() const;
     GameState* generatePacmanSuccessor(Direction dir);
 
     //service methods
@@ -30,28 +30,28 @@ public:
 
     //Getters and Setters
 
-    QPointF getPacmanPosition();
-    AgentState getPacmanState();
+    QPointF getPacmanPosition()const ;
+    AgentState getPacmanState() const;
     void setPacmanState(AgentState state);
     void setAgentState(int index,AgentState state);
-    AgentState getAgentState(int index);
-    QPointF getAgentPosition(int index);
+    AgentState getAgentState(int index) const;
+    QPointF getAgentPosition(int index) const;
     int getScore() const;
     int getNumFood() const;
-    std::vector<QPointF> getFoodAsList();
+    std::vector<QPointF> getFoodAsList() const;
     const std::vector<std::vector<bool> > &getFood() const;
     void setFood(int x,int y,bool val);
     void setWin();
-    bool isLose();
-    bool isWin();
+    bool isLose() const;
+    bool isWin() const;
     void setLose();
-    QPointF getEatenFood();
-    QPointF setEatenFood(QPointF);
-    QPointF getEatenCapsule();
-    QPointF setEatenCapsule(QPointF);
-    const Layout &getLayout() ;
-    std::vector<QPointF> getCapsules();
-    std::vector<AgentState> getAgentStates();
+    QPointF getEatenFood() const;
+    void setEatenFood(QPointF);
+    QPointF getEatenCapsule() const;
+    void setEatenCapsule(QPointF);
+    const Layout &getLayout() const;
+    std::vector<QPointF> getCapsules() const;
+    std::vector<AgentState> getAgentStates() const;
 
 
 private:

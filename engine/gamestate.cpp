@@ -29,7 +29,7 @@ GameState::GameState( Layout &lay)
     data.eatenCapsule = QPointF(-1,-1);
 }
 
-std::vector<Direction> GameState::getLegalActions(int agentNum)
+std::vector<Direction> GameState::getLegalActions(int agentNum) const
 {
     if (isWin() || isLose()) return std::vector<Direction>();
     if(agentNum == 0){
@@ -59,12 +59,12 @@ GameState* GameState::generateSuccessor(int agentIndex, Direction dir)
     return state;
 }
 
-QPointF GameState::getPacmanPosition()
+QPointF GameState::getPacmanPosition() const
 {
     return data.agentStates[0].getPosition();
 }
 
-std::vector<Direction> GameState::getLegalPacmanActions()
+std::vector<Direction> GameState::getLegalPacmanActions() const
 {
     return getLegalActions(0);
 }
@@ -84,43 +84,43 @@ void GameState::setAgentState(int index, AgentState state)
     data.agentStates[index] = state;
 }
 
-AgentState GameState::getPacmanState()
+AgentState GameState::getPacmanState() const
 {
     return data.agentStates[0];
 }
 
-AgentState GameState::getAgentState(int index)
+AgentState GameState::getAgentState(int index) const
 {
     //TODO: Призраки тоже должны быть с 0, пока норм
     return data.agentStates[index];
 }
 
-QPointF GameState::getAgentPosition(int index)
+QPointF GameState::getAgentPosition(int index) const
 {
     return data.agentStates[index].getPosition();
 }
 
-std::vector<AgentState> GameState::getAgentStates()
+std::vector<AgentState> GameState::getAgentStates() const
 {
     return data.agentStates;
 }
 
-QPointF GameState::getEatenFood()
+QPointF GameState::getEatenFood() const
 {
     return data.eatenFood;
 }
 
-QPointF GameState::setEatenFood(QPointF e)
+void GameState::setEatenFood(QPointF e)
 {
     data.eatenFood = e;
 }
 
-QPointF GameState::getEatenCapsule()
+QPointF GameState::getEatenCapsule() const
 {
     return data.eatenCapsule;
 }
 
-QPointF GameState::setEatenCapsule(QPointF caps)
+void GameState::setEatenCapsule(QPointF caps)
 {
     data.eatenCapsule = caps;
 }
@@ -161,7 +161,7 @@ int GameState::getNumFood() const
 }
 
 
-std::vector<QPointF> GameState::getFoodAsList()
+std::vector<QPointF> GameState::getFoodAsList() const
 {
     std::vector<QPointF> result;
     for (std::size_t i = 0;i<data.food.size();++i){
@@ -192,22 +192,22 @@ void GameState::setWin()
     data.win = true;
 }
 
-bool GameState::isLose()
+bool GameState::isLose() const
 {
     return data.lose;
 }
 
-bool GameState::isWin()
+bool GameState::isWin() const
 {
     return data.win;
 }
 
-const Layout& GameState::getLayout()
+const Layout& GameState::getLayout() const
 {
     return *data.layout;
 }
 
-std::vector<QPointF> GameState::getCapsules()
+std::vector<QPointF> GameState::getCapsules() const
 {
     return data.capsules;
 }
@@ -267,7 +267,7 @@ GameState::GameData::GameData(Layout &lay)
     Configuration pacmanConf(pacman,STOP);
     agentStates.push_back(AgentState(pacmanConf,true));
     std::vector<QPointF> positions  = lay.getAgentsPositions();
-    for (int i =0;i<positions.size();++i){
+    for (int i =1;i<positions.size();++i){
         QPointF currentAgent = positions[i];
         Configuration agentConf(currentAgent,STOP);
         agentStates.push_back(AgentState(agentConf,false));

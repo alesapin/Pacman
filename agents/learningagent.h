@@ -7,7 +7,7 @@ public:
     LearningAgent(int numTrain,double eps,double alp,double gam);
     bool isTraining();
     bool isTesting();
-    void startEpisode(GameState& state);
+    void startEpisode();
     void endEpisode();
     void finish(GameState& state);
     Direction getAction(GameState &state) = 0;

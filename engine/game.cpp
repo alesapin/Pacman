@@ -2,32 +2,33 @@
 #include <QDebug>
 
 
-Game::Game(std::string layoutPath)
+const std::string Game::LEARNING = "LEARNING_AGENT";
+const std::string Game::MINIMAX = "MINIMAX_AGENT";
+const std::string Game::EPECTIMAX = "EXPECTIMAX_AGENT";
+const std::string Game::RUSH = "RUSH_AGENT";
+const std::string Game::RANDOM = "RANDOM_AGENT";
+
+Game::Game(std::vector<Agent *> agents, Layout *lay,bool learn):
+    layout(lay),
+    agents(agents),
+    currentMover(0),
+    learn(learn)
 {
-    layout = new Layout(layoutPath);
+    if(learn){
+        pacman = static_cast<PacmanLearningAgent*>(agents[0]);
+    }
     currentGameState = new GameState(*layout);
     startState = currentGameState;
-    currentMover = 0;
-    setAgents();
 }
 
 GameState *Game::step()
 {
-    Agent* currentAgent;
-    Direction action = NOACTION;
-    if(currentMover == 0){
-        currentAgent = pacman;
-        GameState* observation = pacman->observationFuction(*currentGameState);
-        action = pacman->getAction(*observation);
-    }else{
-        currentAgent = agents[currentMover-1];
-        action = currentAgent->getAction(*currentGameState);
-    }
+    Direction action = agents[currentMover]->getAction(*currentGameState);
     GameState* newState = currentGameState->generateSuccessor(currentMover,action);
-    if(currentGameState != startState && !newState->isLose()){
+    if(currentGameState != startState && !newState->isLose() && !newState->isWin()){
         delete currentGameState;
     }
-    currentMover = (currentMover+1)%(agents.size()+1);
+    currentMover = (currentMover+1)%(agents.size());
     return currentGameState = newState;
 }
 
@@ -48,53 +49,59 @@ Game::~Game()
 
 void Game::restartGame()
 {
-    pacman->final(*currentGameState);
+    if(learn){
+        pacman->final(*currentGameState);
+        pacman->startEpisode();
+    }
     delete currentGameState;
     currentGameState = startState;
     currentMover = 0;
-    pacman->startEpisode(*startState);
 }
 
 bool Game::isLearning()
 {
-    return pacman->isTraining();
+    if(learn){
+        return pacman->isTraining();
+    }else{
+        return false;
+    }
 }
 
 void Game::trainAgent()
 {
     while(isLearning()){
-        //qDebug()<<"УЧИТСЯ!";
-        Agent* currentAgent;
-        Direction action = NOACTION;
-        if(currentMover == 0){
-            currentAgent = pacman;
-            GameState* observation = pacman->observationFuction(*currentGameState);
-            action = pacman->getAction(*observation);
-        }else{
-            currentAgent = agents[currentMover-1];
-            action = currentAgent->getAction(*currentGameState);
-        }
-        GameState* newState = currentGameState->generateSuccessor(currentMover,action);
-        if(currentGameState != startState && !newState->isLose() && !newState->isWin()){
-            delete currentGameState;
-        }
-        currentGameState = newState;
-        currentMover = (currentMover+1)%(agents.size()+1);
-        if(newState->isLose() || newState->isWin()){
-            qDebug() << "Пытаемся рестартнуть";
-            qDebug() << "Набрали очков:"<<newState->getScore();
+        step();
+        if(currentGameState->isLose() || currentGameState->isWin()){
             restartGame();
         }
-
     }
 }
 
-
-
-void Game::setAgents()
+Game *Game::parseOptions(GameOptions & opts)
 {
-    pacman= new PacmanLearningAgent(*startState,500,0.08,0.2,0.8);
-    for(int i = 1; i < currentGameState->getAgentStates().size();++i){
-        agents.push_back(new RandomGhostAgent(i));
+    bool learn = false;
+    std::vector<Agent*> agents;
+    Layout* lay = new Layout(opts.layoutPath);
+    if(opts.pacmanAgent == Game::LEARNING){
+        learn = true;
+        agents.push_back(new PacmanLearningAgent(opts.numIters,opts.epsilon,opts.alpha,opts.gamma));
+    } else if(opts.pacmanAgent == Game::MINIMAX){
+        agents.push_back(new AlphaBetaAgent(opts.minimaxDepth));
+    } else if(opts.pacmanAgent == Game::EPECTIMAX){
+        agents.push_back(new ExpectimaxAgent(opts.minimaxDepth));
     }
+
+    if(opts.ghostAgent == Game::RUSH){
+        for(int i = 1;i<lay->getAgentsPositions().size();++i){
+            agents.push_back(new RushGhostAgent(i));
+        }
+    } else if(opts.ghostAgent == Game::RANDOM){
+        for(int i = 1;i<lay->getAgentsPositions().size();++i){
+            agents.push_back(new RandomGhostAgent(i));
+        }
+    }
+    return new Game(agents,lay,learn);
+
 }
+
+
