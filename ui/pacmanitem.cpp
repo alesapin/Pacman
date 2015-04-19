@@ -3,44 +3,44 @@
 
 
 
-PacmanItem::PacmanItem(QPointF pos, int cs, QGraphicsView *v):
-    cellSize(cs)
-{
-    setBrush(QBrush(Qt::yellow));
-    viewew = v;
 
-    startPosition = QPointF(pos.y()*cellSize,pos.x()*cellSize);
-    setRect(startPosition.x(),startPosition.y(),cellSize,cellSize);
-    timer = new QTimer();
-    connect(timer,SIGNAL(timeout()),this,SLOT(moved()));
+
+PacmanItem::PacmanItem(QPointF pos, int cs, int stepTime):
+    GraphicObject(pos,cs,stepTime),
+    currentFrame(0)
+{
+    texture = QPixmap(":/images/pacman-sprite.png").scaledToHeight(cs);
+    setPixmap(texture.copy(0,0,cellSize,cellSize));
+    setTransformOriginPoint(cs/2.,cs/2.);
 }
 
-QRectF PacmanItem::boundingRect() const
-{
-    return QRectF(startPosition.x(),startPosition.y(),cellSize,cellSize);
-}
 
-void PacmanItem::moveToPoint(QPointF moveTo)
+void PacmanItem::moveToPoint(QPointF moveTo,Direction dir)
 {
-    currentTarget = convertCoordinates(moveTo);
-    timer->start(4);
-}
 
-void PacmanItem::moved()
-{
-    double deltaX = currentTarget.x() - x();
-    double deltaY = currentTarget.y() - y();
-    if(x() != currentTarget.x() || y() != currentTarget.y()){
-        this->moveBy(deltaX/4.,deltaY/4.);
-    }else{
-        timer->stop();
+    switch(dir){
+        case NORTH:
+            setRotation(270);
+            break;
+       case SOUTH:
+            setRotation(90);
+            break;
+       case EAST:
+            setRotation(0);
+            break;
+      case WEST:
+            setRotation(180);
+            break;
+       case STOP:
+            break;
     }
+
+    currentTarget = moveTo;
+    setPixmap(texture.copy(currentFrame*cellSize,0,cellSize,cellSize));
+    currentFrame=(currentFrame+1)%5;
+    timer->start(stepTime);
+
 }
 
-
-QPointF PacmanItem::convertCoordinates(QPointF global)
-{
-    return QPointF(global.x()-startPosition.x(),global.y()-startPosition.y());
-}
 
 

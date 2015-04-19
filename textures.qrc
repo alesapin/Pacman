@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>redml.png</file>
+        <file>simple.png</file>
+        <file>scarry.png</file>
+        <file>pacman-sprite.png</file>
+        <file>pacman.png</file>
+        <file>1e.png</file>
+        <file>1n.png</file>
+        <file>1s.png</file>
+        <file>1w.png</file>
+        <file>2e.png</file>
+        <file>2n.png</file>
+        <file>2s.png</file>
+        <file>2w.png</file>
+        <file>3e.png</file>
+        <file>3n.png</file>
+        <file>3s.png</file>
+        <file>3w.png</file>
+        <file>4e.png</file>
+        <file>4n.png</file>
+        <file>4s.png</file>
+        <file>4w.png</file>
+        <file>scarried.png</file>
+    </qresource>
+</RCC>

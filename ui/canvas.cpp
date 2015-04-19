@@ -18,14 +18,7 @@ Canvas::Canvas(GameOptions opts, int cs):
 
     getFoodMap(layout->getFood());
     getCapsuleMap(layout->getCapsules());
-    pacman = new PacmanItem(layout->getPacmanPosition(),cellSize,this);
-
-    std::vector<QPointF> agentPositions = layout->getAgentsPositions();
-    for(int i = 1; i< agentPositions.size();++i){
-        GhostItem* ghost = new GhostItem(agentPositions[i-1],cellSize);
-        scene()->addItem(ghost);
-        ghosts.push_back(ghost);
-    }
+    pacman = new PacmanItem(layout->getPacmanPosition(),cellSize,10);
     scene()->addItem(pacman);
     scene()->addItem(wallPainter);
     for (auto iter = foodMap.begin();iter!=foodMap.end();++iter){
@@ -33,6 +26,12 @@ Canvas::Canvas(GameOptions opts, int cs):
     }
     for(auto iter = capsuleMap.begin();iter!=capsuleMap.end();++iter){
         scene()->addItem(iter->second);
+    }
+    std::vector<QPointF> agentPositions = layout->getAgentsPositions();
+    for(int i = 1; i< agentPositions.size();++i){
+        GhostItem* ghost = new GhostItem(agentPositions[i],cellSize,10,i);
+        scene()->addItem(ghost);
+        ghosts.push_back(ghost);
     }
     timer = new QTimer(this);
     connect(timer,SIGNAL(timeout()),this,SLOT(gameLoop()));
@@ -51,15 +50,15 @@ void Canvas::drawState(GameState *state)
     }
     QPointF pos = state->getAgentPosition(0);
 
-    pacman->moveToPoint(QPointF(pos.y()*cellSize,pos.x()*cellSize));
+    pacman->moveToPoint(QPointF(pos.y()*cellSize,pos.x()*cellSize),state->getAgentState(0).getDireciton());
     for(int i = 0;i<ghosts.size();++i){
         GhostItem* currentGhost = ghosts[i];
         QPointF ghostPos = state->getAgentPosition(i+1);
-        currentGhost->setRect(QRectF(ghostPos.y()*cellSize,ghostPos.x()*cellSize,cellSize,cellSize));
+        currentGhost->moveToPoint(QPointF(ghostPos.y()*cellSize,ghostPos.x()*cellSize),state->getAgentState(i+1).getDireciton());
         if(state->isScared(i+1)) {
-            currentGhost->setBrush(QBrush(Qt::green));
+            currentGhost->scarryMode();
         } else {
-            currentGhost->setBrush(QBrush(Qt::red));
+            currentGhost->normalMode();
         }
     }
     QPointF eatenFood = state->getEatenFood();

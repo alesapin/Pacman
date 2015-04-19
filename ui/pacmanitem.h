@@ -14,22 +14,14 @@
 #include <QGraphicsView>
 #include <QTimer>
 #include <QObject>
-
-class PacmanItem:public QObject,public QGraphicsEllipseItem {
-        Q_OBJECT
+#include "graphicobject.h"
+class PacmanItem: public GraphicObject{
 public:
-    PacmanItem(QPointF pos,int cs,QGraphicsView*);
-    QRectF boundingRect() const;
-    void moveToPoint(QPointF moveTo);
-public slots:
-    void moved();
+    PacmanItem(QPointF pos,int cs,int stepTime);
+    //void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void moveToPoint(QPointF moveTo,Direction dir);
 private:
-    QPointF startPosition;
-    int cellSize;
-    QPointF currentTarget;
-    QTimer* timer;
-    QPointF convertCoordinates(QPointF global);
-    QGraphicsView* viewew;
+    int currentFrame;
 };
 
 #endif // PACMANITEM_H
