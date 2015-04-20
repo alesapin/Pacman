@@ -1,24 +1,26 @@
 #include "layout.h"
 #include <fstream>
 #include <QDebug>
-
+#include <QFile>
 /**
  * @brief Layout::Layout
  * @param path
  * @param cellSize
  */
-Layout::Layout(std::string path):
+Layout::Layout(QString path):
     totalFood(0),
     numAgents(0)
 {
-    std::ifstream file(path);
-    std::string tmp;
+    QFile file(path);
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream in(&file);
+    QString tmp;
     width = 0;
-    while (std::getline(file, tmp))
+    while ((tmp = in.readLine()).count())
     {
         width+=1;
         layoutText+=tmp;
-        qDebug() << layoutText.c_str();
+        qDebug() << layoutText;
         layoutText.push_back('\n');
     }
     height= layoutText.size() / width ;
@@ -59,7 +61,7 @@ Layout::Layout():
  * @param j
  * @param character
  */
-void Layout::processLayoutChar(int i, int j, char character)
+void Layout::processLayoutChar(int i, int j, QChar character)
 {
    //qDebug() << "CHAR:"<< character << '\n';
     if (character == '%'){
@@ -78,11 +80,11 @@ void Layout::processLayoutChar(int i, int j, char character)
     }
 }
 
-void Layout::processLayoutText(std::string text)
+void Layout::processLayoutText(QString text)
 {
     for(int i=0;i<width;++i){
         for(int j =0;j<height;++j){
-            char currentChar= text[i*height + j];
+            QChar currentChar= text[i*height + j];
             processLayoutChar(i,j,currentChar);
         }
     }

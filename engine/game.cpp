@@ -75,6 +75,7 @@ void Game::trainAgent()
             restartGame();
         }
     }
+    learn = false;
 }
 
 Game *Game::parseOptions(GameOptions & opts)

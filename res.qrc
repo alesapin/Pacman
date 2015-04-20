@@ -23,4 +23,15 @@
         <file>4w.png</file>
         <file>scarried.png</file>
     </qresource>
+    <qresource prefix="/layouts">
+        <file>layouts/mediumClassic.lay</file>
+        <file>layouts/originalClassic.lay</file>
+        <file>layouts/smallClassic.lay</file>
+    </qresource>
+    <qresource prefix="/fonts">
+        <file>Munro.ttf</file>
+    </qresource>
+    <qresource prefix="/stylesheets">
+        <file>stylesheets/button.qss</file>
+    </qresource>
 </RCC>

@@ -1,9 +1,11 @@
 HEADERS += ui/canvas.h \
     ui/ghostitem.h \
-    ui/graphicobject.h
+    ui/graphicobject.h \
+    ui/scoretext.h
 SOURCES += ui/canvas.cpp \
     ui/ghostitem.cpp \
-    ui/graphicobject.cpp
+    ui/graphicobject.cpp \
+    ui/scoretext.cpp
 
 HEADERS += ui/pacmanitem.h
 SOURCES += ui/pacmanitem.cpp

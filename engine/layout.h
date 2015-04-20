@@ -8,13 +8,13 @@
 class Layout
 {
 public:
-    Layout(std::string path);
+    Layout(QString path);
     Layout(const Layout& l);
     Layout();
     bool isWall(QPointF point) const;
     QPointF getRandomLegalPosition() const;
-    void processLayoutChar(int i,int j,char character);
-    void processLayoutText(std::string text);
+    void processLayoutChar(int i,int j,QChar character);
+    void processLayoutText(QString text);
     const std::vector <std::vector <bool> >& getWalls() const;
     std::vector <std::vector <bool> > getFood() const;
     std::vector <QPointF> getCapsules() const;
@@ -29,7 +29,7 @@ private:
     std::vector<std::vector <bool> > food;
     std::vector<QPointF> capsules;
     std::vector<QPointF> agentsPositions;
-    std::string layoutText;
+    QString layoutText;
 };
 
 #endif // LAYOUT_H

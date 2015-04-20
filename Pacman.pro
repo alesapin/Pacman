@@ -58,6 +58,7 @@ QMAKE_LFLAGS_DEBUG += -pg
 HEADERS +=
 
 RESOURCES += \
-    textures.qrc
+    res.qrc
+
 
 

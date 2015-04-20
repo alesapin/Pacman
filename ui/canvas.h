@@ -18,8 +18,11 @@
 #include "agents/randomghostagent.h"
 #include "agents/alphabetaagent.h"
 #include "agents/rushghostagent.h"
-#include "engine/game.h"
 
+#include "engine/game.h"
+#include "scoretext.h"
+#include <QFontDatabase>
+#include <QPushButton>
 class Canvas:  public QGraphicsView {
         Q_OBJECT
 public:
@@ -27,16 +30,26 @@ public:
     void drawState(GameState* state);
 public slots:
     void gameLoop();
+    void restartGame();
 private:
     std::map<QPointF,QGraphicsEllipseItem*,PointComparator> foodMap;
     std::map<QPointF,QGraphicsEllipseItem*,PointComparator> capsuleMap;
     WallItem* wallPainter;
     Game* game;
+    ScoreText* scoreText;
+    QPushButton* restartButton;
     PacmanItem* pacman;
     std::vector<GhostItem*> ghosts;
+    QPointF countTextCoords(Layout* lay);
+    QRectF countSceneRect(Layout* lay);
+    QPointF countRestartRect(Layout* lay);
     void removeFood(QPointF foodPoint);
-    void getCapsuleMap(std::vector<QPointF> caps);
-    void getFoodMap(std::vector<std::vector <bool> > foodTable); // Оставить без параметров
+    void setCapsuleMap(std::vector<QPointF> caps);
+    void setFoodMap(std::vector<std::vector <bool> > foodTable);
+    void setAgents(Layout* lay);
+    void setScoreText(Layout *lay);
+    void setWalls(Layout* lay);
+    void setRestartButton(Layout* lay);
     int cellSize;
     QGraphicsScene * myScene;
     QTimer * timer;
