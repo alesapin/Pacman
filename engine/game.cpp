@@ -7,9 +7,9 @@ const std::string Game::MINIMAX = "MINIMAX_AGENT";
 const std::string Game::EPECTIMAX = "EXPECTIMAX_AGENT";
 const std::string Game::RUSH = "RUSH_AGENT";
 const std::string Game::RANDOM = "RANDOM_AGENT";
+const std::string Game::KEYBOARD = "KEYBOARD_AGENT";
 
 Game::Game(std::vector<Agent *> agents, Layout *lay,bool learn):
-    layout(lay),
     agents(agents),
     currentMover(0),
     learn(learn)
@@ -17,7 +17,9 @@ Game::Game(std::vector<Agent *> agents, Layout *lay,bool learn):
     if(learn){
         pacman = static_cast<PacmanLearningAgent*>(agents[0]);
     }
-    currentGameState = new GameState(*layout);
+    keyboard = dynamic_cast<KeyBoardAgent*>(agents[0]);
+    layout = lay;
+    currentGameState = new GameState(layout);
     startState = currentGameState;
 }
 
@@ -25,7 +27,7 @@ GameState *Game::step()
 {
     Direction action = agents[currentMover]->getAction(*currentGameState);
     GameState* newState = currentGameState->generateSuccessor(currentMover,action);
-    if(currentGameState != startState && !newState->isLose() && !newState->isWin()){
+    if(currentGameState != startState){
         delete currentGameState;
     }
     currentMover = (currentMover+1)%(agents.size());
@@ -78,6 +80,13 @@ void Game::trainAgent()
     learn = false;
 }
 
+void Game::setFocus()
+{
+    if(keyboard!=0){
+        keyboard->setFocus();
+    }
+}
+
 Game *Game::parseOptions(GameOptions & opts)
 {
     bool learn = false;
@@ -90,6 +99,10 @@ Game *Game::parseOptions(GameOptions & opts)
         agents.push_back(new AlphaBetaAgent(opts.minimaxDepth));
     } else if(opts.pacmanAgent == Game::EPECTIMAX){
         agents.push_back(new ExpectimaxAgent(opts.minimaxDepth));
+    } else if(opts.pacmanAgent == Game::KEYBOARD){
+        KeyBoardAgent* agent = new KeyBoardAgent();
+        opts.scene->addItem(agent);
+        agents.push_back(agent);
     }
 
     if(opts.ghostAgent == Game::RUSH){

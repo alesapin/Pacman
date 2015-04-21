@@ -4,7 +4,7 @@
 std::map<std::string, double> FeatureExtractor::getFeatures(GameState &state, Direction action)
 {
     std::vector<std::vector<bool>> food = state.getFood();
-    std::vector<std::vector<bool>> walls = state.getLayout().getWalls();
+    std::vector<std::vector<bool>> walls = state.getLayout()->getWalls();
     std::vector<QPointF> ghosts;
     for(int i = 1;i<state.getAgentStates().size();++i){
         ghosts.push_back(state.getAgentPosition(i));

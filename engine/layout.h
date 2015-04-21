@@ -17,6 +17,7 @@ public:
     void processLayoutText(QString text);
     const std::vector <std::vector <bool> >& getWalls() const;
     std::vector <std::vector <bool> > getFood() const;
+    int getTotalFood() const;
     std::vector <QPointF> getCapsules() const;
     std::vector <QPointF> getAgentsPositions() const;
     QPointF getPacmanPosition() const;

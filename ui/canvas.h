@@ -18,7 +18,6 @@
 #include "agents/randomghostagent.h"
 #include "agents/alphabetaagent.h"
 #include "agents/rushghostagent.h"
-
 #include "engine/game.h"
 #include "scoretext.h"
 #include <QFontDatabase>
@@ -28,8 +27,10 @@ class Canvas:  public QGraphicsView {
 public:
     Canvas(GameOptions opts,int cellSize);
     void drawState(GameState* state);
+  //  ~Canvas();
 public slots:
     void gameLoop();
+    void pauseGame();
     void restartGame();
 private:
     std::map<QPointF,QGraphicsEllipseItem*,PointComparator> foodMap;
@@ -38,6 +39,7 @@ private:
     Game* game;
     ScoreText* scoreText;
     QPushButton* restartButton;
+    QPushButton* pauseButton;
     PacmanItem* pacman;
     std::vector<GhostItem*> ghosts;
     QPointF countTextCoords(Layout* lay);
@@ -50,7 +52,10 @@ private:
     void setScoreText(Layout *lay);
     void setWalls(Layout* lay);
     void setRestartButton(Layout* lay);
+    void setPauseButton(Layout* lay);
     int cellSize;
+    bool pause;
+    bool gameOver;
     QGraphicsScene * myScene;
     QTimer * timer;
     int counter;

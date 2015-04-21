@@ -10,8 +10,7 @@ const double GhostRules::SCARED_TIME = 40;
 std::vector<Direction> GhostRules::getLegalActions(const GameState &state, int ghostIndex)
 {
         Configuration conf = state.getAgentState(ghostIndex).getConfiguration();
-        Layout lay = state.getLayout();
-        std::vector<Direction> legal = Actions::getPossibleActions(conf,lay.getWalls());
+        std::vector<Direction> legal = Actions::getPossibleActions(conf,state.getLayout()->getWalls());
         Direction reverse = Actions::reverseDirection(conf.getDirection());
         auto stopPosition = std::find(legal.begin(),legal.end(),STOP);
         if ( stopPosition != legal.end() ) {
@@ -39,9 +38,6 @@ void GhostRules::applyAction(GameState &state, Direction dir, int ghostIndex)
     QPointF vect = Actions::directionToVector(dir,speed);
 
     ghostState.setConfiguration(ghostState.getConfiguration().generateSuccessor(vect));
-//    if(ghostState.getPosition().x() >= 27 || ghostState.getPosition().x() < 0){
-//        qDebug()<<"";
-//    }
     state.setAgentState(ghostIndex,ghostState);
 }
 

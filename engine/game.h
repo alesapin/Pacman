@@ -8,6 +8,7 @@
 #include "agents/expectimaxagent.h"
 #include "agents/randomghostagent.h"
 #include "agents/pacmanlearningagent.h"
+#include "agents/keyboardagent.h"
 #include <vector>
 #include "gameoptions.h"
 class Game
@@ -18,8 +19,7 @@ public:
     static const std::string EPECTIMAX;
     static const std::string RUSH;
     static const std::string RANDOM;
-
-
+    static const std::string KEYBOARD;
 
     GameState *step();
     Layout *getLayout();
@@ -27,6 +27,7 @@ public:
     void restartGame();
     bool isLearning();
     void trainAgent();
+    void setFocus();
     static Game *parseOptions(GameOptions&);
  private:
     GameState* currentGameState;
@@ -34,10 +35,10 @@ public:
     int currentMover;
     Layout* layout;
     PacmanLearningAgent* pacman;
+    KeyBoardAgent* keyboard;
     std::vector<Agent*> agents;
     Game(std::vector<Agent*> agents,Layout* lay,bool learn);
     bool learn;
-
 };
 
 #endif // GAME_H

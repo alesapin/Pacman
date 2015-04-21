@@ -14,7 +14,6 @@ double PacmanLearningAgent::getQValue(GameState &state, Direction action)
     double qVal = 0;
     std::map<std::string,double> feature = FeatureExtractor::getFeatures(state,action);
     for(auto iter=feature.begin();iter!=feature.end();++iter){
-
         qVal += weights[iter->first]*iter->second;
     }
     return qVal;

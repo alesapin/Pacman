@@ -19,7 +19,13 @@ QRectF GraphicObject::boundingRect() const
 void GraphicObject::moveToPoint(QPointF moveTo, Direction dir)
 {
     currentTarget = convertCoordinates(moveTo);
+
     timer->start(stepTime);
+}
+
+GraphicObject::~GraphicObject()
+{
+    delete timer;
 }
 
 void GraphicObject::moveOneStep()

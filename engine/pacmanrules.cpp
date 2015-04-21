@@ -6,8 +6,7 @@ std::vector<Direction> PacmanRules::getLegalActions(const GameState& state)
 {
     AgentState pacmanState = state.getPacmanState();
     Configuration pacConf= pacmanState.getConfiguration();
-    Layout pacLay = state.getLayout();
-    return Actions::getPossibleActions(pacConf,pacLay.getWalls());
+    return Actions::getPossibleActions(pacConf,state.getLayout()->getWalls());
 }
 
 void PacmanRules::applyAction(GameState& state, Direction dir)

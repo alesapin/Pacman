@@ -11,6 +11,7 @@ public:
     GraphicObject(QPointF start,int cs,int stepTime);
     QRectF boundingRect() const;
     virtual void moveToPoint(QPointF moveTo,Direction dir);
+    ~GraphicObject();
 public slots:
     void moveOneStep();
 protected:

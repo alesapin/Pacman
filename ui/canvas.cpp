@@ -3,7 +3,9 @@
 
 Canvas::Canvas(GameOptions opts, int cs):
     cellSize(cs),
-    pacman(0)
+    pacman(0),
+    pause(false),
+    gameOver(false)
 {
     setRenderHints(QPainter::Antialiasing | QPainter::HighQualityAntialiasing);
     setCacheMode(QGraphicsView::CacheNone);
@@ -14,8 +16,7 @@ Canvas::Canvas(GameOptions opts, int cs):
     myScene = new QGraphicsScene();
     this->setStyleSheet("background-color: black;");
     setScene(myScene);
-
-
+    opts.scene = myScene;
     game = Game::parseOptions(opts);
     Layout* layout = game->getLayout();
     scene()->setSceneRect(countSceneRect(layout));
@@ -26,22 +27,24 @@ Canvas::Canvas(GameOptions opts, int cs):
     setCapsuleMap(layout->getCapsules());
     setAgents(layout);
     setRestartButton(layout);
+    setPauseButton(layout);
     timer = new QTimer(this);
     connect(timer,SIGNAL(timeout()),this,SLOT(gameLoop()));
     connect(restartButton,SIGNAL(clicked()),this,SLOT(restartGame()));
-    timer->start(50);
+    connect(pauseButton,SIGNAL(clicked()),this,SLOT(pauseGame()));
     counter  = 0 ;
     game->trainAgent();
+    timer->start(50);
 }
 
 void Canvas::drawState(GameState *state)
 
 {
-    std::vector<Direction> legal= state->getLegalPacmanActions();
-
     if(state->isWin() || state->isLose()){
         timer->stop();
+        gameOver = true;
     }
+    std::vector<Direction> legal= state->getLegalPacmanActions();
     QPointF pos = state->getAgentPosition(0);
 
     pacman->moveToPoint(QPointF(pos.y()*cellSize,pos.x()*cellSize),state->getAgentState(0).getDireciton());
@@ -69,6 +72,14 @@ void Canvas::drawState(GameState *state)
     }
     scoreText->updateScore(state->getScore());
 }
+//Раскоментить в будущем
+//Canvas::~Canvas()
+//{
+//    scene()->clear();
+//    delete game;
+//    delete timer;
+//    delete myScene;
+//}
 
 void Canvas::gameLoop()
 {
@@ -76,17 +87,31 @@ void Canvas::gameLoop()
     scene()->update(scene()->sceneRect());
 }
 
+void Canvas::pauseGame()
+{
+    if(pause){
+        pauseButton->setText("pause");
+        if(!gameOver) timer->start(50);
+    }else{
+        pauseButton->setText("unpause");
+        timer->stop();
+    }
+    pause = !pause;
+    game->setFocus();
+}
+
 void Canvas::restartGame()
 {
-
+    gameOver = false;
     game->restartGame();
     Layout* layout = game->getLayout();
     setFoodMap(layout->getFood());
     setCapsuleMap(layout->getCapsules());
     setAgents(layout);
-    if(!timer->isActive()){
+    if(!timer->isActive() && !pause){
         timer->start(50);
     }
+    game->setFocus();
 }
 
 QPointF Canvas::countTextCoords(Layout *lay)
@@ -126,7 +151,7 @@ void Canvas::setCapsuleMap(std::vector<QPointF> caps)
         }
     }
     for(auto p:caps){
-        capsuleMap[p] = new QGraphicsEllipseItem(p.y()*cellSize,p.x()*cellSize,cellSize,cellSize);
+        capsuleMap[p] = new QGraphicsEllipseItem(p.y()*cellSize+cellSize/4,p.x()*cellSize+cellSize/4,cellSize/2,cellSize/2);
         capsuleMap[p]->setBrush(QBrush(Qt::white));
         scene()->addItem(capsuleMap[p]);
     }
@@ -202,5 +227,25 @@ void Canvas::setRestartButton(Layout *layout)
     restartButton->setFocusPolicy(Qt::NoFocus);
     QPointF buttonPos = countRestartRect(layout);
     restartButton->setGeometry(buttonPos.x(),buttonPos.y(),cellSize/5,cellSize);
+    restartButton->setMinimumWidth(cellSize*5);
+    restartButton->setMaximumWidth(cellSize*7);
     scene()->addWidget(restartButton);
+}
+
+void Canvas::setPauseButton(Layout *layout)
+{
+    QFile style(":/stylesheets/stylesheets/button.qss"); //move to resouce loader
+    style.open(QFile::ReadOnly);
+    QString str = QLatin1String(style.readAll());
+    pauseButton = new QPushButton();
+    pauseButton->setObjectName("pauseButton");
+    pauseButton->setText("pause");
+    pauseButton->setStyleSheet(str);
+    pauseButton->setFont(QFont("Munro",cellSize/1.5));
+    pauseButton->setFocusPolicy(Qt::NoFocus);
+    QPointF buttonPos = countRestartRect(layout);
+    pauseButton->setGeometry(buttonPos.x()+cellSize*6,buttonPos.y(),cellSize/5,cellSize);
+    pauseButton->setMinimumWidth(cellSize*5);
+    pauseButton->setMaximumWidth(cellSize*7);
+    scene()->addWidget(pauseButton);
 }

@@ -20,10 +20,10 @@ Layout::Layout(QString path):
     {
         width+=1;
         layoutText+=tmp;
-        qDebug() << layoutText;
         layoutText.push_back('\n');
     }
     height= layoutText.size() / width ;
+   qDebug() <<layoutText;
     qDebug() << "width:"<< width;
     qDebug() <<"height:"<<height;
     walls.resize(width);
@@ -41,6 +41,13 @@ Layout::Layout(const Layout& l)
     numAgents = l.numAgents;
     walls = std::vector<std::vector<bool > >(l.walls);
     food = std::vector<std::vector<bool> >(l.food);
+    for(int i = 0;i<walls.size();++i){
+        walls.push_back(l.walls[i]);
+    }
+    for(int i =0;i<food.size();++i){
+        food.push_back(l.food[i]);
+    }
+    layoutText = l.layoutText;
     width = l.width;
     height = l.height;
 }
@@ -51,7 +58,7 @@ Layout::Layout():
     totalFood(0),
     numAgents(0)
 {
-
+    qDebug() <<"Я вызвался";
 }
 
 
@@ -98,6 +105,11 @@ const std::vector<std::vector<bool> >& Layout::getWalls() const
 std::vector<std::vector<bool> > Layout::getFood() const
 {
     return food;
+}
+
+int Layout::getTotalFood() const
+{
+    return totalFood;
 }
 
 std::vector<QPointF> Layout::getCapsules() const

@@ -46,7 +46,7 @@ void LearningAgent::endEpisode()
 
 void LearningAgent::doAction(GameState &state, Direction dir)
 {
-    lastState = GameState(state);
+    lastState = state;
     lastAction = dir;
 }
 
@@ -68,4 +68,9 @@ GameState *LearningAgent::observationFuction(GameState &state)
         observeOneAction(lastState,lastAction,state,reward);
     }
     return &state;
+}
+
+LearningAgent::~LearningAgent()
+{
+
 }

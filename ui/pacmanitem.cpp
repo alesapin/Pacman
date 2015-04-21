@@ -39,7 +39,6 @@ void PacmanItem::moveToPoint(QPointF moveTo,Direction dir)
     setPixmap(texture.copy(currentFrame*cellSize,0,cellSize,cellSize));
     currentFrame=(currentFrame+1)%5;
     timer->start(stepTime);
-
 }
 
 

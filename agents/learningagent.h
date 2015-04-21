@@ -12,6 +12,7 @@ public:
     void finish(GameState& state);
     Direction getAction(GameState &state) = 0;
     GameState *observationFuction(GameState& state);
+    ~LearningAgent();
 
 protected:
     virtual void update(GameState& state,Direction action,GameState& nextState,double reward) = 0;

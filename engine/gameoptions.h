@@ -2,6 +2,7 @@
 #define GAMEOPTIONS_H
 #include <string>
 #include <QString>
+#include <QGraphicsScene>
 struct GameOptions
 {
     std::string pacmanAgent;
@@ -12,6 +13,7 @@ struct GameOptions
     double epsilon;
     double gamma;
     int minimaxDepth;
+    QGraphicsScene* scene;
 };
 
 #endif // GAMEOPTIONS_H

@@ -5,7 +5,9 @@
 #include <map>
 #include "configuration.h"
 #include <cstdlib>
-
+#include <deque>
+#include <set>
+#include "actions.h"
 struct PointComparator {
     bool operator()(const QPointF& p1, const QPointF& p2) const {
        return  p1.x() < p2.x() ||
@@ -21,6 +23,7 @@ public:
     static bool tossCoin(double prob);
     static double randDouble();
     static QPointF nearestIntPoint(QPointF p);
+    static double closestFood(QPointF currentPosition,const std::vector<std::vector<bool>>&food,const std::vector<std::vector<bool>>&walls);
 };
 
 #endif // UTIL_H
