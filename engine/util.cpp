@@ -72,5 +72,26 @@ double Util::closestFood(QPointF currentPosition, const std::vector<std::vector<
     }
     return -1;
 }
+void Util::center(QWidget &widget ,int WIDTH , int HEIGHT)
+{
+        int x, y;
+        int screenWidth;
+        int screenHeight;
 
+        QDesktopWidget *desktop = QApplication::desktop();
+
+        screenWidth = desktop->width();
+        screenHeight = desktop->height();
+
+        x = (screenWidth - WIDTH) / 2;
+        y = (screenHeight - HEIGHT) / 2;
+
+        widget.setGeometry(x, y, WIDTH, HEIGHT);
+
+}
+
+void Util::center(QWidget &widget)
+{
+    center(widget,widget.width(),widget.height());
+}
 

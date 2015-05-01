@@ -1,0 +1,275 @@
+#include "settings.h"
+#include <QDebug>
+
+/**
+  РЕФАКТОРИ ЭТО ДЕРЬМО!!!!!
+ * @brief Settings::Settings
+ * @param opts
+ */
+Settings::Settings(GameOptions &opts)
+{
+    startOptions = opts;
+    delete &opts;
+    cellSize = opts.cellSize;
+    QFont pixelFont("Munro",cellSize/1.5);
+    QFont paramsFont("Munro",cellSize/2);
+    QVBoxLayout* mainLayout = new QVBoxLayout(this);
+    //mainLayout->setAlignment(Qt::AlignHCenter);
+    QHBoxLayout* pacmanLine = new QHBoxLayout();
+    QFile style(":/stylesheets/stylesheets/button.qss"); //move to resouce loader
+    style.open(QFile::ReadOnly);
+    QString str = QLatin1String(style.readAll());
+    setStyleSheet(str);
+    this->setContentsMargins(cellSize*3,cellSize*3,cellSize*3,cellSize*3);
+    mainLayout->setSpacing(cellSize/5.);
+    pacman = new QLabel(this);
+    pacman->setText("Player Agent: ");
+    pacman->setFont(pixelFont);
+    pacmanList = new QComboBox(this);
+    pacmanList->addItem("LEARNING");
+    pacmanList->addItem("MINIMAX");
+    pacmanList->addItem("EXPECTIMAX");
+    pacmanList->addItem("KEYBOARD");
+    pacmanList->setMinimumWidth(cellSize*5);
+    pacmanList->setFont(pixelFont);
+    pacmanLine->addWidget(pacman);
+    pacmanLine->addWidget(pacmanList);
+
+    QHBoxLayout* ghostLine = new QHBoxLayout();
+    ghost = new QLabel(this);
+    ghost->setText("Ghost Agent:");
+    ghost->setFont(pixelFont);
+    ghostList = new QComboBox(this);
+    ghostList->addItem("RUSH");
+    ghostList->addItem("RANDOM");
+    ghostList->setFont(pixelFont);
+
+    ghostLine->addWidget(ghost);
+    ghostLine->addWidget(ghostList);
+
+    QHBoxLayout* sizeLine = new QHBoxLayout();
+
+    cells = new QLabel(this);
+    cells->setText("Cells size:");
+    cells->setFont(pixelFont);
+    cellSizeList = new QComboBox(this);
+    cellSizeList->setFont(pixelFont);
+    for(int i = 10;i<=50;i+=5){
+        cellSizeList->addItem(QString::number(i));
+    }
+
+    sizeLine->addWidget(cells);
+    sizeLine->addWidget(cellSizeList);
+
+    QHBoxLayout* chooseLine = new QHBoxLayout();
+
+    chooseLevel = new QLabel(this);
+    chooseLevel->setText("Level:");
+    chooseLevel->setFont(pixelFont);
+    chooseLevelList = new QComboBox(this);
+    QDir layDir("layouts");
+
+    QStringList layouts = layDir.entryList(QDir::NoDotAndDotDot|QDir::AllEntries);
+    chooseLevelList->addItems(layouts);
+    chooseLine->addWidget(chooseLevel);
+    chooseLine->addWidget(chooseLevelList);
+    chooseLevelList->setFont(pixelFont);
+    learningParamsLine = new QHBoxLayout();
+
+    alpha = new QLabel(this);
+    alpha->setText("alpha:");
+    epsilon = new QLabel(this);
+    epsilon->setText("epsilon:");
+    gamma = new QLabel(this);
+    gamma->setText("gamma:");
+    numiters = new QLabel(this);
+    numiters->setText("Amount of iters:");
+    alpha->setFont(paramsFont);
+    gamma->setFont(paramsFont);
+    epsilon->setFont(paramsFont);
+    numiters->setFont(paramsFont);
+    alphaEdit = new QLineEdit();
+    alphaEdit->setMaximumWidth(40);
+    epsilonEdit = new QLineEdit();
+    epsilonEdit->setMaximumWidth(40);
+    gammaEdit = new QLineEdit();
+    gammaEdit->setMaximumWidth(40);
+    numitersEdit = new QLineEdit();
+    numitersEdit->setMaximumWidth(40);
+    learningParamsLine->addWidget(alpha);
+    learningParamsLine->addWidget(alphaEdit);
+    learningParamsLine->addWidget(epsilon);
+    learningParamsLine->addWidget(epsilonEdit);
+    learningParamsLine->addWidget(gamma);
+    learningParamsLine->addWidget(gammaEdit);
+    learningParamsLine->addWidget(numiters);
+    learningParamsLine->addWidget(numitersEdit);
+
+    minimaxParamsLine = new QHBoxLayout();
+    minimaxParamsLine->setAlignment(Qt::AlignCenter);
+    maxDepth = new QLabel();
+    maxDepth->setText("Minimax depth:");
+    maxDepth->setFont(paramsFont);
+    depthEdit = new QLineEdit();
+    depthEdit->setMaximumWidth(40);
+    minimaxParamsLine->addWidget(maxDepth);
+    minimaxParamsLine->addWidget(depthEdit);
+
+    QHBoxLayout* buttonLine = new QHBoxLayout();
+
+    saveSettings = new QPushButton(this);
+    saveSettings->setText("Save");
+    saveSettings->setFont(pixelFont);
+    resetSettings = new QPushButton(this);
+    resetSettings->setText("Reset");
+    resetSettings->setFont(pixelFont);
+    toMenu = new QPushButton(this);
+    toMenu->setText("Menu");
+    toMenu->setFont(pixelFont);
+    fillFromOptions(startOptions);
+    buttonLine->addWidget(saveSettings);
+    buttonLine->addWidget(resetSettings);
+    buttonLine->addWidget(toMenu);
+    mainLayout->addLayout(pacmanLine,0);
+    mainLayout->addLayout(ghostLine,1);
+    mainLayout->addLayout(sizeLine,2);
+    mainLayout->addLayout(chooseLine,3);
+    mainLayout->addLayout(learningParamsLine,4);
+    mainLayout->addLayout(minimaxParamsLine,5);
+    mainLayout->addLayout(buttonLine,6);
+    connect(pacmanList, SIGNAL(currentIndexChanged(int)),this,SLOT(workWithParams(int)));
+    connect(saveSettings,SIGNAL(clicked()),this,SLOT(saveParams()));
+    connect(toMenu,SIGNAL(clicked()),this,SLOT(startMenu()));
+    connect(resetSettings,SIGNAL(clicked()),this,SLOT(resetParams()));
+    setLayout(mainLayout);
+    Util::center(*this);
+}
+
+void Settings::writeToFile(GameOptions &opts)
+{
+    QFile f("config.cfg");
+    f.open(QIODevice::ReadWrite | QIODevice::Truncate | QIODevice::Text);
+
+    QTextStream out(&f);
+    out << "layoutPath=" + opts.layoutPath << '\n';
+    out << "pacmanAgent="+opts.pacmanAgent << '\n';
+    if(opts.pacmanAgent == Game::LEARNING){
+        out << "alpha=" << opts.alpha << '\n';
+        out << "epsilon=" << opts.epsilon << '\n';
+        out << "gamma=" << opts.gamma<<'\n';
+        out << "numIters="<<opts.numIters<<'\n';
+    }else if(!(opts.pacmanAgent == Game::KEYBOARD)){
+        out << "maxDepth=" << opts.minimaxDepth << '\n';
+    }
+    out << "ghostAgent=" << opts.ghostAgent << '\n';
+    out << "cellSize="<<opts.cellSize<<'\n';
+    f.close();
+
+}
+
+
+void Settings::workWithParams(int ind)
+{
+    if(ind == 0){
+        swapLearnParams(true);
+        swapMinimaxParams(false);
+    }else if(ind !=3){
+        swapLearnParams(false);
+        swapMinimaxParams(true);
+    }else{
+        swapLearnParams(false);
+        swapMinimaxParams(false);
+    }
+    minimaxParamsLine->update();
+    learningParamsLine->update();
+}
+
+void Settings::resetParams()
+{
+    fillFromOptions(startOptions);
+}
+
+void Settings::saveParams()
+{
+   GameOptions opts;
+   opts.pacmanAgent = pacmanList->currentText();
+   if(opts.pacmanAgent == Game::LEARNING){
+       opts.alpha = alphaEdit->text().toDouble();
+       opts.epsilon = epsilonEdit->text().toDouble();
+       opts.gamma = gammaEdit->text().toDouble();
+       opts.numIters = numitersEdit->text().toInt();
+   } else if(!(opts.pacmanAgent == Game::KEYBOARD)){
+       opts.minimaxDepth = depthEdit->text().toInt();
+   }
+   opts.ghostAgent = ghostList->currentText();
+   opts.layoutPath ="layouts/"+ chooseLevelList->currentText();
+   opts.cellSize = cellSizeList->currentText().toInt();
+   writeToFile(opts);
+}
+
+void Settings::startMenu()
+{
+    MainMenu *m = new MainMenu();
+    this->close();
+    m->show();
+}
+
+void Settings::swapLearnParams(bool val)
+{
+    epsilonEdit->setEnabled(val);
+    alphaEdit->setEnabled(val);
+    gammaEdit->setEnabled(val);
+    numitersEdit->setEnabled(val);
+}
+
+void Settings::swapMinimaxParams(bool val)
+{
+    depthEdit->setEnabled(val);
+}
+
+void Settings::fillFromOptions(GameOptions &opts)
+{
+    if(opts.pacmanAgent == Game::LEARNING){
+        pacmanList->setCurrentIndex(0);
+    }else if(opts.pacmanAgent == Game::MINIMAX){
+        pacmanList->setCurrentIndex(1);
+    }else if(opts.pacmanAgent == Game::EXPECTIMAX){
+        pacmanList->setCurrentIndex(2);
+    }else{
+        pacmanList->setCurrentIndex(3);
+    }
+
+    if(opts.ghostAgent == Game::RUSH){
+        ghostList->setCurrentIndex(0);
+    }else{
+        ghostList->setCurrentIndex(1);
+    }
+    cellSizeList->setCurrentIndex((opts.cellSize-10)/5);
+
+    if(opts.pacmanAgent == Game::LEARNING){
+        alphaEdit->setText(QString::number(opts.alpha,'g',2));
+        epsilonEdit->setText(QString::number(opts.epsilon,'g',2));
+        gammaEdit->setText(QString::number(opts.gamma,'g',2));
+        numitersEdit->setText(QString::number(opts.numIters));
+        depthEdit->setEnabled(false);
+    }else if (!(opts.pacmanAgent == Game::KEYBOARD)){
+        depthEdit->setText(QString::number(opts.minimaxDepth));
+        alphaEdit->setEnabled(false);
+        epsilonEdit->setEnabled(false);
+        gammaEdit->setEnabled(false);
+        numitersEdit->setEnabled(false);
+    }else{
+        depthEdit->setEnabled(false);
+        alphaEdit->setEnabled(false);
+        epsilonEdit->setEnabled(false);
+        gammaEdit->setEnabled(false);
+        numitersEdit->setEnabled(false);
+    }
+    QString currentLay = opts.layoutPath.split("/").value(1);
+    for(int i =0;i<chooseLevelList->count();++i){
+        QString lay = chooseLevelList->itemText(i);
+        if(lay == currentLay){
+            chooseLevelList->setCurrentIndex(i);
+        }
+    }
+}

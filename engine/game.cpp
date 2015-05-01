@@ -2,12 +2,12 @@
 #include <QDebug>
 
 
-const std::string Game::LEARNING = "LEARNING_AGENT";
-const std::string Game::MINIMAX = "MINIMAX_AGENT";
-const std::string Game::EPECTIMAX = "EXPECTIMAX_AGENT";
-const std::string Game::RUSH = "RUSH_AGENT";
-const std::string Game::RANDOM = "RANDOM_AGENT";
-const std::string Game::KEYBOARD = "KEYBOARD_AGENT";
+const QString Game::LEARNING = "LEARNING";
+const QString Game::MINIMAX = "MINIMAX";
+const QString Game::EXPECTIMAX = "EXPECTIMAX";
+const QString Game::RUSH = "RUSH";
+const QString Game::RANDOM = "RANDOM";
+const QString Game::KEYBOARD = "KEYBOARD";
 
 Game::Game(std::vector<Agent *> agents, Layout *lay,bool learn):
     agents(agents),
@@ -55,8 +55,13 @@ void Game::restartGame()
         pacman->final(*currentGameState);
         pacman->startEpisode();
     }
-    delete currentGameState;
-    currentGameState = startState;
+    if(currentGameState != startState){
+        delete currentGameState;
+        currentGameState = startState;
+    }
+    if(keyboard!=0){
+        keyboard->setDirection(STOP);
+    }
     currentMover = 0;
 }
 
@@ -87,7 +92,36 @@ void Game::setFocus()
     }
 }
 
-Game *Game::parseOptions(GameOptions & opts)
+void Game::keyBoardEvent(QKeyEvent *event)
+{
+    if(keyboard!=0){
+        keyboard->keyPressEvent(event);
+    }
+}
+
+int Game::getTotalIters() const
+{
+    if(learn){
+        return pacman->getTotalNumIters();
+    }else{
+        return 0;
+    }
+}
+
+int Game::trainStep()
+{
+    if(isLearning()){
+        step();
+        if(currentGameState->isLose() || currentGameState->isWin()){
+            restartGame();
+        }
+        return pacman->getTrainIteration();
+    }else{
+        return 0;
+    }
+}
+
+Game *Game::parseOptions(GameOptions& opts)
 {
     bool learn = false;
     std::vector<Agent*> agents;
@@ -97,7 +131,7 @@ Game *Game::parseOptions(GameOptions & opts)
         agents.push_back(new PacmanLearningAgent(opts.numIters,opts.epsilon,opts.alpha,opts.gamma));
     } else if(opts.pacmanAgent == Game::MINIMAX){
         agents.push_back(new AlphaBetaAgent(opts.minimaxDepth));
-    } else if(opts.pacmanAgent == Game::EPECTIMAX){
+    } else if(opts.pacmanAgent == Game::EXPECTIMAX){
         agents.push_back(new ExpectimaxAgent(opts.minimaxDepth));
     } else if(opts.pacmanAgent == Game::KEYBOARD){
         KeyBoardAgent* agent = new KeyBoardAgent();

@@ -74,3 +74,13 @@ LearningAgent::~LearningAgent()
 {
 
 }
+
+int LearningAgent::getTrainIteration()
+{
+    return episodesPast;
+}
+
+int LearningAgent::getTotalNumIters()
+{
+    return numTraining;
+}

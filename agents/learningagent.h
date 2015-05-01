@@ -13,7 +13,8 @@ public:
     Direction getAction(GameState &state) = 0;
     GameState *observationFuction(GameState& state);
     ~LearningAgent();
-
+    int getTrainIteration();
+    int getTotalNumIters();
 protected:
     virtual void update(GameState& state,Direction action,GameState& nextState,double reward) = 0;
     virtual double getQValue(GameState& state,Direction action) = 0;

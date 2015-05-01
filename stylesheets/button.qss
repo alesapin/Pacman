@@ -7,6 +7,67 @@ QPushButton {
     border-color: blue;
     padding: 3px;
 }
+QLabel {
+    background-color: black;
+    color: white;
+    padding: 3px;
+}
+QLineEdit {
+    background-color: black;
+    color: white;
+    border-style: outset;
+    border-width: 2px;
+    border-radius: 2px;
+    border-color: blue;
+}
+QComboBox::drop-down
+{
+    border: 0px;
+}
+QComboBox::down-arrow {
+    image: url(:/textures/arrow.png);
+    width: 20px;
+}
+QComboBox {
+    background-color: black;
+    color: white;
+    border-style: outset;
+    border-width: 3px;
+    border-radius: 10px;
+    border-color: blue;
+    padding: 3px;
+}
+QWidget#gamePauseWindow {
+    background-color: black;
+    border-style: outset;
+    border-width: 3px;
+    border-radius: 10px;
+    border-color: blue;
+}
+QWidget#gameOverWindow {
+    background-color: black;
+    border-style: outset;
+    border-width: 3px;
+    border-radius: 10px;
+    border-color: blue;
+}
+QWidget#trainWindow {
+    background-color: black;
+    border-style: outset;
+    border-width: 3px;
+    border-radius: 10px;
+    border-color: blue;
+}
+QWidget{
+    background-color: black;
+}
+QVBoxLayout#gamePauseLay {
+    background-color: black;
+    border-style: outset;
+    border-width: 3px;
+    border-radius: 10px;
+    border-color: blue;
+}
 QPushButton:pressed {
     background-color: rgb(224, 224,224);
 }

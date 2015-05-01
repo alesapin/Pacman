@@ -18,6 +18,7 @@ WallItem::WallItem(std::vector<std::vector<bool> > w, double cs, QColor c, doubl
     color(c),
     penWidth(pw)
 {
+    setCacheMode(QGraphicsItem::ItemCoordinateCache);
     if (pw == -1) {
         penWidth = cellSize / 26;
     }

@@ -5,14 +5,15 @@ GraphicObject::GraphicObject(QPointF start, int cs,int stepTime):
     cellSize(cs),
     stepTime(stepTime)
 {
-    setPos(QPointF(startPosition.y()*cellSize,startPosition.x()*cellSize));
+    QPointF first(startPosition.y()*cellSize,startPosition.x()*cellSize);
+    currentTarget = first;
+    setPos(first);
     timer = new QTimer();
     connect(timer,SIGNAL(timeout()),this,SLOT(moveOneStep()));
 }
 
 QRectF GraphicObject::boundingRect() const
 {
-    //return QRectF(startPosition.x(),startPosition.y(),cellSize,cellSize);
     return QRectF(0,0,cellSize,cellSize);
 }
 

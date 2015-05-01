@@ -5,6 +5,7 @@
 #include "engine/configuration.h"
 #include <tuple>
 #include <limits>
+
 class AlphaBetaAgent : public MultiAgentSearch
 {
 public:

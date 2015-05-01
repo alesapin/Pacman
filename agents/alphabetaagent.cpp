@@ -23,7 +23,7 @@ std::tuple<Direction, double> AlphaBetaAgent::minimax(GameState &state, int dpth
 
 std::tuple<Direction, double> AlphaBetaAgent::maxVal(GameState &state, int dpth, int agentNum, double alpha, double beta)
 {
-    std::tuple<Direction,double> v  =   std::make_tuple(NOACTION,-100000);
+    std::tuple<Direction,double> v  =   std::make_tuple(NOACTION,-std::numeric_limits<double>::infinity());
     std::vector<Direction> availableActions = state.getLegalActions(agentNum);
     if( availableActions.size() == 0 ){
         std::get<1>(v) = evaluationFunction(state);
@@ -36,7 +36,7 @@ std::tuple<Direction, double> AlphaBetaAgent::maxVal(GameState &state, int dpth,
     for(Direction action:availableActions){
         GameState* nextState = state.generateSuccessor(agentNum,action);
         std::tuple<Direction,double> innerResult = minimax(*nextState,dpth,nextAgent,alpha,beta);
-        std::get<1>(innerResult) -= nextState->getNumFood(); //Pacman understand that he eat something
+        //std::get<1>(innerResult) -= nextState->getNumFood(); //Pacman understand that he eat something
         delete nextState;
         if(std::get<1>(innerResult) > std::get<1>(v)){
             v = std::make_tuple(action,std::get<1>(innerResult));
@@ -51,7 +51,7 @@ std::tuple<Direction, double> AlphaBetaAgent::maxVal(GameState &state, int dpth,
 
 std::tuple<Direction, double> AlphaBetaAgent::minVal(GameState &state, int dpth, int agentNum, double alpha, double beta)
 {
-    std::tuple<Direction,double> v  =   std::make_tuple(NOACTION,+100000000);
+    std::tuple<Direction,double> v  =   std::make_tuple(NOACTION,+std::numeric_limits<double>::infinity());
     std::vector<Direction> availableActions = state.getLegalActions(agentNum);
     if( availableActions.size() == 0 ){
         std::get<1>(v) = evaluationFunction(state);

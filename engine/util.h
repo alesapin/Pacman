@@ -8,6 +8,9 @@
 #include <deque>
 #include <set>
 #include "actions.h"
+#include <QWidget>
+#include <QDesktopWidget>
+#include <QApplication>
 struct PointComparator {
     bool operator()(const QPointF& p1, const QPointF& p2) const {
        return  p1.x() < p2.x() ||
@@ -24,6 +27,8 @@ public:
     static double randDouble();
     static QPointF nearestIntPoint(QPointF p);
     static double closestFood(QPointF currentPosition,const std::vector<std::vector<bool>>&food,const std::vector<std::vector<bool>>&walls);
+    static void center(QWidget &widget ,int WIDTH , int HEIGHT);
+    static void center(QWidget &widget);
 };
 
 #endif // UTIL_H

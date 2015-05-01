@@ -22,12 +22,20 @@
 #include "scoretext.h"
 #include <QFontDatabase>
 #include <QPushButton>
+#include "ui/menu/gamepausemenu.h"
+#include "ui/menu/gameovermenu.h"
+#include "ui/menu/trainingwindow.h"
 class Canvas:  public QGraphicsView {
         Q_OBJECT
 public:
-    Canvas(GameOptions opts,int cellSize);
+    Canvas(GameOptions& opts);
     void drawState(GameState* state);
-  //  ~Canvas();
+    void keyPressEvent(QKeyEvent *event);
+    void closeEvent(QCloseEvent *event);
+    int getCellSize() const;
+    void unpause();
+    QString getScore() const;
+    void startGame();
 public slots:
     void gameLoop();
     void pauseGame();
@@ -59,6 +67,9 @@ private:
     QGraphicsScene * myScene;
     QTimer * timer;
     int counter;
+    int generalTime;
+    int agentTime;
+    bool small;
 };
 
 #endif // CANVAS_H

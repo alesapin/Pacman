@@ -15,3 +15,4 @@ HEADERS += ui/wallitem.h
 SOURCES += ui/wallitem.cpp
 HEADERS += ui/pacmankeyboarditem.h
 SOURCES += ui/pacmankeyboarditem.cpp
+include(menu/menu.pri)

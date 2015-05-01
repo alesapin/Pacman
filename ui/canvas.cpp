@@ -1,14 +1,15 @@
 #include "canvas.h"
 #include <QDebug>
 
-Canvas::Canvas(GameOptions opts, int cs):
-    cellSize(cs),
+Canvas::Canvas(GameOptions& opts):
     pacman(0),
     pause(false),
     gameOver(false)
 {
+    small = false;
+    cellSize = opts.cellSize;
     setRenderHints(QPainter::Antialiasing | QPainter::HighQualityAntialiasing);
-    setCacheMode(QGraphicsView::CacheNone);
+    //setCacheMode(QGraphicsView::CacheBackground);
     setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     QFontDatabase::addApplicationFont(":/fonts/Munro.ttf");
@@ -19,13 +20,16 @@ Canvas::Canvas(GameOptions opts, int cs):
     opts.scene = myScene;
     game = Game::parseOptions(opts);
     Layout* layout = game->getLayout();
-    scene()->setSceneRect(countSceneRect(layout));
-
-    setWalls(layout);
     setScoreText(layout);
+    QRectF sceneR = countSceneRect(layout);
+    scene()->setSceneRect(sceneR);
+    setGeometry(0,0,sceneR.bottomRight().x(),sceneR.bottomRight().y());
+    setWalls(layout);
     setFoodMap(layout->getFood());
     setCapsuleMap(layout->getCapsules());
+    agentTime = 10;
     setAgents(layout);
+    generalTime = 100 / (ghosts.size()+1);
     setRestartButton(layout);
     setPauseButton(layout);
     timer = new QTimer(this);
@@ -33,8 +37,17 @@ Canvas::Canvas(GameOptions opts, int cs):
     connect(restartButton,SIGNAL(clicked()),this,SLOT(restartGame()));
     connect(pauseButton,SIGNAL(clicked()),this,SLOT(pauseGame()));
     counter  = 0 ;
-    game->trainAgent();
-    timer->start(50);
+    delete &opts;
+    if(game->isLearning()){
+        setEnabled(false);
+        TrainingWindow* train = new TrainingWindow(game,this);
+        train->show();
+        train->raise();
+        train->activateWindow();
+    }else{
+        startGame();
+    }
+    Util::center(*this);
 }
 
 void Canvas::drawState(GameState *state)
@@ -44,7 +57,6 @@ void Canvas::drawState(GameState *state)
         timer->stop();
         gameOver = true;
     }
-    std::vector<Direction> legal= state->getLegalPacmanActions();
     QPointF pos = state->getAgentPosition(0);
 
     pacman->moveToPoint(QPointF(pos.y()*cellSize,pos.x()*cellSize),state->getAgentState(0).getDireciton());
@@ -72,6 +84,53 @@ void Canvas::drawState(GameState *state)
     }
     scoreText->updateScore(state->getScore());
 }
+
+void Canvas::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Escape){
+        //MainMenu *m = new MainMenu();
+        this->setDisabled(true);
+        GamePauseMenu* p = new GamePauseMenu(this);
+        pause = false;
+        this->pauseGame();
+        p->show();
+    }else{
+        game->keyBoardEvent(event);
+    }
+}
+
+void Canvas::closeEvent(QCloseEvent *event)
+{
+    if(this->isEnabled()){
+        event->accept();
+    }else{
+        event->ignore();
+    }
+}
+
+int Canvas::getCellSize() const
+{
+    return cellSize;
+}
+
+void Canvas::unpause()
+{
+    pause = false;
+    if(!gameOver) timer->start(generalTime);
+    pauseButton->setText("pause");
+}
+
+QString Canvas::getScore() const
+{
+    return scoreText->text();
+}
+
+void Canvas::startGame()
+{
+    setEnabled(true);
+    scene()->update();
+    timer->start(generalTime);
+}
 //Раскоментить в будущем
 //Canvas::~Canvas()
 //{
@@ -84,20 +143,24 @@ void Canvas::drawState(GameState *state)
 void Canvas::gameLoop()
 {
     drawState(game->step());
-    scene()->update(scene()->sceneRect());
+    if(gameOver){
+        this->setEnabled(false);
+        GameOverMenu* go = new GameOverMenu(this);
+        go->show();
+    }
 }
 
 void Canvas::pauseGame()
 {
     if(pause){
         pauseButton->setText("pause");
-        if(!gameOver) timer->start(50);
+        if(!gameOver) timer->start(generalTime);
     }else{
         pauseButton->setText("unpause");
         timer->stop();
     }
     pause = !pause;
-    game->setFocus();
+    //game->setFocus();
 }
 
 void Canvas::restartGame()
@@ -108,27 +171,37 @@ void Canvas::restartGame()
     setFoodMap(layout->getFood());
     setCapsuleMap(layout->getCapsules());
     setAgents(layout);
+    scoreText->updateScore(0);
     if(!timer->isActive() && !pause){
-        timer->start(50);
+        timer->start(generalTime);
     }
-    game->setFocus();
+    //game->setFocus();
 }
 
 QPointF Canvas::countTextCoords(Layout *lay)
 {
     int width = lay->getWalls().size();
     int height = lay->getWalls()[0].size();
-    int dy = width*cellSize;
-    int dx = height*cellSize-(height/3)*cellSize;
-    return QPointF(dx,dy);
+
+    double dy = width;
+    double dx = height-(height/3.);
+    if((height - dx) < 12){
+        small = true;
+        dx = 1;
+        dy = (width+1.5);
+    }
+    return QPointF(dx*cellSize,dy*cellSize);
 }
 
 QRectF Canvas::countSceneRect(Layout *lay)
 {
     int width = lay->getWalls().size();
     int height = lay->getWalls()[0].size();
-    int dy = width*cellSize+cellSize*3/2;
-    int dx = height*cellSize-cellSize;
+    double dy = width*cellSize+cellSize*1.5;
+    double dx = height*cellSize-cellSize;
+    if(small){
+        dy =  width*cellSize+cellSize*3;
+    }
     return QRectF(0,0,dx,dy);
 }
 
@@ -192,11 +265,11 @@ void Canvas::setAgents(Layout *layout)
         }
         ghosts.clear();
     }
-    pacman = new PacmanItem(layout->getPacmanPosition(),cellSize,10);
+    pacman = new PacmanItem(layout->getPacmanPosition(),cellSize,agentTime);
     scene()->addItem(pacman);
     std::vector<QPointF> agentPositions = layout->getAgentsPositions();
     for(int i = 1; i< agentPositions.size();++i){
-        GhostItem* ghost = new GhostItem(agentPositions[i],cellSize,10,i);
+        GhostItem* ghost = new GhostItem(agentPositions[i],cellSize,agentTime,i);
         scene()->addItem(ghost);
         ghosts.push_back(ghost);
     }
@@ -205,6 +278,7 @@ void Canvas::setAgents(Layout *layout)
 void Canvas::setScoreText(Layout *lay)
 {
     scoreText = new ScoreText(countTextCoords(lay),cellSize);
+    scoreText->updateScore(0);
     scene()->addItem(scoreText);
 }
 
@@ -223,12 +297,19 @@ void Canvas::setRestartButton(Layout *layout)
     restartButton->setObjectName("restartButton");
     restartButton->setText("restart");
     restartButton->setStyleSheet(str);
-    restartButton->setFont(QFont("Munro",cellSize/1.5));
+    double width = 5;
+    double fontFact = 1.5;
+    if(width > layout->getWalls()[0].size()/2){
+        width = layout->getWalls()[0].size()/4.;
+        fontFact = 3;
+    }
+    restartButton->setFont(QFont("Munro",cellSize/fontFact));
     restartButton->setFocusPolicy(Qt::NoFocus);
     QPointF buttonPos = countRestartRect(layout);
     restartButton->setGeometry(buttonPos.x(),buttonPos.y(),cellSize/5,cellSize);
-    restartButton->setMinimumWidth(cellSize*5);
-    restartButton->setMaximumWidth(cellSize*7);
+
+    restartButton->setMinimumWidth(width*cellSize);
+    restartButton->setMaximumWidth(width*cellSize);
     scene()->addWidget(restartButton);
 }
 
@@ -241,11 +322,19 @@ void Canvas::setPauseButton(Layout *layout)
     pauseButton->setObjectName("pauseButton");
     pauseButton->setText("pause");
     pauseButton->setStyleSheet(str);
-    pauseButton->setFont(QFont("Munro",cellSize/1.5));
+    double width = 5;
+    double fontFact = 1.5;
+    double shift = cellSize*6;
+    if(width > layout->getWalls()[0].size()/2){
+        width = layout->getWalls()[0].size()/4.;
+        fontFact = 3;
+        shift = cellSize*3;
+    }
+    pauseButton->setFont(QFont("Munro",cellSize/fontFact));
     pauseButton->setFocusPolicy(Qt::NoFocus);
     QPointF buttonPos = countRestartRect(layout);
-    pauseButton->setGeometry(buttonPos.x()+cellSize*6,buttonPos.y(),cellSize/5,cellSize);
-    pauseButton->setMinimumWidth(cellSize*5);
-    pauseButton->setMaximumWidth(cellSize*7);
+    pauseButton->setGeometry(buttonPos.x()+shift,buttonPos.y(),cellSize/5,cellSize);
+    pauseButton->setMinimumWidth(width*cellSize);
+    pauseButton->setMaximumWidth(width*cellSize);
     scene()->addWidget(pauseButton);
 }

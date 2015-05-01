@@ -10,6 +10,7 @@ public:
     KeyBoardAgent();
     Direction getAction(GameState& state);
     void keyPressEvent(QKeyEvent *event);
+    void setDirection(Direction dir);
 private:
     Direction currentDirection;
 };

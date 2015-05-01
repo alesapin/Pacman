@@ -23,6 +23,7 @@ private:
     std::vector<std::vector<bool> > walls;
     ElemType checkCell(int i,int j);
     QPainter* painter;
+    QPixmap* staticItem;
 };
 
 #endif // WALLITEM_H

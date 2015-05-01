@@ -24,3 +24,8 @@ void KeyBoardAgent::keyPressEvent(QKeyEvent *event)
         currentDirection = SOUTH;
     }
 }
+
+void KeyBoardAgent::setDirection(Direction dir)
+{
+    currentDirection = dir;
+}

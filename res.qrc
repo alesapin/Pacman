@@ -1,28 +1,4 @@
 <RCC>
-    <qresource prefix="/images">
-        <file>redml.png</file>
-        <file>simple.png</file>
-        <file>scarry.png</file>
-        <file>pacman-sprite.png</file>
-        <file>pacman.png</file>
-        <file>1e.png</file>
-        <file>1n.png</file>
-        <file>1s.png</file>
-        <file>1w.png</file>
-        <file>2e.png</file>
-        <file>2n.png</file>
-        <file>2s.png</file>
-        <file>2w.png</file>
-        <file>3e.png</file>
-        <file>3n.png</file>
-        <file>3s.png</file>
-        <file>3w.png</file>
-        <file>4e.png</file>
-        <file>4n.png</file>
-        <file>4s.png</file>
-        <file>4w.png</file>
-        <file>scarried.png</file>
-    </qresource>
     <qresource prefix="/layouts">
         <file>layouts/mediumClassic.lay</file>
         <file>layouts/originalClassic.lay</file>
@@ -30,8 +6,31 @@
     </qresource>
     <qresource prefix="/fonts">
         <file>Munro.ttf</file>
+        <file>pixel.ttf</file>
+        <file>pixelFont.ttf</file>
     </qresource>
     <qresource prefix="/stylesheets">
         <file>stylesheets/button.qss</file>
+    </qresource>
+    <qresource prefix="/textures">
+        <file>textures/1e.png</file>
+        <file>textures/1n.png</file>
+        <file>textures/1s.png</file>
+        <file>textures/1w.png</file>
+        <file>textures/2e.png</file>
+        <file>textures/2n.png</file>
+        <file>textures/2s.png</file>
+        <file>textures/2w.png</file>
+        <file>textures/3e.png</file>
+        <file>textures/3n.png</file>
+        <file>textures/3s.png</file>
+        <file>textures/3w.png</file>
+        <file>textures/4e.png</file>
+        <file>textures/4n.png</file>
+        <file>textures/4s.png</file>
+        <file>textures/4w.png</file>
+        <file>textures/pacman-sprite.png</file>
+        <file>textures/scarried.png</file>
+        <file>arrow.png</file>
     </qresource>
 </RCC>

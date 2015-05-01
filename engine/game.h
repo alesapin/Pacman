@@ -9,17 +9,20 @@
 #include "agents/randomghostagent.h"
 #include "agents/pacmanlearningagent.h"
 #include "agents/keyboardagent.h"
-#include <vector>
 #include "gameoptions.h"
+#include <vector>
+class GameOptions;
 class Game
 {
 public:
-    static const std::string LEARNING;
-    static const std::string MINIMAX;
-    static const std::string EPECTIMAX;
-    static const std::string RUSH;
-    static const std::string RANDOM;
-    static const std::string KEYBOARD;
+    static const QString LEARNING;
+    static const QString MINIMAX;
+    static const QString EXPECTIMAX;
+    static const QString RUSH;
+    static const QString RANDOM;
+    static const QString KEYBOARD;
+
+    static Game *parseOptions(GameOptions& opts);
 
     GameState *step();
     Layout *getLayout();
@@ -28,10 +31,14 @@ public:
     bool isLearning();
     void trainAgent();
     void setFocus();
-    static Game *parseOptions(GameOptions&);
+    void keyBoardEvent(QKeyEvent *event);
+    int getCurrentIter() const;
+    int getTotalIters() const;
+    int trainStep();
  private:
     GameState* currentGameState;
     GameState* startState;
+
     int currentMover;
     Layout* layout;
     PacmanLearningAgent* pacman;
