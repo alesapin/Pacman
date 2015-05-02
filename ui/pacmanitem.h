@@ -14,6 +14,7 @@
 #include <QGraphicsView>
 #include <QTimer>
 #include <QObject>
+#include "resourceloader.h"
 #include "graphicobject.h"
 class PacmanItem: public GraphicObject{
 public:

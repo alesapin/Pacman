@@ -12,10 +12,9 @@ Canvas::Canvas(GameOptions& opts):
     //setCacheMode(QGraphicsView::CacheBackground);
     setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-    QFontDatabase::addApplicationFont(":/fonts/Munro.ttf");
 
     myScene = new QGraphicsScene();
-    this->setStyleSheet("background-color: black;");
+    this->setStyleSheet(ResourceLoader::STYLE);
     setScene(myScene);
     opts.scene = myScene;
     game = Game::parseOptions(opts);
@@ -27,16 +26,15 @@ Canvas::Canvas(GameOptions& opts):
     setWalls(layout);
     setFoodMap(layout->getFood());
     setCapsuleMap(layout->getCapsules());
-    agentTime = 10;
+    agentTime = ResourceLoader::AGENT_TIMER_TIME;
     setAgents(layout);
-    generalTime = 100 / (ghosts.size()+1);
+    generalTime = ResourceLoader::GLOBAL_TIMER_TIME / (ghosts.size()+1);
     setRestartButton(layout);
     setPauseButton(layout);
     timer = new QTimer(this);
     connect(timer,SIGNAL(timeout()),this,SLOT(gameLoop()));
     connect(restartButton,SIGNAL(clicked()),this,SLOT(restartGame()));
     connect(pauseButton,SIGNAL(clicked()),this,SLOT(pauseGame()));
-    counter  = 0 ;
     delete &opts;
     if(game->isLearning()){
         setEnabled(false);
@@ -48,6 +46,7 @@ Canvas::Canvas(GameOptions& opts):
         startGame();
     }
     Util::center(*this);
+
 }
 
 void Canvas::drawState(GameState *state)
@@ -185,11 +184,6 @@ QPointF Canvas::countTextCoords(Layout *lay)
 
     double dy = width;
     double dx = height-(height/3.);
-    if((height - dx) < 12){
-        small = true;
-        dx = 1;
-        dy = (width+1.5);
-    }
     return QPointF(dx*cellSize,dy*cellSize);
 }
 
@@ -210,7 +204,7 @@ QPointF Canvas::countRestartRect(Layout *lay)
     int width = lay->getWalls().size();
     int height = lay->getWalls()[0].size();
     int dy = width*cellSize;
-    int dx = cellSize;
+    int dx = cellSize/3;
     return QPointF(dx,dy);
 }
 
@@ -277,7 +271,7 @@ void Canvas::setAgents(Layout *layout)
 
 void Canvas::setScoreText(Layout *lay)
 {
-    scoreText = new ScoreText(countTextCoords(lay),cellSize);
+    scoreText = new ScoreText(countTextCoords(lay),cellSize,lay->getWalls()[0].size());
     scoreText->updateScore(0);
     scene()->addItem(scoreText);
 }
@@ -290,51 +284,33 @@ void Canvas::setWalls(Layout *layout)
 
 void Canvas::setRestartButton(Layout *layout)
 {
-    QFile style(":/stylesheets/stylesheets/button.qss"); //move to resouce loader
-    style.open(QFile::ReadOnly);
-    QString str = QLatin1String(style.readAll());
-    restartButton = new QPushButton();
+    double width = layout->getWalls()[0].size();
+    restartButton = new QPushButton(this);
     restartButton->setObjectName("restartButton");
     restartButton->setText("restart");
-    restartButton->setStyleSheet(str);
-    double width = 5;
-    double fontFact = 1.5;
-    if(width > layout->getWalls()[0].size()/2){
-        width = layout->getWalls()[0].size()/4.;
-        fontFact = 3;
-    }
-    restartButton->setFont(QFont("Munro",cellSize/fontFact));
+    double fontSize = width > cellSize? cellSize/1.5:width;
+    restartButton->setFont(QFont(ResourceLoader::FONT_NAME,fontSize));
     restartButton->setFocusPolicy(Qt::NoFocus);
     QPointF buttonPos = countRestartRect(layout);
     restartButton->setGeometry(buttonPos.x(),buttonPos.y(),cellSize/5,cellSize);
 
-    restartButton->setMinimumWidth(width*cellSize);
-    restartButton->setMaximumWidth(width*cellSize);
+    restartButton->setMinimumWidth((width*cellSize)/6);
+    restartButton->setMaximumWidth((width*cellSize)/3);
     scene()->addWidget(restartButton);
 }
 
 void Canvas::setPauseButton(Layout *layout)
 {
-    QFile style(":/stylesheets/stylesheets/button.qss"); //move to resouce loader
-    style.open(QFile::ReadOnly);
-    QString str = QLatin1String(style.readAll());
-    pauseButton = new QPushButton();
+    double width = layout->getWalls()[0].size();
+    pauseButton = new QPushButton(this);
     pauseButton->setObjectName("pauseButton");
     pauseButton->setText("pause");
-    pauseButton->setStyleSheet(str);
-    double width = 5;
-    double fontFact = 1.5;
-    double shift = cellSize*6;
-    if(width > layout->getWalls()[0].size()/2){
-        width = layout->getWalls()[0].size()/4.;
-        fontFact = 3;
-        shift = cellSize*3;
-    }
-    pauseButton->setFont(QFont("Munro",cellSize/fontFact));
+    double fontSize = width > cellSize? cellSize/1.5:width;
+    pauseButton->setFont(QFont(ResourceLoader::FONT_NAME,fontSize));
     pauseButton->setFocusPolicy(Qt::NoFocus);
     QPointF buttonPos = countRestartRect(layout);
-    pauseButton->setGeometry(buttonPos.x()+shift,buttonPos.y(),cellSize/5,cellSize);
-    pauseButton->setMinimumWidth(width*cellSize);
-    pauseButton->setMaximumWidth(width*cellSize);
+    pauseButton->setGeometry(buttonPos.x()+width*cellSize/3.,buttonPos.y(),cellSize/5,cellSize);
+    pauseButton->setMinimumWidth((width*cellSize)/6.);
+    pauseButton->setMaximumWidth((width*cellSize)/3.);
     scene()->addWidget(pauseButton);
 }

@@ -9,7 +9,6 @@
 #include "engine/layout.h"
 #include <vector>
 #include <QGraphicsScene>
-#include "pacmankeyboarditem.h"
 #include <QTimer>
 #include <QObject>
 #include "pacmanitem.h"
@@ -25,6 +24,7 @@
 #include "ui/menu/gamepausemenu.h"
 #include "ui/menu/gameovermenu.h"
 #include "ui/menu/trainingwindow.h"
+#include "resourceloader.h"
 class Canvas:  public QGraphicsView {
         Q_OBJECT
 public:
@@ -66,7 +66,6 @@ private:
     bool gameOver;
     QGraphicsScene * myScene;
     QTimer * timer;
-    int counter;
     int generalTime;
     int agentTime;
     bool small;

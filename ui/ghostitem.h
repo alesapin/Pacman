@@ -6,6 +6,7 @@
 #include <QBrush>
 #include "agents/ghostagent.h"
 #include "graphicobject.h"
+#include "resourceloader.h"
 class GhostItem : public GraphicObject
 {
 public:

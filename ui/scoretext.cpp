@@ -2,11 +2,12 @@
 
 const QString ScoreText::SCORE = "Score: ";
 
-ScoreText::ScoreText(QPointF position, int cellSize)
+ScoreText::ScoreText(QPointF position, int cellSize,int width)
 {
+    double fontSize = width > cellSize? cellSize:width;
     scoreNum = 0;
     setBrush(QBrush(Qt::white));
-    setFont(QFont("Munro",cellSize));
+    setFont(QFont("Munro",fontSize));
     setPos(position);
 }
 

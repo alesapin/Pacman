@@ -9,9 +9,9 @@ public:
     ExpectimaxAgent(int d):MultiAgentSearch(d){}
     Direction getAction(GameState& state);
 private:
-    double expectimax(GameState& state,int dpth,int agentIndex);
-    double maxVal(GameState& state,int dpth,int agentIndex);
-    double expectVal(GameState& state,int dpth,int agentIndex);
+    std::tuple<Direction,double> expectimax(GameState& state,int dpth,int agentIndex);
+    std::tuple<Direction,double> maxVal(GameState& state,int dpth,int agentIndex);
+    std::tuple<Direction,double> expectVal(GameState& state,int dpth,int agentIndex);
 };
 
 #endif // EXPECTIMAXAGENT_H

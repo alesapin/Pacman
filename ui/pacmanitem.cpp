@@ -9,7 +9,7 @@ PacmanItem::PacmanItem(QPointF pos, int cs, int stepTime):
     GraphicObject(pos,cs,stepTime),
     currentFrame(0)
 {
-    texture = QPixmap(":/textures/textures/pacman-sprite.png").scaledToHeight(cs);
+    texture = QPixmap(ResourceLoader::PACMAN_TEXTURE_PATH).scaledToHeight(cs);
     setPixmap(texture.copy(0,0,cellSize,cellSize));
     setTransformOriginPoint(cs/2.,cs/2.);
 }
