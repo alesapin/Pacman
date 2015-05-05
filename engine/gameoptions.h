@@ -4,9 +4,8 @@
 #include <QFile>
 #include <QTextStream>
 #include "game.h"
-class GameOptions
+struct GameOptions
 {
-public:
     QString pacmanAgent;
     QString ghostAgent;
     QString layoutPath;

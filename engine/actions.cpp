@@ -54,7 +54,6 @@ QPointF Actions::directionToVector(Direction dir, double speed)
 
 std::vector<Direction> Actions::getPossibleActions(Configuration& config,const std::vector<std::vector<bool> >& walls)
 {
-//    QDebug debug = qDebug();
     std::vector<Direction> result;
     QPointF pos = config.getPosition();
     double x = pos.x();

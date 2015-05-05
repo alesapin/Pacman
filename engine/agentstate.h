@@ -21,8 +21,6 @@ private:
     Configuration current;
     bool isPacman;
     int scarryTimer = 0;
-    int numCarrying = 0;
-    int numReturned = 0;
 };
 
 #endif // AGENTSTATE_H

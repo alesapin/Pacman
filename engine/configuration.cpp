@@ -43,16 +43,14 @@ bool Configuration::operator==(const Configuration &other)
 
 Configuration Configuration::generateSuccessor(QPointF vectorTo)
 {
-    //QDebug debug = qDebug();
     double x =position.x();
     double y = position.y();
     double dx = vectorTo.x();
     double dy = vectorTo.y();
-
     Direction dir = Actions::vectorToDirection(vectorTo);
     if (dir == STOP){
         dir = direction;
     }
-    return Configuration(QPointF(x+dx,y+dy),dir); //TODO
+    return Configuration(QPointF(x+dx,y+dy),dir);
 }
 

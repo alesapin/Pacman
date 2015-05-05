@@ -63,8 +63,6 @@ AgentState::AgentState(const AgentState &other):
     current(other.current)
 {
     isPacman = other.isPacman;
-    numCarrying = other.numCarrying;
-    numReturned = other.numReturned;
     scarryTimer = other.scarryTimer;
 }
 

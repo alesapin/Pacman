@@ -54,18 +54,6 @@ void PacmanLearningAgent::update(GameState &state, Direction action, GameState &
 }
 
 
-double PacmanLearningAgent::computeValueFromQValues(GameState &state)
-{
-    std::vector<Direction> legalActions = state.getLegalPacmanActions(); // упразднить
-    if(legalActions.empty()){
-        return 0;
-    }
-    std::vector<double> currentValues;
-    for(Direction dir:legalActions){
-        currentValues.push_back(getQValue(state,dir));
-    }
-    return *std::max_element(currentValues.begin(),currentValues.end());
-}
 
 Direction PacmanLearningAgent::computeActionFromQValues(GameState &state)
 {
@@ -85,15 +73,6 @@ Direction PacmanLearningAgent::computeActionFromQValues(GameState &state)
     return maxAction;
 }
 
-double PacmanLearningAgent::getValue(GameState &state)
-{
-    return computeValueFromQValues(state);
-}
-
-Direction PacmanLearningAgent::getPolicyAction(GameState &state)
-{
-    return computeActionFromQValues(state);
-}
 
 void PacmanLearningAgent::final(GameState &finalState)
 {

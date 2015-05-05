@@ -18,8 +18,6 @@ public:
 protected:
     virtual void update(GameState& state,Direction action,GameState& nextState,double reward) = 0;
     virtual double getQValue(GameState& state,Direction action) = 0;
-    virtual double getValue(GameState& state) = 0;
-    virtual Direction getPolicyAction(GameState& state) = 0;
     void doAction(GameState& state,Direction dir);
     void observeOneAction(GameState& state,Direction action,GameState& nextState,double deltaReward);
     std::vector<Direction> getLegalAction(GameState& state);

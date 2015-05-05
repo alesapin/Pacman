@@ -36,7 +36,6 @@ std::tuple<Direction, double> AlphaBetaAgent::maxVal(GameState &state, int dpth,
     for(Direction action:availableActions){
         GameState* nextState = state.generateSuccessor(agentNum,action);
         std::tuple<Direction,double> innerResult = minimax(*nextState,dpth,nextAgent,alpha,beta);
-        //std::get<1>(innerResult) -= nextState->getNumFood(); //Pacman understand that he eat something
         delete nextState;
         if(std::get<1>(innerResult) > std::get<1>(v)){
             v = std::make_tuple(action,std::get<1>(innerResult));

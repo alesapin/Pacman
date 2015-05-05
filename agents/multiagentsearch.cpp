@@ -6,15 +6,6 @@ MultiAgentSearch::MultiAgentSearch(int depth)
     index = 0;
 }
 
-int MultiAgentSearch::getDepth() const
-{
-    return depth;
-}
-
-void MultiAgentSearch::setDepth(int value)
-{
-    depth = value;
-}
 
 double MultiAgentSearch::evaluationFunction(GameState &state)
 {
@@ -28,9 +19,8 @@ double MultiAgentSearch::evaluationFunction(GameState &state)
     if(distToFood == -1){
         result += 1000;
     }else{
-        result += ((1./ (distToFood+1))*10); //bad proportion
+        result += ((1./ (distToFood+1))*10);
     }
-    //qDebug() << distToFood;
     double minDist = std::numeric_limits<double>::infinity();
     for(int i = 1;i<state.getAgentStates().size();++i){
         QPointF ghostPosition = state.getAgentPosition(i);

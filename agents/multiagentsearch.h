@@ -6,11 +6,9 @@ class MultiAgentSearch : public Agent
 {
 public:
     MultiAgentSearch(int depth);
-    int getDepth() const;
-    void setDepth(int value);
-    double evaluationFunction(GameState& state);
 protected:
     int depth;
+    double evaluationFunction(GameState& state);
 
 };
 

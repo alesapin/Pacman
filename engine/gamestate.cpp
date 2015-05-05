@@ -62,9 +62,7 @@ std::vector<Direction> GameState::getLegalActions(int agentNum) const
 
 GameState* GameState::generateSuccessor(int agentIndex, Direction dir)
 {
-//    QPointF agentPos = this->getAgentPosition(agentIndex);
-//    //qDebug()<<"(" << agentPos.x() <<"," << agentPos.y() << ")";
-    if(isWin() || isLose()) qDebug()<< "Terminal state,lose/win(gamestate.cpp - 20)";
+    if(isWin() || isLose()) qDebug() << "Terminal state,lose/win";
     GameState* state=new GameState(*this);
     if(agentIndex == 0){
         PacmanRules::applyAction(*state,dir);

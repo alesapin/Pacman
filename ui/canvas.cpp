@@ -50,7 +50,6 @@ Canvas::Canvas(GameOptions& opts):
 }
 
 void Canvas::drawState(GameState *state)
-
 {
     if(state->isWin() || state->isLose()){
         timer->stop();

@@ -52,7 +52,6 @@ void LearningAgent::doAction(GameState &state, Direction dir)
 
 void LearningAgent::observeOneAction(GameState &state, Direction action, GameState &nextState, double deltaReward)
 {
-    episodeRewards += deltaReward;
     update(state,action,nextState,deltaReward);
 }
 

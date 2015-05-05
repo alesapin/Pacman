@@ -16,10 +16,7 @@ public:
 protected:
      virtual double getQValue(GameState &state, Direction action);
      virtual void update(GameState& state,Direction action,GameState& nextState,double reward);
-     double computeValueFromQValues(GameState& state);
      Direction computeActionFromQValues(GameState& state);
-     double getValue(GameState &state);
-     Direction getPolicyAction(GameState &state);
 private:
      //std::unordered_map<std::tuple<GameState,Direction>,double,key_hash,key_equal> qValues;
      std::map<std::string,double> weights;

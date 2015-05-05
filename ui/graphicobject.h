@@ -22,9 +22,6 @@ protected:
     int cellSize;
     int stepTime;
     QPixmap texture;
-    double deltaX;
-    double deltaY;
-    int countStep;
 };
 
 #endif // GRAPHICOBJECT_H
