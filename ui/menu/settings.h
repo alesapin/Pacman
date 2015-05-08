@@ -9,6 +9,7 @@
 #include <QLineEdit>
 #include "engine/gameoptions.h"
 #include <QDir>
+#include <QSettings>
 #include "mainmenu.h"
 class Settings: public QWidget
 {

@@ -41,6 +41,16 @@ public slots:
     void pauseGame();
     void restartGame();
 private:
+    void removeFood(QPointF foodPoint);
+    void setCapsuleMap(std::vector<QPointF> caps);
+    void setFoodMap(std::vector<std::vector <bool> > foodTable);
+    void setAgents(Layout* lay);
+    void setScoreText(Layout *lay);
+    void setWalls(Layout* lay);
+    void setRestartButton(Layout* lay);
+    void setPauseButton(Layout* lay);
+    void saveScore();
+
     std::map<QPointF,QGraphicsEllipseItem*,PointComparator> foodMap;
     std::map<QPointF,QGraphicsEllipseItem*,PointComparator> capsuleMap;
     WallItem* wallPainter;
@@ -53,14 +63,6 @@ private:
     QPointF countTextCoords(Layout* lay);
     QRectF countSceneRect(Layout* lay);
     QPointF countRestartRect(Layout* lay);
-    void removeFood(QPointF foodPoint);
-    void setCapsuleMap(std::vector<QPointF> caps);
-    void setFoodMap(std::vector<std::vector <bool> > foodTable);
-    void setAgents(Layout* lay);
-    void setScoreText(Layout *lay);
-    void setWalls(Layout* lay);
-    void setRestartButton(Layout* lay);
-    void setPauseButton(Layout* lay);
     int cellSize;
     bool pause;
     bool gameOver;
@@ -69,6 +71,8 @@ private:
     int generalTime;
     int agentTime;
     bool small;
+    QString layoutName;
+    QString agentName;
 };
 
 #endif // CANVAS_H

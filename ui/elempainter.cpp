@@ -1,7 +1,7 @@
 #include "elempainter.h"
 #include <QRectF>
 #include <QPainter>
-
+#include <QDebug>
 
 
 ElemPainter::ElemPainter(double w, double h, QPainter* p):
@@ -68,9 +68,9 @@ void ElemPainter::drawElem(double ox, double oy, ElemType type)
 void ElemPainter::drawFirstArc(double ox, double oy)
 {
     QRectF inner1(ox,oy+2*width/3,width/3,height/3);
-    painter->drawArc(inner1,0*16,91*16);
+    painter->drawArc(inner1,1*16,91*16);
     QRectF inner2(ox+width/3,oy+height/3,width/3,height/3);
-    painter->drawArc(inner2,0*16, 91*16);
+    painter->drawArc(inner2,1*16, 91*16);
 
     painter->drawLine(ox+2*width/3,oy+height/3+height/6,ox+2*width/3,oy+height); //vl
     painter->drawLine(ox+width/3,oy+2*height/3+height/6, ox+width/3,oy+height); //vs
@@ -94,7 +94,7 @@ void ElemPainter::drawSecondArc(double ox, double oy)
 
 void ElemPainter::drawThirdArc(double ox, double oy)
 {
-    QRectF inner1(ox + 2*width/3,oy,width/3,height/3);
+    QRectF inner1(ox + 2*width/3,oy-1,width/3,height/3);
     painter->drawArc(inner1,181*16,91*16);
     QRectF inner2(ox+width/3,oy+height/3,width/3,height/3);
     painter->drawArc(inner2,181*16,91*16);
@@ -106,7 +106,7 @@ void ElemPainter::drawThirdArc(double ox, double oy)
 
 void ElemPainter::drawFourthArc(double ox, double oy)
 {
-    QRectF inner1(ox,oy,width/3,height/3);
+    QRectF inner1(ox-1,oy-1,width/3,height/3);
     painter->drawArc(inner1,1*16,-91*16);
     QRectF inner2(ox+width/3,oy+height/3,width/3,height/3);
     painter->drawArc(inner2,1*16,-91*16);
@@ -218,8 +218,8 @@ void ElemPainter::drawQuadArc(QRectF quad, double start, double end)
 {
     painter->drawArc(quad,start*16,end*16);
     QPointF origin = quad.topLeft();
-    double w = quad.width() /2;
-    double ox =origin.x();
+    double w = quad.width() /2.;
+    double ox = origin.x();
     double oy = origin.y();
     int angle = (int) start;
     switch(angle){
@@ -232,11 +232,11 @@ void ElemPainter::drawQuadArc(QRectF quad, double start, double end)
             painter->drawLine(ox+w,oy,ox+2*w,oy);
             break;
         case 181:
-            painter->drawLine(ox,oy,ox,oy+w);
+            painter->drawLine(ox,oy,ox,oy+w+1);
             painter->drawLine(ox+w,oy+2*w,ox+2*w,oy+2*w);
             break;
         case 271:
-            painter->drawLine(ox,oy+2*w,ox+w,oy+2*w);
+            painter->drawLine(ox,oy+2*w,ox+w+1,oy+2*w);
             painter->drawLine(ox+2*w,oy,ox+2*w,oy+w);
             break;
     }

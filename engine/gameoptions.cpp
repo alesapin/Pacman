@@ -13,35 +13,21 @@ void GameOptions::createDefaultCfg(QFile &f)
     f.close();
 }
 
-GameOptions *GameOptions::parseFromFile(QFile& f)
+GameOptions *GameOptions::parseFromFile()
 {
+    QSettings *settings = new QSettings(ResourceLoader::CONFIG_PATH,QSettings::NativeFormat);
     GameOptions* opts = new GameOptions();
-    if(!f.exists()){
-       createDefaultCfg(f);
-    }
-    f.open(QIODevice::ReadOnly | QIODevice::Text);
-    QTextStream in(&f);
-    QString tmp;
-    tmp = in.readLine();
-    opts->layoutPath = tmp.split("=").value(1);
-    tmp = in.readLine();
-    opts->pacmanAgent = tmp.split("=").value(1);
+    opts->layoutPath = settings->value("layoutPath","layouts/smallClassic.lay").toString() ;
+    opts->pacmanAgent = settings->value("pacmanAgent","KEYBOARD").toString();
     if(opts->pacmanAgent == Game::LEARNING){
-        tmp = in.readLine();
-        opts->alpha = tmp.split("=").value(1).toDouble();
-        tmp = in.readLine();
-        opts->epsilon = tmp.split("=").value(1).toDouble();
-        tmp = in.readLine();
-        opts->gamma =tmp.split("=").value(1).toDouble();
-        tmp = in.readLine();
-        opts->numIters = tmp.split("=").value(1).toInt();
+        opts->alpha = settings->value("alpha",0.2).toDouble();
+        opts->epsilon = settings->value("epsilon",0.05).toDouble();
+        opts->gamma = settings->value("gamma",0.8).toDouble();
+        opts->numIters = settings->value("numIters",50).toInt();
     }else if (opts->pacmanAgent == Game::MINIMAX || opts->pacmanAgent == Game::EXPECTIMAX){
-        tmp=in.readLine();
-         opts->minimaxDepth = tmp.split("=").value(1).toInt();
+         opts->minimaxDepth = settings->value("maxDepth",2).toInt();
     }
-    tmp = in.readLine();
-    opts->ghostAgent = tmp.split("=").value(1);
-    tmp=in.readLine();
-    opts->cellSize = tmp.split("=").value(1).toInt();
+    opts->ghostAgent = settings->value("ghostAgent","RANDOM").toString();
+    opts->cellSize = settings->value("cellSize",30).toInt();
     return opts;
 }

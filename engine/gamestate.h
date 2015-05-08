@@ -53,7 +53,7 @@ public:
     const Layout *getLayout() const;
     std::vector<QPointF> getCapsules() const;
     std::vector<AgentState> getAgentStates() const;
-
+    int getSquare() const;
 
 private:
         const Layout* layout;

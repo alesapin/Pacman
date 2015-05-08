@@ -9,6 +9,7 @@ class ScoreText : public QGraphicsSimpleTextItem
 public:
     ScoreText(QPointF pos,int cellSize,int width);
     void updateScore(int num);
+    int getScore();
     static const QString SCORE;
     int scoreNum;
 };

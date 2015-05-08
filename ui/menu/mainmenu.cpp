@@ -3,15 +3,12 @@
 const QString MainMenu::CONFIG_PATH = "config.cfg";
 MainMenu::MainMenu()
 {
-    QFile f(CONFIG_PATH);
-    QFontDatabase::addApplicationFont(":/fonts/Munro.ttf");
-    GameOptions* opts = GameOptions::parseFromFile(f);
+    setWindowTitle("Pacman");
+    GameOptions* opts = GameOptions::parseFromFile();
     cellSize = opts->cellSize;
     setContentsMargins(cellSize*5,cellSize*5,cellSize*5,cellSize*5);
-    QFile style(":/stylesheets/stylesheets/button.qss"); //move to resouce loader
-    style.open(QFile::ReadOnly);
-    QString str = QLatin1String(style.readAll());
-    setStyleSheet(str);
+
+    setStyleSheet(ResourceLoader::STYLE);
 
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->setSpacing(cellSize);
@@ -19,6 +16,7 @@ MainMenu::MainMenu()
     connect(startButton,SIGNAL(clicked()),this,SLOT(startGame()));
     connect(exitButton,SIGNAL(clicked()),this,SLOT(close()));
     connect(settings,SIGNAL(clicked()),this,SLOT(startSettings()));
+    connect(scores,SIGNAL(clicked()),this,SLOT(startScore()));
     setLayout(layout);
     Util::center(*this);
     delete opts;
@@ -27,18 +25,23 @@ MainMenu::MainMenu()
 void MainMenu::startGame()
 {
 
-        QFile f(CONFIG_PATH);
         this->close();
-        Canvas *v=new Canvas(*GameOptions::parseFromFile(f));
+        Canvas *v=new Canvas(*GameOptions::parseFromFile());
         v->show();
 }
 
 void MainMenu::startSettings()
 {
-    QFile f(CONFIG_PATH);
-    Settings *s = new Settings(*GameOptions::parseFromFile(f));
+    Settings *s = new Settings(*GameOptions::parseFromFile());
     this->close();
     s->show();
+}
+
+void MainMenu::startScore()
+{
+    ScoreMenu *m = new ScoreMenu(cellSize);
+    this->close();
+    m->show();
 }
 
 void MainMenu::setButtons(QVBoxLayout* layout)
@@ -55,11 +58,17 @@ void MainMenu::setButtons(QVBoxLayout* layout)
     settings->setFont(QFont("Munro",cellSize/1.5));
     settings->setFocusPolicy(Qt::NoFocus);
     layout->addWidget(settings);
+    scores = new QPushButton(this);
+    scores->setText("Score Table");
+    scores->setFont(QFont("Munro",cellSize/1.5));
+    scores->setFocusPolicy(Qt::NoFocus);
+    layout->addWidget(scores);
     exitButton = new QPushButton(this);
     exitButton->setText("Exit");
     exitButton->setFont(QFont("Munro",cellSize/1.5));
     exitButton->setFocusPolicy(Qt::NoFocus);
     layout->addWidget(exitButton);
+
 }
 
 

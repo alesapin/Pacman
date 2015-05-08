@@ -3,6 +3,8 @@
 #include <QGraphicsScene>
 #include <QFile>
 #include <QTextStream>
+#include <QSettings>
+#include "ui/resourceloader.h"
 #include "game.h"
 struct GameOptions
 {
@@ -17,7 +19,7 @@ struct GameOptions
     int cellSize;
     QGraphicsScene* scene;
     static  void createDefaultCfg(QFile&);
-    static GameOptions *parseFromFile(QFile&);
+    static GameOptions *parseFromFile();
 };
 
 #endif // GAMEOPTIONS_H

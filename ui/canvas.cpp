@@ -9,10 +9,9 @@ Canvas::Canvas(GameOptions& opts):
     small = false;
     cellSize = opts.cellSize;
     setRenderHints(QPainter::Antialiasing | QPainter::HighQualityAntialiasing);
-    //setCacheMode(QGraphicsView::CacheBackground);
     setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-
+    setWindowTitle("Pacman");
     myScene = new QGraphicsScene();
     this->setStyleSheet(ResourceLoader::STYLE);
     setScene(myScene);
@@ -35,6 +34,8 @@ Canvas::Canvas(GameOptions& opts):
     connect(timer,SIGNAL(timeout()),this,SLOT(gameLoop()));
     connect(restartButton,SIGNAL(clicked()),this,SLOT(restartGame()));
     connect(pauseButton,SIGNAL(clicked()),this,SLOT(pauseGame()));
+    layoutName = opts.layoutPath.split("/").value(1);
+    agentName = opts.pacmanAgent;
     delete &opts;
     if(game->isLearning()){
         setEnabled(false);
@@ -86,7 +87,6 @@ void Canvas::drawState(GameState *state)
 void Canvas::keyPressEvent(QKeyEvent *event)
 {
     if(event->key() == Qt::Key_Escape){
-        //MainMenu *m = new MainMenu();
         this->setDisabled(true);
         GamePauseMenu* p = new GamePauseMenu(this);
         pause = false;
@@ -145,6 +145,7 @@ void Canvas::gameLoop()
         this->setEnabled(false);
         GameOverMenu* go = new GameOverMenu(this);
         go->show();
+        saveScore();
     }
 }
 
@@ -158,7 +159,6 @@ void Canvas::pauseGame()
         timer->stop();
     }
     pause = !pause;
-    //game->setFocus();
 }
 
 void Canvas::restartGame()
@@ -173,7 +173,6 @@ void Canvas::restartGame()
     if(!timer->isActive() && !pause){
         timer->start(generalTime);
     }
-    //game->setFocus();
 }
 
 QPointF Canvas::countTextCoords(Layout *lay)
@@ -284,9 +283,10 @@ void Canvas::setWalls(Layout *layout)
 void Canvas::setRestartButton(Layout *layout)
 {
     double width = layout->getWalls()[0].size();
-    restartButton = new QPushButton(this);
+    restartButton = new QPushButton();
     restartButton->setObjectName("restartButton");
     restartButton->setText("restart");
+    restartButton->setStyleSheet(ResourceLoader::STYLE);
     double fontSize = width > cellSize? cellSize/1.5:width;
     restartButton->setFont(QFont(ResourceLoader::FONT_NAME,fontSize));
     restartButton->setFocusPolicy(Qt::NoFocus);
@@ -301,9 +301,10 @@ void Canvas::setRestartButton(Layout *layout)
 void Canvas::setPauseButton(Layout *layout)
 {
     double width = layout->getWalls()[0].size();
-    pauseButton = new QPushButton(this);
+    pauseButton = new QPushButton();
     pauseButton->setObjectName("pauseButton");
     pauseButton->setText("pause");
+    pauseButton->setStyleSheet(ResourceLoader::STYLE);
     double fontSize = width > cellSize? cellSize/1.5:width;
     pauseButton->setFont(QFont(ResourceLoader::FONT_NAME,fontSize));
     pauseButton->setFocusPolicy(Qt::NoFocus);
@@ -312,4 +313,28 @@ void Canvas::setPauseButton(Layout *layout)
     pauseButton->setMinimumWidth((width*cellSize)/6.);
     pauseButton->setMaximumWidth((width*cellSize)/3.);
     scene()->addWidget(pauseButton);
+}
+
+void Canvas::saveScore()
+{
+    QSettings *settings = new QSettings(ResourceLoader::SCORE_LIST_PATH,QSettings::NativeFormat);
+    settings->beginGroup(layoutName+"/"+agentName);
+    int currentScore = scoreText->getScore();
+    QStringList keys = settings->childKeys();
+    if(keys.isEmpty()){
+        settings->setValue("1",currentScore);
+        return;
+    }
+    std::vector<int> values;
+    for(int i = 0;i<keys.size();++i){
+        values.push_back(settings->value(keys.value(i)).toInt());
+    }
+    values.push_back(currentScore);
+    std::sort(values.begin(),values.end(),std::greater<int>());
+    while (values.size() > 10) {
+        values.pop_back();
+    }
+    for(int i=1;i<=values.size();++i){
+        settings->setValue(QString::number(i),values[i-1]);
+    }
 }

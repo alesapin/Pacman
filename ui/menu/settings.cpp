@@ -10,16 +10,13 @@ Settings::Settings(GameOptions &opts)
 {
     startOptions = opts;
     delete &opts;
+    setWindowTitle("Pacman");
     cellSize = opts.cellSize;
     QFont pixelFont("Munro",cellSize/1.5);
     QFont paramsFont("Munro",cellSize/2);
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
-    //mainLayout->setAlignment(Qt::AlignHCenter);
     QHBoxLayout* pacmanLine = new QHBoxLayout();
-    QFile style(":/stylesheets/stylesheets/button.qss"); //move to resouce loader
-    style.open(QFile::ReadOnly);
-    QString str = QLatin1String(style.readAll());
-    setStyleSheet(str);
+    setStyleSheet(ResourceLoader::STYLE);
     this->setContentsMargins(cellSize*3,cellSize*3,cellSize*3,cellSize*3);
     mainLayout->setSpacing(cellSize/5.);
     pacman = new QLabel(this);
@@ -68,7 +65,7 @@ Settings::Settings(GameOptions &opts)
     chooseLevel->setFont(pixelFont);
     chooseLevelList = new QComboBox(this);
     QDir layDir("layouts");
-
+    layDir.setNameFilters(QStringList()<<"*.lay");
     QStringList layouts = layDir.entryList(QDir::NoDotAndDotDot|QDir::AllEntries);
     chooseLevelList->addItems(layouts);
     chooseLine->addWidget(chooseLevel);
@@ -147,24 +144,20 @@ Settings::Settings(GameOptions &opts)
 
 void Settings::writeToFile(GameOptions &opts)
 {
-    QFile f("config.cfg");
-    f.open(QIODevice::ReadWrite | QIODevice::Truncate | QIODevice::Text);
-
-    QTextStream out(&f);
-    out << "layoutPath=" + opts.layoutPath << '\n';
-    out << "pacmanAgent="+opts.pacmanAgent << '\n';
+    QSettings *settings = new QSettings(ResourceLoader::CONFIG_PATH,QSettings::NativeFormat);
+    settings->setValue("layoutPath",opts.layoutPath);
+    settings->setValue("pacmanAgent",opts.pacmanAgent);
     if(opts.pacmanAgent == Game::LEARNING){
-        out << "alpha=" << opts.alpha << '\n';
-        out << "epsilon=" << opts.epsilon << '\n';
-        out << "gamma=" << opts.gamma<<'\n';
-        out << "numIters="<<opts.numIters<<'\n';
+        settings->setValue("alpha",opts.alpha);
+        settings->setValue("epsilon",opts.epsilon);
+        settings->setValue("gamma",opts.gamma);
+        settings->setValue("numIters",opts.numIters);
     }else if(!(opts.pacmanAgent == Game::KEYBOARD)){
-        out << "maxDepth=" << opts.minimaxDepth << '\n';
+        settings->setValue("maxDepth",opts.minimaxDepth);
     }
-    out << "ghostAgent=" << opts.ghostAgent << '\n';
-    out << "cellSize="<<opts.cellSize<<'\n';
-    f.close();
-
+    settings->setValue("ghostAgent",opts.ghostAgent);
+    settings->setValue("cellSize",opts.cellSize);
+    settings->sync();
 }
 
 

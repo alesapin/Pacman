@@ -124,6 +124,11 @@ std::vector<AgentState> GameState::getAgentStates() const
     return agentStates;
 }
 
+int GameState::getSquare() const
+{
+    return layout->getWalls()[0].size()*layout->getWalls().size();
+}
+
 QPointF GameState::getEatenFood() const
 {
     return eatenFood;

@@ -4,7 +4,7 @@ const QString ScoreText::SCORE = "Score: ";
 
 ScoreText::ScoreText(QPointF position, int cellSize,int width)
 {
-    double fontSize = width > cellSize? cellSize:width;
+    double fontSize = width*2 > cellSize? cellSize:width;
     scoreNum = 0;
     setBrush(QBrush(Qt::white));
     setFont(QFont("Munro",fontSize));
@@ -15,4 +15,9 @@ void ScoreText::updateScore(int num)
 {
     scoreNum = num;
     setText(SCORE + QString::number(num));
+}
+
+int ScoreText::getScore()
+{
+    return scoreNum;
 }

@@ -10,6 +10,7 @@
 #include <QDebug>
 #include "settings.h"
 #include "engine/util.h"
+#include "scoremenu.h"
 class MainMenu : public QWidget
 {
     Q_OBJECT
@@ -18,10 +19,12 @@ public:
 public slots:
     void startGame();
     void startSettings();
+    void startScore();
 private:
     QPushButton* startButton;
     QPushButton* exitButton;
     QPushButton* settings;
+    QPushButton* scores;
     static const QString CONFIG_PATH;
     int cellSize;
     void setButtons(QVBoxLayout* layout);

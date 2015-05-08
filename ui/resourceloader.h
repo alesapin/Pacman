@@ -19,7 +19,7 @@ struct ResourceLoader
     static const double GLOBAL_TIMER_TIME;
     static const double AGENT_TIMER_TIME;
     static const int WALL_PEN_WIDTH;
-
+    static const QString SCORE_LIST_PATH;
     static void loadFont();
     static void loadStyle();
     static void load();

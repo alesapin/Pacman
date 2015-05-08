@@ -13,7 +13,6 @@ TrainingWindow::TrainingWindow(Game *g,Canvas* can):
       QString str = QLatin1String(style.readAll());
       setStyleSheet(str);
       setWindowFlags(Qt::FramelessWindowHint);
-
       setGeometry(0,0,can->getCellSize()*10,can->getCellSize()*5);
       QVBoxLayout* layout = new QVBoxLayout(this);
       layout->setAlignment(Qt::AlignCenter);

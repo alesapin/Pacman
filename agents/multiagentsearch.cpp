@@ -13,11 +13,10 @@ double MultiAgentSearch::evaluationFunction(GameState &state)
     QPointF pacmanPosition = state.getPacmanPosition();
     int totalFood = state.getLayout()->getTotalFood();
     int size = (state.getLayout()->getWalls()[0].size())*(state.getLayout()->getWalls().size());
-    double coef = 1.*totalFood/size;
 
     double distToFood = Util::closestFood(pacmanPosition,state.getFood(),state.getLayout()->getWalls());
     if(distToFood == -1){
-        result += 1000;
+        result += 1000000;
     }else{
         result += ((1./ (distToFood+1))*10);
     }
@@ -30,9 +29,9 @@ double MultiAgentSearch::evaluationFunction(GameState &state)
         result-=5000;
     }
     if(state.getNumFood() == 0){
-        result +=100000;
+        result +=state.getSquare()*100000;
     }else{
-        result += ((1./(state.getNumFood()))*100000);
+        result += ((1./(state.getNumFood()))*state.getSquare()*450);
     }
     return result;
 }
