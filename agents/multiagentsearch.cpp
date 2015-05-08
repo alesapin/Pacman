@@ -16,7 +16,7 @@ double MultiAgentSearch::evaluationFunction(GameState &state)
 
     double distToFood = Util::closestFood(pacmanPosition,state.getFood(),state.getLayout()->getWalls());
     if(distToFood == -1){
-        result += 1000000;
+        return 1000000+state.getScore();
     }else{
         result += ((1./ (distToFood+1))*10);
     }
@@ -29,10 +29,10 @@ double MultiAgentSearch::evaluationFunction(GameState &state)
         result-=5000;
     }
     if(state.getNumFood() == 0){
-        result +=state.getSquare()*100000;
+        result += state.getSquare()*100000;
     }else{
         result += ((1./(state.getNumFood()))*state.getSquare()*450);
     }
-    return result;
+    return result+state.getScore();
 }
 
