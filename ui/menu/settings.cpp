@@ -64,7 +64,7 @@ Settings::Settings(GameOptions &opts)
     chooseLevel->setText("Level:");
     chooseLevel->setFont(pixelFont);
     chooseLevelList = new QComboBox(this);
-    QDir layDir("layouts");
+    QDir layDir(ResourceLoader::LAYOUTS_PATH);
     layDir.setNameFilters(QStringList()<<"*.lay");
     QStringList layouts = layDir.entryList(QDir::NoDotAndDotDot|QDir::AllEntries);
     chooseLevelList->addItems(layouts);

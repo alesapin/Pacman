@@ -9,7 +9,9 @@ const double ResourceLoader::AGENT_TIMER_TIME = 10;
 const int ResourceLoader::WALL_PEN_WIDTH = 26;
 const QString ResourceLoader::SCARRIED_GHOST_TEXTURE_PATH = ":/textures/textures/scarried.png";
 const QString ResourceLoader::SCORE_LIST_PATH = "score.lst";
+const QString ResourceLoader::LAYOUTS_PATH = "layouts";
 QString ResourceLoader::STYLE;
+
 const std::vector<QString> ResourceLoader::GHOST_TEXTURES_PATH =
     { ":/textures/textures/1",
       ":/textures/textures/2",

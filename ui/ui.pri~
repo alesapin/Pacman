@@ -18,4 +18,3 @@ SOURCES += ui/wallitem.cpp
 HEADERS +=
 SOURCES +=
 include(menu/menu.pri)
-include(levelCreator/levelCreator.pri)

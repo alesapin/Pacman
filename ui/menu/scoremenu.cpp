@@ -103,6 +103,7 @@ void ScoreMenu::setAgentLabels(std::vector<int> values, std::vector<QLabel*>& ag
     for(int i = 0 ;i<10;++i){
         agentLabs[i]->setText("");
     }
+    std::sort(values.begin(),values.end(),std::greater<int>());
     for(int i=0;i<values.size() && i < 10;++i){
         QLabel* lab = agentLabs[i];
         lab->setText(QString::number(i+1)+". " + QString::number(values[i]));

@@ -7,6 +7,8 @@
 #include <cstdlib>
 #include "ui/menu/mainmenu.h"
 #include "ui/resourceloader.h"
+#include "ui/levelCreator/field.h"
+#include "ui/levelCreator/levelcreator.h"
 int main(int argc, char *argv[])
 {
     srand(time(0));
@@ -14,5 +16,7 @@ int main(int argc, char *argv[])
     ResourceLoader::load();
     MainMenu m;
     m.show();
+//    LevelCreator* creator = new LevelCreator();
+//    creator->show();
     return a.exec();
 }

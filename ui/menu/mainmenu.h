@@ -11,6 +11,7 @@
 #include "settings.h"
 #include "engine/util.h"
 #include "scoremenu.h"
+#include "ui/levelCreator/levelcreator.h"
 class MainMenu : public QWidget
 {
     Q_OBJECT
@@ -20,10 +21,12 @@ public slots:
     void startGame();
     void startSettings();
     void startScore();
+    void startLevelEditor();
 private:
     QPushButton* startButton;
     QPushButton* exitButton;
     QPushButton* settings;
+    QPushButton* levelEditor;
     QPushButton* scores;
     static const QString CONFIG_PATH;
     int cellSize;

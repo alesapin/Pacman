@@ -17,6 +17,7 @@ MainMenu::MainMenu()
     connect(exitButton,SIGNAL(clicked()),this,SLOT(close()));
     connect(settings,SIGNAL(clicked()),this,SLOT(startSettings()));
     connect(scores,SIGNAL(clicked()),this,SLOT(startScore()));
+    connect(levelEditor,SIGNAL(clicked()),this,SLOT(startLevelEditor()));
     setLayout(layout);
     Util::center(*this);
     delete opts;
@@ -44,6 +45,13 @@ void MainMenu::startScore()
     m->show();
 }
 
+void MainMenu::startLevelEditor()
+{
+    LevelCreator* c = new LevelCreator(20,10,cellSize);
+    this->close();
+    c->show();
+}
+
 void MainMenu::setButtons(QVBoxLayout* layout)
 {
     layout->setAlignment(Qt::AlignHCenter);
@@ -63,6 +71,11 @@ void MainMenu::setButtons(QVBoxLayout* layout)
     scores->setFont(QFont("Munro",cellSize/1.5));
     scores->setFocusPolicy(Qt::NoFocus);
     layout->addWidget(scores);
+    levelEditor = new QPushButton(this);
+    levelEditor->setText("Level Editor");
+    levelEditor->setFont(QFont("Munro",cellSize/1.5));
+    levelEditor->setFocusPolicy(Qt::NoFocus);
+    layout->addWidget(levelEditor);
     exitButton = new QPushButton(this);
     exitButton->setText("Exit");
     exitButton->setFont(QFont("Munro",cellSize/1.5));

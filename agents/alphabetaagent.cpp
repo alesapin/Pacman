@@ -5,7 +5,6 @@ Direction AlphaBetaAgent::getAction(GameState &state)
     double alpha = -std::numeric_limits<double>::infinity();
     double beta = std::numeric_limits<double>::infinity();
     std::tuple<Direction,double> result = minimax(state,0,0,alpha,beta);
-    qDebug() << std::get<1>(result);
     return std::get<0>(result);
 }
 

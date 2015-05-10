@@ -7,6 +7,7 @@ GraphicObject::GraphicObject(QPointF start, int cs,int stepTime):
 {
     QPointF first(startPosition.y()*cellSize,startPosition.x()*cellSize);
     currentTarget = first;
+    setCacheMode(QGraphicsItem::DeviceCoordinateCache);
     setPos(first);
     timer = new QTimer();
     connect(timer,SIGNAL(timeout()),this,SLOT(moveOneStep()));
