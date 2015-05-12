@@ -33,4 +33,12 @@
         <file>textures/scarried.png</file>
         <file>arrow.png</file>
     </qresource>
+    <qresource prefix="/icons">
+        <file>icons/wallicon.png</file>
+        <file>icons/capsicon.png</file>
+        <file>icons/pcmnicon.png</file>
+        <file>icons/foodicon.png</file>
+        <file>icons/empticon.png</file>
+        <file>icons/red-icon.png</file>
+    </qresource>
 </RCC>

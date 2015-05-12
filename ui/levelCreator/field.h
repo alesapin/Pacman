@@ -9,7 +9,7 @@
 #include <vector>
 #include <QMouseEvent>
 enum CellType{
-    WALL,FOOD,CAPSULE,GHOST,PACMAN,EMPTY
+    EMPTY,WALL,FOOD,CAPSULE,GHOST,PACMAN
 };
 
 class Field : public QGraphicsView
@@ -19,10 +19,12 @@ public:
     CellType getCurrentMode() const;
     void setCurrentMode(const CellType &value);
     void toFile(QString fileName);
+    void resize(int w,int h,int cs);
 protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
 private:
+    NetScene* currentScene;
     int width;
     int height;
     int cellSize;
@@ -40,6 +42,7 @@ private:
     void drawRandomPacman();
     QPoint getPacmanPos();
     bool hasEmpty();
+    bool hasPacman();
     int countGhosts();
     void removeRandomGhost();
     void drawBorder();

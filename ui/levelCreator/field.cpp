@@ -13,7 +13,8 @@ Field::Field(int w, int h, int cs):
     setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     setWindowTitle("Pacman");
-    setScene(new NetScene(w,h,cs));
+    currentScene = new NetScene(w,h,cs);
+    setScene(currentScene);
     setStyleSheet(ResourceLoader::STYLE);
     data.resize(height);
     items.resize(height);
@@ -27,7 +28,8 @@ Field::Field(int w, int h, int cs):
     }
     drawBorder();
     drawRandomPacman();
-    setGeometry(0,0,width*cellSize,height*cellSize);
+    setGeometry(0,0,30*cellSize,30*cellSize);
+    setFixedSize(30*cellSize,30*cellSize);
 }
 CellType Field::getCurrentMode() const
 {
@@ -41,9 +43,9 @@ void Field::setCurrentMode(const CellType &value)
 
 void Field::mousePressEvent(QMouseEvent *event)
 {
-    QPoint cursorPos = QWidget::mapFromGlobal(QCursor::pos());
-    int i = cursorPos.x()/cellSize;
-    int j = cursorPos.y()/cellSize;
+    QPointF cursorPos = mapToScene(QWidget::mapFromGlobal(QCursor::pos()));
+    int i = (int)cursorPos.x()/cellSize;
+    int j = (int)cursorPos.y()/cellSize;
     if(i!=0 && j!=0 && i != width-1 && j != height-1){
         if(event->buttons() & Qt::LeftButton){
              drawCell(i,j,currentMode);
@@ -57,9 +59,9 @@ void Field::mousePressEvent(QMouseEvent *event)
 void Field::mouseMoveEvent(QMouseEvent *event)
 {
     if(event->buttons()){
-        QPoint cursorPos = QWidget::mapFromGlobal(QCursor::pos());
-        int i = cursorPos.x()/cellSize;
-        int j = cursorPos.y()/cellSize;
+        QPointF cursorPos = mapToScene(QWidget::mapFromGlobal(QCursor::pos()));
+        int i = (int)cursorPos.x()/cellSize;
+        int j = (int)cursorPos.y()/cellSize;
         if(i>0 && j>0 && i < width-1 && j < height-1){
             if(event->buttons() & Qt::LeftButton){
                  drawCell(i,j,currentMode);
@@ -193,7 +195,7 @@ void Field::drawRandomPacman()
             j = rand()%width;
         }
     }else{
-        while(i==0 || j==0 || i == width-1 || j == height-1){
+        while(i==0 || j==0 || j == width-1 || i == height-1){
             i = rand()%height;
             j = rand()%width;
         }
@@ -218,6 +220,18 @@ bool Field::hasEmpty()
     for(int i = 0; i<height ;++i){
         for(int j = 0; j<width; ++j){
             if(data[i][j] == EMPTY){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool Field::hasPacman()
+{
+    for(int i = 0; i<height ;++i){
+        for(int j = 0; j<width; ++j){
+            if(data[i][j] == PACMAN){
                 return true;
             }
         }
@@ -287,6 +301,39 @@ void Field::stringToFile(QString name, QString data)
 void Field::toFile(QString fileName)
 {
     stringToFile(fileName,dataToString());
+}
+
+void Field::resize(int w, int h, int cs)
+{
+    width = w;
+    height = h;
+    cellSize = cs;
+    currentScene->setSceneRect(0,0,w*cellSize,h*cellSize);
+    currentScene->setCellSize(cellSize);
+    currentScene->setWidth(width);
+    currentScene->setHeight(height);
+    for(int i = 0;i<data.size();++i){
+        for(int j = 0;j<data[0].size();++j){
+            if((i==0 || j==0 || i==data.size()-1 || j == data[0].size()-1 || j>=width-1 || i>=height-1) && data[i][j]!=EMPTY){
+                data[i][j]=EMPTY;
+                scene()->removeItem(items[i][j]);
+                delete items[i][j];
+                items[i][j]=0;
+            }
+        }
+    }
+    data.resize(h);
+    items.resize(h);
+    for(int i = 0; i<h;++i){
+        data[i].resize(w);
+        items[i].resize(w);
+
+    }
+    drawBorder();
+    if(!hasPacman()){
+        drawRandomPacman();
+    }
+    currentScene->update(currentScene->sceneRect());
 }
 
 QChar Field::converToSym(CellType t)

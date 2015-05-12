@@ -4,7 +4,8 @@ HEADERS += \
     ui/menu/gamepausemenu.h \
     ui/menu/gameovermenu.h \
     ui/menu/trainingwindow.h \
-    ui/menu/scoremenu.h
+    ui/menu/scoremenu.h \
+    ui/menu/creatormenu.h
 
 SOURCES += \
     ui/menu/mainmenu.cpp \
@@ -12,4 +13,5 @@ SOURCES += \
     ui/menu/gamepausemenu.cpp \
     ui/menu/gameovermenu.cpp \
     ui/menu/trainingwindow.cpp \
-    ui/menu/scoremenu.cpp
+    ui/menu/scoremenu.cpp \
+    ui/menu/creatormenu.cpp
