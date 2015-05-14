@@ -41,10 +41,10 @@ std::map<Direction, double> RushGhostAgent::getDistribution(GameState &state)
      double bestScore = 0;
      double bestProb = 0;
      if(state.isScared(index)){
-        bestScore = *std::max(distancesToPacman.begin(),distancesToPacman.end());
+        bestScore = *std::max_element(distancesToPacman.begin(),distancesToPacman.end());
         bestProb = probScaried;
      } else {
-        bestScore = *std::min(distancesToPacman.begin(),distancesToPacman.end());
+        bestScore = *std::min_element(distancesToPacman.begin(),distancesToPacman.end());
         bestProb = probAtack;
      }
      std::vector<Direction> bestActions;
