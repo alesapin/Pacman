@@ -17,6 +17,7 @@ struct GameOptions
     double gamma;
     int minimaxDepth;
     int cellSize;
+    int gameSpeed;
     QGraphicsScene* scene;
     static  void createDefaultCfg(QFile&);
     static GameOptions *parseFromFile();

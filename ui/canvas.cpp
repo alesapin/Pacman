@@ -25,9 +25,9 @@ Canvas::Canvas(GameOptions& opts):
     setWalls(layout);
     setFoodMap(layout->getFood());
     setCapsuleMap(layout->getCapsules());
-    agentTime = ResourceLoader::AGENT_TIMER_TIME;
+    agentTime = opts.gameSpeed/10;
     setAgents(layout);
-    generalTime = ResourceLoader::GLOBAL_TIMER_TIME / (ghosts.size()+1);
+    generalTime = opts.gameSpeed / (ghosts.size()+1);
     setRestartButton(layout);
     setPauseButton(layout);
     timer = new QTimer(this);

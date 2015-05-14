@@ -10,14 +10,16 @@
 #include "engine/gameoptions.h"
 #include <QDir>
 #include <QSettings>
+#include <QSlider>
 #include "mainmenu.h"
+#include <QMessageBox>
 class Settings: public QWidget
 {
     Q_OBJECT
 public:
     Settings(GameOptions& opts);
     static void generateDefaultConfig();
-    static void writeToFile(GameOptions& opts);
+    void writeToFile(GameOptions& opts);
 public slots:
     void workWithParams(int);
     void resetParams();
@@ -36,6 +38,7 @@ private:
     QLabel* gamma;
     QLabel* numiters;
     QLabel* maxDepth;
+    QLabel* gameSpeed;
     QComboBox* pacmanList;
     QComboBox* ghostList;
     QComboBox* cellSizeList;
@@ -45,6 +48,7 @@ private:
     QLineEdit* gammaEdit;
     QLineEdit* numitersEdit;
     QLineEdit* depthEdit;
+    QSlider* gameSpeedSlide;
     QHBoxLayout* minimaxParamsLine;
     QHBoxLayout* learningParamsLine;
     int cellSize;
@@ -52,6 +56,8 @@ private:
     void swapMinimaxParams(bool);
     GameOptions startOptions;
     void fillFromOptions(GameOptions&);
+    void alert(QString text);
+    bool checkSettings(GameOptions& opts);
 };
 
 #endif // SETTINGS_H

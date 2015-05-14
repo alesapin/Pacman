@@ -107,11 +107,20 @@ Settings::Settings(GameOptions &opts)
     maxDepth = new QLabel();
     maxDepth->setText("Minimax depth:");
     maxDepth->setFont(paramsFont);
+    maxDepth->setMaximumWidth(cellSize*5);
     depthEdit = new QLineEdit();
     depthEdit->setMaximumWidth(40);
+    gameSpeed = new QLabel("Speed:");
+    gameSpeed->setFont(paramsFont);
+    gameSpeed->setMaximumWidth(cellSize*2);
+    gameSpeedSlide = new QSlider(Qt::Horizontal);
+    gameSpeedSlide->setMaximum(4);
+    gameSpeedSlide->setMinimum(1);
+    gameSpeedSlide->setMaximumWidth(cellSize*5);
     minimaxParamsLine->addWidget(maxDepth);
     minimaxParamsLine->addWidget(depthEdit);
-
+    minimaxParamsLine->addWidget(gameSpeed);
+    minimaxParamsLine->addWidget(gameSpeedSlide);
     QHBoxLayout* buttonLine = new QHBoxLayout();
 
     saveSettings = new QPushButton(this);
@@ -157,6 +166,7 @@ void Settings::writeToFile(GameOptions &opts)
     }
     settings->setValue("ghostAgent",opts.ghostAgent);
     settings->setValue("cellSize",opts.cellSize);
+    settings->setValue("gameSpeed",opts.gameSpeed);
     settings->sync();
 }
 
@@ -187,6 +197,7 @@ void Settings::saveParams()
    GameOptions opts;
    opts.pacmanAgent = pacmanList->currentText();
    if(opts.pacmanAgent == Game::LEARNING){
+
        opts.alpha = alphaEdit->text().toDouble();
        opts.epsilon = epsilonEdit->text().toDouble();
        opts.gamma = gammaEdit->text().toDouble();
@@ -197,7 +208,10 @@ void Settings::saveParams()
    opts.ghostAgent = ghostList->currentText();
    opts.layoutPath ="layouts/"+ chooseLevelList->currentText();
    opts.cellSize = cellSizeList->currentText().toInt();
-   writeToFile(opts);
+   opts.gameSpeed = (5-gameSpeedSlide->value())*50;
+   if(checkSettings(opts)){
+        writeToFile(opts);
+   }
 }
 
 void Settings::startMenu()
@@ -213,11 +227,20 @@ void Settings::swapLearnParams(bool val)
     alphaEdit->setEnabled(val);
     gammaEdit->setEnabled(val);
     numitersEdit->setEnabled(val);
+    if(!val){
+        epsilonEdit->setText("");
+        alphaEdit->setText("");
+        gammaEdit->setText("");
+        numitersEdit->setText("");
+    }
 }
 
 void Settings::swapMinimaxParams(bool val)
 {
     depthEdit->setEnabled(val);
+    if(!val){
+        depthEdit->setText("");
+    }
 }
 
 void Settings::fillFromOptions(GameOptions &opts)
@@ -238,7 +261,7 @@ void Settings::fillFromOptions(GameOptions &opts)
         ghostList->setCurrentIndex(1);
     }
     cellSizeList->setCurrentIndex((opts.cellSize-10)/5);
-
+    gameSpeedSlide->setValue(5-opts.gameSpeed/50);
     if(opts.pacmanAgent == Game::LEARNING){
         alphaEdit->setText(QString::number(opts.alpha,'g',2));
         epsilonEdit->setText(QString::number(opts.epsilon,'g',2));
@@ -265,4 +288,39 @@ void Settings::fillFromOptions(GameOptions &opts)
             chooseLevelList->setCurrentIndex(i);
         }
     }
+}
+
+void Settings::alert(QString text)
+{
+    QMessageBox* box = new QMessageBox(this);
+    box->setText(text);
+    box->exec();
+}
+
+bool Settings::checkSettings(GameOptions &opts)
+{
+    if(opts.pacmanAgent == Game::LEARNING){
+        if(opts.alpha < 0 || opts.alpha > 1){
+            alert("Incorrect alpha![0..1]");
+            return false;
+        }
+        if(opts.epsilon < 0 || opts.epsilon > 1){
+            alert("Incorrect epsilon![0..1]");
+            return false;
+        }
+        if(opts.gamma < 0 || opts.gamma > 1){
+            alert("Incorrect gamma![0..1]");
+            return false;
+        }
+        if(opts.numIters < 1){
+            alert("Incorrect iters![1.. .]");
+            return false;
+        }
+    }else if (opts.pacmanAgent != Game::KEYBOARD){
+        if(opts.minimaxDepth < 1 || opts.minimaxDepth > 20){
+            alert("Incorrect minimax depth![1..20]");
+            return false;
+        }
+    }
+    return true;
 }

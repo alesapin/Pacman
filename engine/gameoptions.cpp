@@ -1,18 +1,6 @@
 #include "gameoptions.h"
 
 
-void GameOptions::createDefaultCfg(QFile &f)
-{
-    f.open(QIODevice::ReadWrite | QIODevice::Truncate | QIODevice::Text);
-
-    QTextStream out(&f);
-    out << "layoutPath=layouts/originalClassic.lay" << '\n';
-    out << "pacmanAgent=KEYBOARD" << '\n';
-    out << "ghostAgent=RANDOM" << '\n';
-    out << "cellSize=30"<<'\n';
-    f.close();
-}
-
 GameOptions *GameOptions::parseFromFile()
 {
     QSettings *settings = new QSettings(ResourceLoader::CONFIG_PATH,QSettings::NativeFormat);
@@ -29,5 +17,6 @@ GameOptions *GameOptions::parseFromFile()
     }
     opts->ghostAgent = settings->value("ghostAgent","RANDOM").toString();
     opts->cellSize = settings->value("cellSize",30).toInt();
+    opts->gameSpeed=settings->value("gameSpeed",150).toInt();
     return opts;
 }
