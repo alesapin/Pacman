@@ -72,6 +72,7 @@ double Util::closestFood(QPointF currentPosition, const std::vector<std::vector<
     }
     return -1;
 }
+
 void Util::center(QWidget &widget ,int WIDTH , int HEIGHT)
 {
         int x, y;

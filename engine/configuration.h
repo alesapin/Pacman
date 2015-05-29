@@ -15,6 +15,7 @@ public:
     void setPosition(QPointF p);
     bool operator==(const Configuration& other);
     Configuration generateSuccessor(QPointF vectorTo);
+    Configuration generateSuccessor(Direction dir);
 private:
     Direction direction;
     QPointF position;

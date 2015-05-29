@@ -47,16 +47,14 @@ SOURCES += main.cpp
 #    pacmanitem.h \
 #    reflectagent.h
 
-CONFIG += c++11
+CONFIG += c++11 thread
 
 OTHER_FILES += \
     ../Code/multiagent/layouts/smallClassic.lay \
     smallClassic.lay
-QMAKE_CXXFLAGS_DEBUG += -pg
+QMAKE_CXXFLAGS_DEBUG +=  -pg
 QMAKE_LFLAGS_DEBUG += -pg
-
-HEADERS +=
-
+LIBS += -ltbb
 RESOURCES += \
     res.qrc
 

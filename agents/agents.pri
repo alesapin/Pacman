@@ -9,7 +9,8 @@ HEADERS += \
     agents/rushghostagent.h \
     agents/learningagent.h \
     agents/pacmanlearningagent.h \
-    agents/keyboardagent.h
+    agents/keyboardagent.h \
+    agents/pairghostagent.h
 
 SOURCES += \
     agents/multiagentsearch.cpp \
@@ -22,5 +23,6 @@ SOURCES += \
     agents/rushghostagent.cpp \
     agents/learningagent.cpp \
     agents/pacmanlearningagent.cpp \
-    agents/keyboardagent.cpp
+    agents/keyboardagent.cpp \
+    agents/pairghostagent.cpp
 

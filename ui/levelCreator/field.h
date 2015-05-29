@@ -8,6 +8,7 @@
 #include <QPoint>
 #include <vector>
 #include <QMouseEvent>
+#include "levelcreator.h"
 enum CellType{
     EMPTY,WALL,FOOD,CAPSULE,GHOST,PACMAN
 };
@@ -20,6 +21,7 @@ public:
     void setCurrentMode(const CellType &value);
     void toFile(QString fileName);
     void resize(int w,int h,int cs);
+    bool loadFromString(const QStringList&);
 protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
@@ -49,6 +51,8 @@ private:
     QString dataToString();
     void stringToFile(QString name,QString data);
     QChar converToSym(CellType t);
+    CellType converToType(QChar sym);
+    bool checkLayoutText(const QStringList& text);
 };
 
 #endif // FIELD_H

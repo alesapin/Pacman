@@ -4,6 +4,7 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QLineEdit>
+#include <QFileDialog>
 #include "field.h"
 #include "ui/resourceloader.h"
 #include "engine/util.h"
@@ -11,11 +12,16 @@
 #include <QSlider>
 #include <QPixmap>
 #include <QIcon>
+class Field;
 class LevelCreator : public QWidget
 {
     Q_OBJECT
 public:
     LevelCreator(int w,int h,int cellSize,QWidget* parent=0);
+    static const int MIN_FIELD_WIDTH;
+    static const int MAX_FIELD_WIDTH;
+    static const int MIN_FIELD_HEIGHT;
+    static const int MAX_FIELD_HEIGHT;
 public slots:
     void wallSignal();
     void emptySignal();
@@ -23,6 +29,7 @@ public slots:
     void pacmanSignal();
     void foodSignal();
     void capsuleSignal();
+    void openSignal();
     void save();
     void toMenu();
     void resizeF();
@@ -38,6 +45,7 @@ private:
     QPushButton* saveToFile;
     QPushButton* exitToMenu;
     QPushButton* resizeField;
+    QPushButton* openFile;
     QLineEdit* layoutName;
     QSlider* widthSlider;
     QSlider* heightSlider;
@@ -48,6 +56,7 @@ private:
     QVBoxLayout* setLeftPanel(int cellSize);
     int cellSize;
     void setButtonIcon(QPushButton* button, QString texturePath, int cellSize);
+    void loadFromFile(QString path);
 };
 
 #endif // LEVELCREATOR_H

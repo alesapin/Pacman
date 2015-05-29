@@ -54,3 +54,8 @@ Configuration Configuration::generateSuccessor(QPointF vectorTo)
     return Configuration(QPointF(x+dx,y+dy),dir);
 }
 
+Configuration Configuration::generateSuccessor(Direction dir)
+{
+    return generateSuccessor(Actions::directionToVector(dir));
+}
+

@@ -6,12 +6,20 @@ QPushButton {
     border-radius: 10px;
     border-color: blue;
 }
+QLineEdit:disabled{
+    background-color: #39343B;
+    color: white;
+    border-style: outset;
+    border-width: 2px;
+    border-radius: 2px;
+    border-color: #341D73;
+}
 QLabel {
     background-color: black;
     color: white;
     padding: 3px;
 }
-QLineEdit {
+QLineEdit:enabled {
     background-color: black;
     color: white;
     border-style: outset;

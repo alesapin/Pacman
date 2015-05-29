@@ -43,16 +43,13 @@ Direction Actions::vectorToDirection(QPointF vect)
 
 QPointF Actions::directionToVector(Direction dir, double speed)
 {
-//    if(dir == NOACTION){
-//        qDebug() <<"";
-//    }
     QPointF p = directions[dir];
     double dx = p.x();
     double dy = p.y();
     return QPointF(dx*speed,dy*speed);
 }
 
-std::vector<Direction> Actions::getPossibleActions(Configuration& config,const std::vector<std::vector<bool> >& walls)
+std::vector<Direction> Actions::getPossibleActions(const Configuration& config,const std::vector<std::vector<bool> >& walls)
 {
     std::vector<Direction> result;
     QPointF pos = config.getPosition();
@@ -84,13 +81,13 @@ std::vector<Direction> Actions::getPossibleActions(Configuration& config,const s
     return result;
 }
 
-std::vector<QPointF> Actions::getLegalNeighbours(QPointF position, const std::vector<std::vector<bool> >& walls)
+std::map<Direction,QPointF> Actions::getLegalDirections(QPointF position, const std::vector<std::vector<bool> >& walls)
 {
     double x =position.x();
     double y = position.y();
     int intx= (int)(x+0.5);
     int inty = (int)(y+0.5);
-    std::vector<QPointF> result;
+    std::map<Direction,QPointF> result;
     for (auto iter = directions.begin();iter != directions.end();++iter){
         QPointF currentVector = iter->second;
         double dx = currentVector.x();
@@ -100,8 +97,18 @@ std::vector<QPointF> Actions::getLegalNeighbours(QPointF position, const std::ve
         int nextY = (int)(inty+dy);
         if(nextY < 0 || nextY >= walls[0].size()) continue;
         if (!walls[nextX][nextY]){
-            result.push_back(QPointF(nextX,nextY));
+            result[iter->first]=QPointF(nextX,nextY);
         }
+    }
+    return result;
+}
+
+std::vector<QPointF> Actions::getLegalNeighbours(QPointF position, const std::vector<std::vector<bool> > &walls)
+{
+    std::map<Direction,QPointF> pairs = getLegalDirections(position,walls);
+    std::vector<QPointF> result;
+    for(auto iter:pairs){
+        result.push_back(iter.second);
     }
     return result;
 }

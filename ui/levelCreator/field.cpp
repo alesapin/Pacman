@@ -78,6 +78,7 @@ void Field::removeItem(int i, int j)
         scene()->removeItem(items[j][i]);
         delete items[j][i];
         items[j][i]=0;
+
         if(data[j][i] == PACMAN && currentMode != PACMAN){
             drawRandomPacman();
         }
@@ -336,6 +337,25 @@ void Field::resize(int w, int h, int cs)
     currentScene->update(currentScene->sceneRect());
 }
 
+bool Field::loadFromString(const QStringList& datum)
+{
+    if(!checkLayoutText(datum)){
+        return false;
+    }
+    int h = datum.length()-1;
+    int w = datum[0].length();
+    currentMode = PACMAN;
+    resize(w,h,cellSize);
+    for(int i = 0; i< height;++i){
+        for(int j = 0 ; j<width;++j){
+            drawCell(j,i,converToType(datum[i][j]));
+        }
+    }
+    currentMode = WALL;
+    currentScene->update(currentScene->sceneRect());
+    return true;
+}
+
 QChar Field::converToSym(CellType t)
 {
     switch (t) {
@@ -352,4 +372,41 @@ QChar Field::converToSym(CellType t)
     default:
         return ' ';
     }
+}
+
+CellType Field::converToType(QChar sym)
+{
+    switch(sym.toLatin1()){
+    case '%':
+        return WALL;
+    case 'P':
+        return PACMAN;
+    case 'G':
+        return GHOST;
+    case '.':
+        return FOOD;
+    case 'o':
+        return CAPSULE;
+    default:
+        return EMPTY;
+    }
+}
+
+bool Field::checkLayoutText(const QStringList &datum)
+{
+    int h = datum.length()-1;
+    int w = datum[0].length();
+    if( h < LevelCreator::MIN_FIELD_HEIGHT - 1) return false;
+    if( h > LevelCreator::MAX_FIELD_HEIGHT - 1) return false;
+    if( w < LevelCreator::MIN_FIELD_WIDTH - 1 )return false;
+    if( w > LevelCreator::MAX_FIELD_WIDTH - 1)return false;
+    for(int i = 0;i<h;++i){
+        for(int j = 0;j<w;++j){
+            if(datum[i][j]!='%' && datum[i][j]!='P' && datum[i][j]!='G' &&
+                    datum[i][j]!='.' && datum[i][j]!='o' && datum[i][j]!=' '){
+                return false;
+            }
+        }
+    }
+    return true;
 }

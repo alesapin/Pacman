@@ -141,7 +141,7 @@ Game *Game::parseOptions(GameOptions& opts)
 
     if(opts.ghostAgent == Game::RUSH){
         for(int i = 1;i<lay->getAgentsPositions().size();++i){
-            agents.push_back(new RushGhostAgent(i));
+            agents.push_back(new PairGhostAgent(i));
         }
     } else if(opts.ghostAgent == Game::RANDOM){
         for(int i = 1;i<lay->getAgentsPositions().size();++i){

@@ -2,10 +2,10 @@
 #include <QDebug>
 
 /**
-  РЕФАКТОРИ ЭТО ДЕРЬМО!!!!!
  * @brief Settings::Settings
  * @param opts
  */
+const int Settings::SPEED_CONVERSION = 50;
 Settings::Settings(GameOptions &opts)
 {
     startOptions = opts;
@@ -208,7 +208,7 @@ void Settings::saveParams()
    opts.ghostAgent = ghostList->currentText();
    opts.layoutPath ="layouts/"+ chooseLevelList->currentText();
    opts.cellSize = cellSizeList->currentText().toInt();
-   opts.gameSpeed = (5-gameSpeedSlide->value())*50;
+   opts.gameSpeed = (5-gameSpeedSlide->value())*SPEED_CONVERSION;
    if(checkSettings(opts)){
         writeToFile(opts);
    }
@@ -261,7 +261,7 @@ void Settings::fillFromOptions(GameOptions &opts)
         ghostList->setCurrentIndex(1);
     }
     cellSizeList->setCurrentIndex((opts.cellSize-10)/5);
-    gameSpeedSlide->setValue(5-opts.gameSpeed/50);
+    gameSpeedSlide->setValue(5-opts.gameSpeed/SPEED_CONVERSION);
     if(opts.pacmanAgent == Game::LEARNING){
         alphaEdit->setText(QString::number(opts.alpha,'g',2));
         epsilonEdit->setText(QString::number(opts.epsilon,'g',2));
@@ -313,7 +313,7 @@ bool Settings::checkSettings(GameOptions &opts)
             return false;
         }
         if(opts.numIters < 1){
-            alert("Incorrect iters![1.. .]");
+            alert("Incorrect iters![1.. \u221e]");
             return false;
         }
     }else if (opts.pacmanAgent != Game::KEYBOARD){

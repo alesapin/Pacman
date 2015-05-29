@@ -4,6 +4,7 @@
 #include "agents/agent.h"
 #include <QPointF>
 #include "configuration.h"
+#include "util.h"
 /**
  * @brief The Actions class
  * Класс состоящий из статических методов
@@ -43,7 +44,8 @@ public:
      * @param walls стены
      * @return список направлений
      */
-    static std::vector<Direction> getPossibleActions(Configuration& config,const std::vector <std::vector <bool> >& walls);
+    static std::vector<Direction> getPossibleActions(const Configuration& config,const std::vector <std::vector <bool> >& walls);
+    static std::map<Direction,QPointF> getLegalDirections(QPointF position, const std::vector<std::vector<bool> > &walls);
     static std::vector<QPointF> getLegalNeighbours(QPointF position, const std::vector<std::vector<bool> > &walls);
     /**
      * @brief getSuccessor возвращает вектор полученый в резултатте

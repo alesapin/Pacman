@@ -10,6 +10,7 @@
 #include "engine/game.h"
 #include "mainmenu.h"
 #include "engine/util.h"
+
 class TrainingWindow: public QWidget
 {
     Q_OBJECT

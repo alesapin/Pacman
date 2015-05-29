@@ -4,8 +4,8 @@ RushGhostAgent::RushGhostAgent(int ind):
     GhostAgent(ind)
 {
     index = ind;
-    probScaried = 0.5;
-    probAtack = 0.5;
+    probScaried = 0.8;
+    probAtack = 1;
 }
 
 

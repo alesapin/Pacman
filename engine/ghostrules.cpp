@@ -7,20 +7,24 @@ const double GhostRules::COLLISION_TOLERANCE= 0.7;
 const double GhostRules::GHOST_SPEED = 1.0;
 const double GhostRules::SCARED_TIME = 40;
 
+std::vector<Direction> GhostRules::getLegalActions(const Configuration &conf, const std::vector<std::vector<bool> > &walls)
+{
+    std::vector<Direction> legal = Actions::getPossibleActions(conf,walls);
+    Direction reverse = Actions::reverseDirection(conf.getDirection());
+    auto stopPosition = std::find(legal.begin(),legal.end(),STOP);
+    if ( stopPosition != legal.end() ) {
+        legal.erase(stopPosition);
+    }
+    auto reversePosition = std::find(legal.begin(),legal.end(),reverse);
+    if ((reversePosition != legal.end()) && legal.size() > 1) {
+        legal.erase(reversePosition);
+    }
+    return legal;
+}
+
 std::vector<Direction> GhostRules::getLegalActions(const GameState &state, int ghostIndex)
 {
-        Configuration conf = state.getAgentState(ghostIndex).getConfiguration();
-        std::vector<Direction> legal = Actions::getPossibleActions(conf,state.getLayout()->getWalls());
-        Direction reverse = Actions::reverseDirection(conf.getDirection());
-        auto stopPosition = std::find(legal.begin(),legal.end(),STOP);
-        if ( stopPosition != legal.end() ) {
-            legal.erase(stopPosition);
-        }
-        auto reversePosition = std::find(legal.begin(),legal.end(),reverse);
-        if ((reversePosition != legal.end()) && legal.size() > 1) {
-            legal.erase(reversePosition);
-        }
-        return legal;
+      return getLegalActions(state.getAgentState(ghostIndex).getConfiguration(),state.getLayout()->getWalls());
 }
 
 void GhostRules::applyAction(GameState &state, Direction dir, int ghostIndex)

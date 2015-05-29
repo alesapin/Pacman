@@ -20,6 +20,7 @@ public:
     Settings(GameOptions& opts);
     static void generateDefaultConfig();
     void writeToFile(GameOptions& opts);
+    const static int SPEED_CONVERSION;
 public slots:
     void workWithParams(int);
     void resetParams();

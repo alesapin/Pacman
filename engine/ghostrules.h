@@ -9,6 +9,7 @@
 class GhostRules
 {
 public:
+    static std::vector<Direction> getLegalActions(const Configuration& conf, const std::vector<std::vector<bool>>& walls);
     static std::vector<Direction> getLegalActions(const GameState& state,int ghostIndex);
     static void applyAction(GameState& state,Direction dir,int ghostIndex);
     static AgentState decrementTimer(AgentState ghostState);

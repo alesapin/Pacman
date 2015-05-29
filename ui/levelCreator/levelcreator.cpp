@@ -2,7 +2,10 @@
 
 
 
-
+const int LevelCreator::MIN_FIELD_HEIGHT = 5;
+const int LevelCreator::MAX_FIELD_HEIGHT = 30;
+const int LevelCreator::MIN_FIELD_WIDTH = 5;
+const int LevelCreator::MAX_FIELD_WIDTH = 30;
 LevelCreator::LevelCreator(int w,int h,int cellSize,QWidget *parent):
     QWidget(parent),
     cellSize(cellSize)
@@ -33,6 +36,7 @@ LevelCreator::LevelCreator(int w,int h,int cellSize,QWidget *parent):
     connect(resizeField,SIGNAL(clicked()),this,SLOT(resizeF()));
     connect(widthSlider,SIGNAL(valueChanged(int)),this,SLOT(widthChanged(int)));
     connect(heightSlider,SIGNAL(valueChanged(int)),this,SLOT(heightChanged(int)));
+    connect(openFile,SIGNAL(clicked()),this,SLOT(openSignal()));
     setGeometry(0,0,(40)*cellSize,(35)*cellSize);
     Util::center(*this);
 
@@ -66,6 +70,15 @@ void LevelCreator::foodSignal()
 void LevelCreator::capsuleSignal()
 {
     field->setCurrentMode(CAPSULE);
+}
+
+void LevelCreator::openSignal()
+{
+    QString fileName =  QFileDialog::getOpenFileName(this,tr("Open File"),QDir::currentPath() + "/layouts",tr("Layout files (*.lay)\n"));
+    qDebug() << fileName;
+    QStringList name=fileName.split("/");
+    layoutName->setText(name.last());
+    loadFromFile(fileName);
 }
 
 void LevelCreator::save()
@@ -140,7 +153,6 @@ QVBoxLayout *LevelCreator::setLeftPanel(int cellSize)
     exitToMenu->setMaximumWidth(cellSize*7);
     exitToMenu->setMinimumWidth(cellSize*5);
     exitToMenu->setFont(QFont(ResourceLoader::FONT_NAME,cellSize/1.5));
-
     layoutName = new QLineEdit();
     layoutName->setMinimumWidth(cellSize*3);
     layoutName->setMaximumWidth(cellSize*7);
@@ -148,25 +160,32 @@ QVBoxLayout *LevelCreator::setLeftPanel(int cellSize)
     resizeField->setFont(QFont(ResourceLoader::FONT_NAME,cellSize/1.5));
     resizeField->setMaximumWidth(cellSize*7);
     widthSlider = new QSlider();
-    widthSlider->setMaximum(30);
-    widthSlider->setMinimum(5);
+    widthSlider->setMaximum(MAX_FIELD_WIDTH);
+    widthSlider->setMinimum(MIN_FIELD_WIDTH);
     widthSlider->setTickInterval(1);
     widthSlider->setMaximumWidth(cellSize*5);
     widthSlider->setOrientation(Qt::Horizontal);
     widthSlider->setValue(15);
     heightSlider = new QSlider();
-    heightSlider->setMaximum(30);
-    heightSlider->setMinimum(5);
+    heightSlider->setMaximum(MAX_FIELD_HEIGHT);
+    heightSlider->setMinimum(MIN_FIELD_HEIGHT);
     heightSlider->setTickInterval(1);
     heightSlider->setMaximumWidth(cellSize*5);
     heightSlider->setOrientation(Qt::Horizontal);
     heightSlider->setValue(15);
+    openFile = new QPushButton("Open Layout");
+    openFile->setMaximumWidth(cellSize*7);
+    openFile->setMinimumWidth(cellSize*3);
+    openFile->setFont(QFont(ResourceLoader::FONT_NAME,cellSize/1.5));
     QHBoxLayout* widthLine = new QHBoxLayout();
     QHBoxLayout* heightLine=new QHBoxLayout();
     QHBoxLayout* currentValues = new QHBoxLayout();
     QHBoxLayout* forResizeButton = new QHBoxLayout();
+
     QHBoxLayout* forMenuButton = new QHBoxLayout();
+    QHBoxLayout* forOpenButton = new QHBoxLayout();
     QHBoxLayout* saveLine =new QHBoxLayout();
+
     leftPanel->setAlignment(Qt::AlignCenter);
     forMenuButton->setAlignment(Qt::AlignCenter);
     currentWidth = new QLabel("W: 15");
@@ -198,6 +217,9 @@ QVBoxLayout *LevelCreator::setLeftPanel(int cellSize)
     forResizeButton->addWidget(resizeField);
     forResizeButton->setContentsMargins(0,0,0,cellSize*20);
     leftPanel->addLayout(forResizeButton);
+    forOpenButton->setContentsMargins(0,0,0,cellSize);
+    forOpenButton->addWidget(openFile);
+    leftPanel->addLayout(forOpenButton);
     leftPanel->addLayout(saveLine);
     forMenuButton->addWidget(exitToMenu);
     leftPanel->addLayout(forMenuButton);
@@ -212,4 +234,17 @@ void LevelCreator::setButtonIcon(QPushButton *button, QString texturePath,int ce
     button->setMaximumWidth(cellSize*2);
     button->setIcon(icon);
     button->setIconSize(scaled.rect().size());
+}
+
+void LevelCreator::loadFromFile(QString path)
+{
+    QFile f(path);
+    f.open(QFile::ReadOnly);
+    QStringList layoutArray = QString(f.readAll()).split('\n');
+    int h = layoutArray.length()-1;
+    int w = layoutArray[0].length();
+    if(field->loadFromString(layoutArray)){
+        heightSlider->setValue(h);
+        widthSlider->setValue(w);
+    }
 }
