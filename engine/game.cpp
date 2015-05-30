@@ -8,7 +8,7 @@ const QString Game::EXPECTIMAX = "EXPECTIMAX";
 const QString Game::RUSH = "RUSH";
 const QString Game::RANDOM = "RANDOM";
 const QString Game::KEYBOARD = "KEYBOARD";
-
+const QString Game::DIRECTIONAL = "DIRECTIONAL";
 Game::Game(std::vector<Agent *> agents, Layout *lay,bool learn):
     agents(agents),
     currentMover(0),
@@ -141,11 +141,15 @@ Game *Game::parseOptions(GameOptions& opts)
 
     if(opts.ghostAgent == Game::RUSH){
         for(int i = 1;i<lay->getAgentsPositions().size();++i){
-            agents.push_back(new PairGhostAgent(i));
+            agents.push_back(new RushGhostAgent(i));
         }
     } else if(opts.ghostAgent == Game::RANDOM){
         for(int i = 1;i<lay->getAgentsPositions().size();++i){
             agents.push_back(new RandomGhostAgent(i));
+        }
+    } else if (opts.ghostAgent == Game::DIRECTIONAL){
+        for(int i = 1;i<lay->getAgentsPositions().size();++i){
+            agents.push_back(new PairGhostAgent(i));
         }
     }
     return new Game(agents,lay,learn);

@@ -11,7 +11,12 @@ const QString ResourceLoader::SCARRIED_GHOST_TEXTURE_PATH = ":/textures/textures
 const QString ResourceLoader::SCORE_LIST_PATH = "score.lst";
 const QString ResourceLoader::LAYOUTS_PATH = "layouts";
 QString ResourceLoader::STYLE;
-
+ const QString ResourceLoader::START_SOUND_PATH = "qrc:/sounds/sound/pacman_beginning.wav";
+ const QString ResourceLoader::EAT_FOOD_SOUND_PATH = "qrc:/sounds/sound/pacman_chomp.waw";
+ const QString ResourceLoader::EAT_GHOST_SOUND_PATH = "qrc:/sounds/sound/pacman_eatghost.wav";
+ const QString ResourceLoader::WIN_SOUND_PATH = "qrc:/sounds/sound/pacman_intermission.wav";
+ const QString ResourceLoader::LOSE_SOUND_PATH = "qrc:/sounds/sound/pacman_death.wav";
+ const QString ResourceLoader::EAT_CAPS_SOUND_PATH= "qrc:/sounds/sound/pacman_eatfruit.wav";
 const std::vector<QString> ResourceLoader::GHOST_TEXTURES_PATH =
     { ":/textures/textures/1",
       ":/textures/textures/2",

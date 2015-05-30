@@ -21,6 +21,12 @@ struct ResourceLoader
     static const int WALL_PEN_WIDTH;
     static const QString SCORE_LIST_PATH;
     static const QString LAYOUTS_PATH;
+    static const QString START_SOUND_PATH;
+    static const QString EAT_FOOD_SOUND_PATH;
+    static const QString EAT_GHOST_SOUND_PATH;
+    static const QString WIN_SOUND_PATH;
+    static const QString LOSE_SOUND_PATH;
+    static const QString EAT_CAPS_SOUND_PATH;
     static void loadFont();
     static void loadStyle();
     static void load();

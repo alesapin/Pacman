@@ -22,7 +22,7 @@ public:
     static const QString RUSH;
     static const QString RANDOM;
     static const QString KEYBOARD;
-
+    static const QString DIRECTIONAL;
     static Game *parseOptions(GameOptions& opts);
 
     GameState *step();

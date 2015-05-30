@@ -39,6 +39,7 @@ Settings::Settings(GameOptions &opts)
     ghostList = new QComboBox(this);
     ghostList->addItem("RUSH");
     ghostList->addItem("RANDOM");
+    ghostList->addItem("DIRECTIONAL");
     ghostList->setFont(pixelFont);
 
     ghostLine->addWidget(ghost);
@@ -257,8 +258,10 @@ void Settings::fillFromOptions(GameOptions &opts)
 
     if(opts.ghostAgent == Game::RUSH){
         ghostList->setCurrentIndex(0);
-    }else{
+    }else if(opts.ghostAgent == Game::RANDOM){
         ghostList->setCurrentIndex(1);
+    } else{
+        ghostList->setCurrentIndex(2);
     }
     cellSizeList->setCurrentIndex((opts.cellSize-10)/5);
     gameSpeedSlide->setValue(5-opts.gameSpeed/SPEED_CONVERSION);

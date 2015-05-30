@@ -25,6 +25,8 @@
 #include "ui/menu/gameovermenu.h"
 #include "ui/menu/trainingwindow.h"
 #include "resourceloader.h"
+#include <QSoundEffect>
+
 class Canvas:  public QGraphicsView {
         Q_OBJECT
 public:
@@ -50,6 +52,7 @@ private:
     void setRestartButton(Layout* lay);
     void setPauseButton(Layout* lay);
     void saveScore();
+    void setSounds();
 
     std::map<QPointF,QGraphicsEllipseItem*,PointComparator> foodMap;
     std::map<QPointF,QGraphicsEllipseItem*,PointComparator> capsuleMap;
@@ -73,6 +76,13 @@ private:
     bool small;
     QString layoutName;
     QString agentName;
+
+    QSoundEffect* startSound;
+    QSoundEffect* wakaSound;
+    QSoundEffect* eatCapsuleSound;
+    QSoundEffect* loseSound;
+    QSoundEffect* winSound;
+    QSoundEffect* eatGhostSound;
 };
 
 #endif // CANVAS_H

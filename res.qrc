@@ -41,4 +41,12 @@
         <file>icons/empticon.png</file>
         <file>icons/red-icon.png</file>
     </qresource>
+    <qresource prefix="/sounds">
+        <file>sound/pacman_beginning.wav</file>
+        <file>sound/pacman_chomp.waw</file>
+        <file>sound/pacman_eatfruit.wav</file>
+        <file>sound/pacman_eatghost.wav</file>
+        <file>sound/pacman_intermission.wav</file>
+        <file>sound/pacman_death.wav</file>
+    </qresource>
 </RCC>

@@ -4,13 +4,12 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT  += core gui multimedia
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT +=  widgets
 
 TARGET = Walls
 TEMPLATE = app
-
 include(engine/engine.pri)
 include(ui/ui.pri)
 include(agents/agents.pri)
@@ -46,15 +45,12 @@ SOURCES += main.cpp
 #    pacmankeyboarditem.h \
 #    pacmanitem.h \
 #    reflectagent.h
-
-CONFIG += c++11 thread
-
+CONFIG += c++11
 OTHER_FILES += \
     ../Code/multiagent/layouts/smallClassic.lay \
     smallClassic.lay
 QMAKE_CXXFLAGS_DEBUG +=  -pg
 QMAKE_LFLAGS_DEBUG += -pg
-LIBS += -ltbb
 RESOURCES += \
     res.qrc
 

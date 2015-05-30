@@ -34,6 +34,7 @@ Canvas::Canvas(GameOptions& opts):
     connect(timer,SIGNAL(timeout()),this,SLOT(gameLoop()));
     connect(restartButton,SIGNAL(clicked()),this,SLOT(restartGame()));
     connect(pauseButton,SIGNAL(clicked()),this,SLOT(pauseGame()));
+    setSounds();
     layoutName = opts.layoutPath.split("/").value(1);
     agentName = opts.pacmanAgent;
     delete &opts;
@@ -44,6 +45,8 @@ Canvas::Canvas(GameOptions& opts):
         train->raise();
         train->activateWindow();
     }else{
+        startSound->stop();
+        startSound->play();
         startGame();
     }
     Util::center(*this);
@@ -55,6 +58,12 @@ void Canvas::drawState(GameState *state)
     if(state->isWin() || state->isLose()){
         timer->stop();
         gameOver = true;
+    }
+    if(state->isWin()){
+        winSound->play();
+    }
+    if(state->isLose()){
+        loseSound->play();
     }
     QPointF pos = state->getAgentPosition(0);
 
@@ -74,12 +83,18 @@ void Canvas::drawState(GameState *state)
         scene()->removeItem(foodMap[eatenFood]);
         delete foodMap[eatenFood];
         foodMap.erase(eatenFood);
+        if(!wakaSound->isPlaying()){
+            wakaSound->play();
+        }
     }
     QPointF eatenCapsule = state->getEatenCapsule();
     if(capsuleMap.find(eatenCapsule)!=capsuleMap.end()){
         scene()->removeItem(capsuleMap[eatenCapsule]);
         delete capsuleMap[eatenCapsule];
         capsuleMap.erase(eatenCapsule);
+        if(!eatCapsuleSound->isPlaying()){
+            eatCapsuleSound->play();
+        }
     }
     scoreText->updateScore(state->getScore());
 }
@@ -127,16 +142,11 @@ void Canvas::startGame()
 {
     setEnabled(true);
     scene()->update();
+    startSound->stop();
+    startSound->play();
     timer->start(generalTime);
 }
-//Раскоментить в будущем
-//Canvas::~Canvas()
-//{
-//    scene()->clear();
-//    delete game;
-//    delete timer;
-//    delete myScene;
-//}
+
 
 void Canvas::gameLoop()
 {
@@ -163,6 +173,7 @@ void Canvas::pauseGame()
 
 void Canvas::restartGame()
 {
+
     gameOver = false;
     game->restartGame();
     Layout* layout = game->getLayout();
@@ -173,6 +184,8 @@ void Canvas::restartGame()
     if(!timer->isActive() && !pause){
         timer->start(generalTime);
     }
+    startSound->stop();
+    startSound->play();
 }
 
 QPointF Canvas::countTextCoords(Layout *lay)
@@ -337,4 +350,20 @@ void Canvas::saveScore()
     for(int i=1;i<=values.size();++i){
         settings->setValue(QString::number(i),values[i-1]);
     }
+}
+
+void Canvas::setSounds()
+{
+    startSound = new QSoundEffect();
+    wakaSound = new QSoundEffect();
+    eatGhostSound = new QSoundEffect();
+    eatCapsuleSound = new QSoundEffect();
+    winSound = new QSoundEffect();
+    loseSound = new QSoundEffect();
+    startSound->setSource(QUrl(ResourceLoader::START_SOUND_PATH));
+    wakaSound->setSource(QUrl(ResourceLoader::EAT_FOOD_SOUND_PATH));
+    eatGhostSound->setSource(QUrl(ResourceLoader::EAT_GHOST_SOUND_PATH));
+    eatCapsuleSound->setSource(QUrl(ResourceLoader::EAT_CAPS_SOUND_PATH));
+    winSound->setSource(QUrl(ResourceLoader::WIN_SOUND_PATH));
+    loseSound->setSource(QUrl(ResourceLoader::LOSE_SOUND_PATH));
 }
