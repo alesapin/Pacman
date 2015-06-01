@@ -47,7 +47,7 @@ void MainMenu::startScore()
 
 void MainMenu::startLevelEditor()
 {
-    LevelCreator* c = new LevelCreator(15,15,cellSize);
+    LevelCreator* c = new LevelCreator(15,15,cellSize-10);
     this->close();
     c->show();
 }

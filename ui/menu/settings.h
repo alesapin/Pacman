@@ -13,6 +13,7 @@
 #include <QSlider>
 #include "mainmenu.h"
 #include <QMessageBox>
+#include <QCheckBox>
 class Settings: public QWidget
 {
     Q_OBJECT
@@ -40,10 +41,12 @@ private:
     QLabel* numiters;
     QLabel* maxDepth;
     QLabel* gameSpeed;
+    QLabel* sound;
     QComboBox* pacmanList;
     QComboBox* ghostList;
     QComboBox* cellSizeList;
     QComboBox* chooseLevelList;
+    QCheckBox* soundChecker;
     QLineEdit* alphaEdit;
     QLineEdit* epsilonEdit;
     QLineEdit* gammaEdit;

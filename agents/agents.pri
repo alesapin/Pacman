@@ -10,7 +10,7 @@ HEADERS += \
     agents/learningagent.h \
     agents/pacmanlearningagent.h \
     agents/keyboardagent.h \
-    agents/pairghostagent.h
+    agents/directionalghostagent.h
 
 SOURCES += \
     agents/multiagentsearch.cpp \
@@ -24,5 +24,5 @@ SOURCES += \
     agents/learningagent.cpp \
     agents/pacmanlearningagent.cpp \
     agents/keyboardagent.cpp \
-    agents/pairghostagent.cpp
+    agents/directionalghostagent.cpp
 

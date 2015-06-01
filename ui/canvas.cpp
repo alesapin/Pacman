@@ -6,6 +6,7 @@ Canvas::Canvas(GameOptions& opts):
     pause(false),
     gameOver(false)
 {
+    sound = opts.sound;
     small = false;
     cellSize = opts.cellSize;
     setRenderHints(QPainter::Antialiasing | QPainter::HighQualityAntialiasing);
@@ -45,8 +46,6 @@ Canvas::Canvas(GameOptions& opts):
         train->raise();
         train->activateWindow();
     }else{
-        startSound->stop();
-        startSound->play();
         startGame();
     }
     Util::center(*this);
@@ -59,10 +58,10 @@ void Canvas::drawState(GameState *state)
         timer->stop();
         gameOver = true;
     }
-    if(state->isWin()){
+    if(state->isWin() && sound){
         winSound->play();
     }
-    if(state->isLose()){
+    if(state->isLose() && sound){
         loseSound->play();
     }
     QPointF pos = state->getAgentPosition(0);
@@ -83,7 +82,7 @@ void Canvas::drawState(GameState *state)
         scene()->removeItem(foodMap[eatenFood]);
         delete foodMap[eatenFood];
         foodMap.erase(eatenFood);
-        if(!wakaSound->isPlaying()){
+        if(!wakaSound->isPlaying() && sound){
             wakaSound->play();
         }
     }
@@ -92,7 +91,7 @@ void Canvas::drawState(GameState *state)
         scene()->removeItem(capsuleMap[eatenCapsule]);
         delete capsuleMap[eatenCapsule];
         capsuleMap.erase(eatenCapsule);
-        if(!eatCapsuleSound->isPlaying()){
+        if(!eatCapsuleSound->isPlaying() && sound){
             eatCapsuleSound->play();
         }
     }
@@ -142,8 +141,9 @@ void Canvas::startGame()
 {
     setEnabled(true);
     scene()->update();
-    startSound->stop();
-    startSound->play();
+    if(sound){
+        startSound->play();
+    }
     timer->start(generalTime);
 }
 
@@ -184,8 +184,10 @@ void Canvas::restartGame()
     if(!timer->isActive() && !pause){
         timer->start(generalTime);
     }
-    startSound->stop();
-    startSound->play();
+    if(sound){
+        startSound->stop();
+        startSound->play();
+    }
 }
 
 QPointF Canvas::countTextCoords(Layout *lay)

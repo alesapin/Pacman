@@ -1,11 +1,11 @@
-#include "pairghostagent.h"
+#include "directionalghostagent.h"
 #include <QDebug>
-PairGhostAgent::PairGhostAgent(int index):
+DirectionalGhostAgent::DirectionalGhostAgent(int index):
     GhostAgent(index)
 {
 }
 
-std::map<Direction, double> PairGhostAgent::getDistribution(GameState &state)
+std::map<Direction, double> DirectionalGhostAgent::getDistribution(GameState &state)
 {
     std::map<Direction,double> result;
     if(state.getAgentState(index).getScarryTimer()==0){
@@ -13,12 +13,17 @@ std::map<Direction, double> PairGhostAgent::getDistribution(GameState &state)
         qDebug() << toPacman;
         result[toPacman]=1.0;
     }else{
-        result[GhostRules::getLegalActions(state,index)[0]] = 1.0;
+        std::vector<Direction> legalActions = GhostRules::getLegalActions(state,index);
+        for(int i = 0;i<legalActions.size();++i){
+            //qDebug() << legalActions[i];
+        }
+        //qDebug() << "_______";
+        result[legalActions[rand() % legalActions.size()]] = 1.0;
     }
     return result;
 }
 
-Direction PairGhostAgent::wayToPacman(GameState &state)
+Direction DirectionalGhostAgent::wayToPacman(GameState &state)
 {
 
     std::deque<std::tuple<Configuration,Direction>> fringe;
@@ -53,5 +58,6 @@ Direction PairGhostAgent::wayToPacman(GameState &state)
             }
         }
     }
-    return NOACTION;
+    std::vector<Direction> legal = state.getLegalActions(index);
+    return legal[rand()%legal.size()];
 }

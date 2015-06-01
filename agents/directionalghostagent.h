@@ -2,10 +2,10 @@
 #define PAIRGHOSTAGENT_H
 #include "ghostagent.h"
 #include "engine/ghostrules.h"
-class PairGhostAgent: public  GhostAgent
+class DirectionalGhostAgent: public  GhostAgent
 {
 public:
-    PairGhostAgent(int index);
+    DirectionalGhostAgent(int index);
     std::map<Direction,double> getDistribution(GameState &state);
 private:
     Direction wayToPacman(GameState& state);

@@ -149,7 +149,7 @@ Game *Game::parseOptions(GameOptions& opts)
         }
     } else if (opts.ghostAgent == Game::DIRECTIONAL){
         for(int i = 1;i<lay->getAgentsPositions().size();++i){
-            agents.push_back(new PairGhostAgent(i));
+            agents.push_back(new DirectionalGhostAgent(i));
         }
     }
     return new Game(agents,lay,learn);

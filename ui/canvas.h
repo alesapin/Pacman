@@ -76,7 +76,7 @@ private:
     bool small;
     QString layoutName;
     QString agentName;
-
+    bool sound;
     QSoundEffect* startSound;
     QSoundEffect* wakaSound;
     QSoundEffect* eatCapsuleSound;

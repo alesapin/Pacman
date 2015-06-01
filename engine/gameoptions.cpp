@@ -18,5 +18,6 @@ GameOptions *GameOptions::parseFromFile()
     opts->ghostAgent = settings->value("ghostAgent","RANDOM").toString();
     opts->cellSize = settings->value("cellSize",30).toInt();
     opts->gameSpeed=settings->value("gameSpeed",150).toInt();
+    opts->sound = settings->value("sound",false).toBool();
     return opts;
 }

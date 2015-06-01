@@ -19,6 +19,7 @@ struct GameOptions
     int cellSize;
     int gameSpeed;
     QGraphicsScene* scene;
+    bool sound;
     static  void createDefaultCfg(QFile&);
     static GameOptions *parseFromFile();
 };

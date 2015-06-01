@@ -118,10 +118,16 @@ Settings::Settings(GameOptions &opts)
     gameSpeedSlide->setMaximum(4);
     gameSpeedSlide->setMinimum(1);
     gameSpeedSlide->setMaximumWidth(cellSize*5);
+    sound = new QLabel("Sound:");
+    sound->setFont(paramsFont);
+    sound->setMaximumWidth(cellSize*2);
+    soundChecker = new QCheckBox();
     minimaxParamsLine->addWidget(maxDepth);
     minimaxParamsLine->addWidget(depthEdit);
     minimaxParamsLine->addWidget(gameSpeed);
     minimaxParamsLine->addWidget(gameSpeedSlide);
+    minimaxParamsLine->addWidget(sound);
+    minimaxParamsLine->addWidget(soundChecker);
     QHBoxLayout* buttonLine = new QHBoxLayout();
 
     saveSettings = new QPushButton(this);
@@ -168,6 +174,7 @@ void Settings::writeToFile(GameOptions &opts)
     settings->setValue("ghostAgent",opts.ghostAgent);
     settings->setValue("cellSize",opts.cellSize);
     settings->setValue("gameSpeed",opts.gameSpeed);
+    settings->setValue("sound",opts.sound);
     settings->sync();
 }
 
@@ -210,6 +217,7 @@ void Settings::saveParams()
    opts.layoutPath ="layouts/"+ chooseLevelList->currentText();
    opts.cellSize = cellSizeList->currentText().toInt();
    opts.gameSpeed = (5-gameSpeedSlide->value())*SPEED_CONVERSION;
+   opts.sound = soundChecker->isChecked();
    if(checkSettings(opts)){
         writeToFile(opts);
    }
@@ -265,6 +273,9 @@ void Settings::fillFromOptions(GameOptions &opts)
     }
     cellSizeList->setCurrentIndex((opts.cellSize-10)/5);
     gameSpeedSlide->setValue(5-opts.gameSpeed/SPEED_CONVERSION);
+    if(opts.sound){
+        soundChecker->setChecked(1);
+    }
     if(opts.pacmanAgent == Game::LEARNING){
         alphaEdit->setText(QString::number(opts.alpha,'g',2));
         epsilonEdit->setText(QString::number(opts.epsilon,'g',2));

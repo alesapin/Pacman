@@ -9,7 +9,7 @@
 #include "agents/randomghostagent.h"
 #include "agents/pacmanlearningagent.h"
 #include "agents/keyboardagent.h"
-#include "agents/pairghostagent.h"
+#include "agents/directionalghostagent.h"
 #include "gameoptions.h"
 #include <vector>
 class GameOptions;
