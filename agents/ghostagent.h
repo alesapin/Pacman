@@ -11,6 +11,7 @@ struct PairComparator {
        return  p1.second < p2.second;
     }
 };
+
 class GhostAgent: public Agent
 {
 public:

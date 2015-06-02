@@ -29,6 +29,9 @@ public:
     static double closestFood(QPointF currentPosition,const std::vector<std::vector<bool>>&food,const std::vector<std::vector<bool>>&walls);
     static void center(QWidget &widget ,int WIDTH , int HEIGHT);
     static void center(QWidget &widget);
+    static Direction ghostWayToPoint(int ghostNumber,QPointF point,const GameState& state);
+private:
+    static QPointF emptyNearWall(QPointF point,const std::vector<std::vector<bool>>& walls);
 };
 
 #endif // UTIL_H

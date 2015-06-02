@@ -13,22 +13,22 @@
         <file>stylesheets/button.qss</file>
     </qresource>
     <qresource prefix="/textures">
-        <file>textures/1e.png</file>
-        <file>textures/1n.png</file>
-        <file>textures/1s.png</file>
-        <file>textures/1w.png</file>
-        <file>textures/2e.png</file>
-        <file>textures/2n.png</file>
-        <file>textures/2s.png</file>
-        <file>textures/2w.png</file>
         <file>textures/3e.png</file>
         <file>textures/3n.png</file>
         <file>textures/3s.png</file>
         <file>textures/3w.png</file>
+        <file>textures/2e.png</file>
+        <file>textures/2n.png</file>
+        <file>textures/2s.png</file>
+        <file>textures/2w.png</file>
         <file>textures/4e.png</file>
         <file>textures/4n.png</file>
         <file>textures/4s.png</file>
         <file>textures/4w.png</file>
+        <file>textures/1e.png</file>
+        <file>textures/1n.png</file>
+        <file>textures/1s.png</file>
+        <file>textures/1w.png</file>
         <file>textures/pacman-sprite.png</file>
         <file>textures/scarried.png</file>
         <file>arrow.png</file>

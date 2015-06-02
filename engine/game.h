@@ -10,11 +10,18 @@
 #include "agents/pacmanlearningagent.h"
 #include "agents/keyboardagent.h"
 #include "agents/directionalghostagent.h"
+#include "agents/blinkyghostagent.h"
+#include "agents/inkyghostagent.h"
+#include "agents/clydeghostagent.h"
+#include "agents/pinkyghostagent.h"
 #include "gameoptions.h"
 #include <vector>
+#include <QTimer>
+#include <QObject>
 class GameOptions;
-class Game
+class Game : public QObject
 {
+    Q_OBJECT
 public:
     static const QString LEARNING;
     static const QString MINIMAX;
@@ -23,6 +30,8 @@ public:
     static const QString RANDOM;
     static const QString KEYBOARD;
     static const QString DIRECTIONAL;
+    static const QString ORIGINAL;
+
     static Game *parseOptions(GameOptions& opts);
 
     GameState *step();
@@ -36,17 +45,23 @@ public:
     int getCurrentIter() const;
     int getTotalIters() const;
     int trainStep();
+ public slots:
+    void switchMode();
  private:
     GameState* currentGameState;
     GameState* startState;
-
+    int scatterTime;
+    int chaseTime;
     int currentMover;
     Layout* layout;
     PacmanLearningAgent* pacman;
     KeyBoardAgent* keyboard;
     std::vector<Agent*> agents;
-    Game(std::vector<Agent*> agents,Layout* lay,bool learn);
+    Game(std::vector<Agent*> agents,Layout* lay,bool learn,bool orig);
     bool learn;
+    bool originalMode;
+    QTimer* ghostModeTimer;
+    void setGhostsToScatter(std::vector<Agent*> ghosts);
 };
 
 #endif // GAME_H

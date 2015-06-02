@@ -4,60 +4,44 @@ DirectionalGhostAgent::DirectionalGhostAgent(int index):
     GhostAgent(index)
 {
 }
-
+const int DirectionalGhostAgent::BLINKY_NUMBER = 1;
+const int DirectionalGhostAgent::PINKY_NUMBER = 2;
+const int DirectionalGhostAgent::INKY_NUMBER = 3;
+const int DirectionalGhostAgent::CLYDE_NUMBER = 4;
 std::map<Direction, double> DirectionalGhostAgent::getDistribution(GameState &state)
 {
     std::map<Direction,double> result;
     if(state.getAgentState(index).getScarryTimer()==0){
-        Direction toPacman = wayToPacman(state);
-        qDebug() << toPacman;
+        Direction toPacman = Util::ghostWayToPoint(index,countTarget(state),state);
         result[toPacman]=1.0;
     }else{
         std::vector<Direction> legalActions = GhostRules::getLegalActions(state,index);
-        for(int i = 0;i<legalActions.size();++i){
-            //qDebug() << legalActions[i];
-        }
-        //qDebug() << "_______";
         result[legalActions[rand() % legalActions.size()]] = 1.0;
     }
     return result;
 }
 
-Direction DirectionalGhostAgent::wayToPacman(GameState &state)
+void DirectionalGhostAgent::changeMode()
 {
-
-    std::deque<std::tuple<Configuration,Direction>> fringe;
-    fringe.push_back(std::make_tuple(state.getAgentState(index).getConfiguration(),NOACTION));
-    std::set<QPointF,PointComparator> expanded;
-    bool firstStep = true;
-    while(!fringe.empty()){
-        std::tuple<Configuration,Direction> current = fringe.front();
-        fringe.pop_front();
-        Configuration conf = std::get<0>(current);
-        QPointF pos = conf.getPosition();
-        Direction startDirection = std::get<1>(current);
-        if(expanded.find(pos)!=expanded.end()){
-            continue;
-        }
-        expanded.insert(pos);
-        if(pos == state.getPacmanPosition()){
-            return startDirection;
-        }
-
-        std::vector<Direction> legal = GhostRules::getLegalActions(std::get<0>(current),state.getLayout()->getWalls());
-        if(firstStep){
-            for(Direction dir:legal){
-                Configuration succ = conf.generateSuccessor(dir);
-                fringe.push_back(std::make_tuple(succ,dir));
-            }
-            firstStep = false;
-        }else{
-            for(Direction dir:legal){
-                Configuration succ = conf.generateSuccessor(dir);
-                fringe.push_back(std::make_tuple(succ,startDirection));
-            }
-        }
+    if(mode == CHASE){
+        mode = SCATTER;
+    }else{
+        mode = CHASE;
     }
-    std::vector<Direction> legal = state.getLegalActions(index);
-    return legal[rand()%legal.size()];
 }
+
+void DirectionalGhostAgent::setMode(GhostBehavior b)
+{
+    mode = b;
+}
+
+GhostBehavior DirectionalGhostAgent::getMode()
+{
+    return mode;
+}
+
+QPointF DirectionalGhostAgent::countTarget(const GameState &state)
+{
+    return state.getPacmanPosition();
+}
+

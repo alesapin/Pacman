@@ -9,10 +9,13 @@ const QString Game::RUSH = "RUSH";
 const QString Game::RANDOM = "RANDOM";
 const QString Game::KEYBOARD = "KEYBOARD";
 const QString Game::DIRECTIONAL = "DIRECTIONAL";
-Game::Game(std::vector<Agent *> agents, Layout *lay,bool learn):
+const QString Game::ORIGINAL = "ORIGINAL";
+
+Game::Game(std::vector<Agent *> agents, Layout *lay,bool learn,bool orig):
     agents(agents),
     currentMover(0),
-    learn(learn)
+    learn(learn),
+    originalMode(orig)
 {
     if(learn){
         pacman = static_cast<PacmanLearningAgent*>(agents[0]);
@@ -21,6 +24,23 @@ Game::Game(std::vector<Agent *> agents, Layout *lay,bool learn):
     layout = lay;
     currentGameState = new GameState(layout);
     startState = currentGameState;
+
+    if(orig){
+        ghostModeTimer = new QTimer();
+        connect(ghostModeTimer,SIGNAL(timeout()),this,SLOT(switchMode()));
+        scatterTime = 5000;
+        chaseTime = 20000;
+        ghostModeTimer->start(scatterTime);
+    }
+
+}
+
+void Game::setGhostsToScatter(std::vector<Agent *> ghosts)
+{
+    for(int i = 1;i<ghosts.size();++i){
+        DirectionalGhostAgent* agent = static_cast<DirectionalGhostAgent*>(ghosts[i]);
+        agent->setMode(SCATTER);
+    }
 }
 
 GameState *Game::step()
@@ -61,6 +81,13 @@ void Game::restartGame()
     }
     if(keyboard!=0){
         keyboard->setDirection(STOP);
+    }
+    if(originalMode){
+        scatterTime = 5000;
+        chaseTime = 20000;
+        setGhostsToScatter(agents);
+        ghostModeTimer->stop();
+        ghostModeTimer->start(scatterTime);
     }
     currentMover = 0;
 }
@@ -121,9 +148,31 @@ int Game::trainStep()
     }
 }
 
+void Game::switchMode()
+{
+    ghostModeTimer->stop();
+    DirectionalGhostAgent* ghost;
+    for(int i = 1; i<agents.size();++i){
+        ghost =  static_cast<DirectionalGhostAgent*>(agents[i]);
+        ghost->changeMode();
+    }
+    qDebug()<<"MODE SWITCHED TO "<< ghost->getMode();
+    if(scatterTime <= 0 && ghost->getMode() == CHASE){
+        return;
+    }
+    chaseTime+=1000;
+    scatterTime-=1000;
+    if(ghost->getMode() == CHASE){
+        ghostModeTimer->start(chaseTime);
+    }else{
+        ghostModeTimer->start(scatterTime);
+    }
+}
+
 Game *Game::parseOptions(GameOptions& opts)
 {
     bool learn = false;
+    bool orig = false;
     std::vector<Agent*> agents;
     Layout* lay = new Layout(opts.layoutPath);
     if(opts.pacmanAgent == Game::LEARNING){
@@ -147,12 +196,34 @@ Game *Game::parseOptions(GameOptions& opts)
         for(int i = 1;i<lay->getAgentsPositions().size();++i){
             agents.push_back(new RandomGhostAgent(i));
         }
-    } else if (opts.ghostAgent == Game::DIRECTIONAL){
+    } else if (opts.ghostAgent == Game::ORIGINAL){
+        if(lay->getAgentsPositions().size() > 1){
+            DirectionalGhostAgent *agent = new BlinkyGhostAgent(DirectionalGhostAgent::BLINKY_NUMBER);
+            agent->setMode(SCATTER);
+            agents.push_back(agent);
+        }
+        if(lay->getAgentsPositions().size() > 2){
+            DirectionalGhostAgent* agent = new PinkyGhostAgent(DirectionalGhostAgent::PINKY_NUMBER);
+            agent->setMode(SCATTER);
+            agents.push_back(agent);
+        }
+        if(lay->getAgentsPositions().size() > 3){
+            DirectionalGhostAgent* agent = new PinkyGhostAgent(DirectionalGhostAgent::INKY_NUMBER);
+            agent->setMode(SCATTER);
+            agents.push_back(agent);
+        }
+        if(lay->getAgentsPositions().size() > 4){
+            DirectionalGhostAgent* agent = new ClydeGhostAgent(DirectionalGhostAgent::CLYDE_NUMBER);
+            agent->setMode(SCATTER);
+            agents.push_back(agent);
+        }
+        orig = true;
+    }else if (opts.ghostAgent == Game::DIRECTIONAL){
         for(int i = 1;i<lay->getAgentsPositions().size();++i){
             agents.push_back(new DirectionalGhostAgent(i));
         }
     }
-    return new Game(agents,lay,learn);
+    return new Game(agents,lay,learn,orig);
 
 }
 

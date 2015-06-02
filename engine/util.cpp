@@ -1,5 +1,6 @@
 #include "util.h"
-
+#include "ghostrules.h"
+#include <QDebug>
 double Util::manhattanDistance(QPointF f, QPointF s)
 {
     return std::abs(f.x()-s.x())+std::abs(f.y()-s.y());
@@ -95,4 +96,66 @@ void Util::center(QWidget &widget)
 {
     center(widget,widget.width(),widget.height());
 }
+
+Direction Util::ghostWayToPoint(int ghostNumber, QPointF point, const GameState &state)
+{
+    std::deque<std::tuple<Configuration,Direction>> fringe;
+    std::vector<Direction> legal = state.getLegalActions(ghostNumber);
+    fringe.push_back(std::make_tuple(state.getAgentState(ghostNumber).getConfiguration(),legal[0]));
+    std::set<QPointF,PointComparator> expanded;
+    if(state.getLayout()->getWalls()[point.x()][point.y()]){
+        point = emptyNearWall(point,state.getLayout()->getWalls());
+    }
+    bool firstStep = true;
+    while(!fringe.empty()){
+        std::tuple<Configuration,Direction> current = fringe.front();
+        fringe.pop_front();
+        Configuration conf = std::get<0>(current);
+        QPointF pos = conf.getPosition();
+        Direction startDirection = std::get<1>(current);
+        if(expanded.find(pos)!=expanded.end()){
+            continue;
+        }
+        expanded.insert(pos);
+        if(pos == point){
+            return startDirection;
+        }
+
+        std::vector<Direction> legal = GhostRules::getLegalActions(std::get<0>(current),state.getLayout()->getWalls());
+
+        if(firstStep){
+            for(Direction dir:legal){
+                Configuration succ = conf.generateSuccessor(dir);
+                fringe.push_back(std::make_tuple(succ,dir));
+            }
+            firstStep = false;
+        }else{
+            for(Direction dir:legal){
+                Configuration succ = conf.generateSuccessor(dir);
+                fringe.push_back(std::make_tuple(succ,startDirection));
+            }
+        }
+    }
+
+    return legal[rand()%legal.size()];
+}
+
+QPointF Util::emptyNearWall(QPointF point, const std::vector<std::vector<bool> > &walls)
+{
+    int x =(int) point.x();
+    int y =(int) point.y();
+    int width = walls.size();
+    int height = walls[0].size();
+    for(int i = 0; ;++i){
+        if(x + i < width && !walls[x+i][y]) return QPointF(x+i,y);
+        if(x - i > 0 && !walls[x-i][y]) return QPointF(x-i,y);
+        if(y + i < height && !walls[x][y+i]) return QPointF(x,y+i);
+        if(y - i > 0 && !walls[x][y-i]) return QPointF(x,y-i);
+        if(x + i < width && y+i < height && !walls[x+i][y+i]) return QPointF(x+i,y+i);
+        if(x - i > 0 &&  y + i < height && !walls[x-i][y+i]) return QPointF(x-i,y+i);
+        if(x + i < width && y - i > 0 && !walls[x+i][y-i]) return QPointF(x+i,y-i);
+        if(x - i > 0 && y - i > 0 && !walls[x-i][y-i]) return QPointF(x+i,y+i);
+    }
+}
+
 

@@ -6,10 +6,10 @@ GhostItem::GhostItem(QPointF pos, int cs, int timeStep,int num):
     GraphicObject(pos,cs,timeStep)
 {
     counter = 0;
-    textures[NORTH] = QPixmap(ResourceLoader::GHOST_TEXTURES_PATH[num%4]+"n.png").scaledToHeight(cs);
-    textures[SOUTH] = QPixmap(ResourceLoader::GHOST_TEXTURES_PATH[num%4]+"s.png").scaledToHeight(cs);
-    textures[WEST] = QPixmap(ResourceLoader::GHOST_TEXTURES_PATH[num%4]+"w.png").scaledToHeight(cs);
-    textures[EAST] = QPixmap(ResourceLoader::GHOST_TEXTURES_PATH[num%4]+"e.png").scaledToHeight(cs);
+    textures[NORTH] = QPixmap(ResourceLoader::GHOST_TEXTURES_PATH[(num-1)%4]+"n.png").scaledToHeight(cs);
+    textures[SOUTH] = QPixmap(ResourceLoader::GHOST_TEXTURES_PATH[(num-1)%4]+"s.png").scaledToHeight(cs);
+    textures[WEST] = QPixmap(ResourceLoader::GHOST_TEXTURES_PATH[(num-1)%4]+"w.png").scaledToHeight(cs);
+    textures[EAST] = QPixmap(ResourceLoader::GHOST_TEXTURES_PATH[(num-1)%4]+"e.png").scaledToHeight(cs);
     textures[NOACTION] = QPixmap(ResourceLoader::SCARRIED_GHOST_TEXTURE_PATH).scaledToHeight(cs);
     scar = false;
     texture = textures[NORTH];
