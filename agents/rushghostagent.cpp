@@ -48,7 +48,7 @@ std::map<Direction, double> RushGhostAgent::getDistribution(GameState &state)
         bestProb = probAtack;
      }
      std::vector<Direction> bestActions;
-     for (int i = 0; i < distancesToPacman.size() ; ++i) {
+     for (std::size_t i = 0; i < distancesToPacman.size() ; ++i) {
          if(distancesToPacman[i] == bestScore){
              bestActions.push_back(legalActions[i]);
          }

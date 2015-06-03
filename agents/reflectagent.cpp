@@ -15,7 +15,7 @@ Direction ReflectAgent::getAction(GameState &state)
     }
 
     int maxInd = 0;
-    for(int i =1;i<scores.size();++i){
+    for(std::size_t i =1;i<scores.size();++i){
         if(scores[maxInd] < scores[i]){
 
             maxInd = i;

@@ -28,7 +28,7 @@ Layout::Layout(QString path):
     qDebug() <<"height:"<<height;
     walls.resize(width);
     food.resize(width);
-    for (int i = 0;i<walls.size();++i){
+    for (std::size_t i = 0;i<walls.size();++i){
         walls[i] = std::vector<bool>(height);
         food[i] = std::vector<bool>(height);
     }
@@ -41,10 +41,10 @@ Layout::Layout(const Layout& l)
     numAgents = l.numAgents;
     walls = std::vector<std::vector<bool > >(l.walls);
     food = std::vector<std::vector<bool> >(l.food);
-    for(int i = 0;i<walls.size();++i){
+    for(std::size_t i = 0;i<walls.size();++i){
         walls.push_back(l.walls[i]);
     }
-    for(int i =0;i<food.size();++i){
+    for(std::size_t i =0;i<food.size();++i){
         food.push_back(l.food[i]);
     }
     layoutText = l.layoutText;

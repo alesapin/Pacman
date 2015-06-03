@@ -52,11 +52,11 @@ public:
     GameState* startState;
     int scatterTime;
     int chaseTime;
-    int currentMover;
     Layout* layout;
     PacmanLearningAgent* pacman;
     KeyBoardAgent* keyboard;
     std::vector<Agent*> agents;
+    int currentMover;
     Game(std::vector<Agent*> agents,Layout* lay,bool learn,bool orig);
     bool learn;
     bool originalMode;

@@ -22,8 +22,7 @@ protected:
     void observeOneAction(GameState& state,Direction action,GameState& nextState,double deltaReward);
     std::vector<Direction> getLegalAction(GameState& state);
 
-
-   int numTraining;
+    int numTraining;
    double epsilon;
    double alpha;
    double discount;

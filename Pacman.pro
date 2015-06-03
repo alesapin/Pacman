@@ -53,6 +53,7 @@ QMAKE_CXXFLAGS_DEBUG +=  -pg
 QMAKE_LFLAGS_DEBUG += -pg
 RESOURCES += \
     res.qrc
-
+win64:RC_ICONS += icon.ico
+win32:RC_ICONS += icon.ico
 
 

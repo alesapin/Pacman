@@ -3,13 +3,13 @@
 
 
 LearningAgent::LearningAgent(int numTrain, double eps, double alp, double gam):
-    episodesPast(0),
-    sumOfTrainRewards(0),
-    sumOfTestRewards(0),
     numTraining(numTrain),
     epsilon(eps),
     alpha(alp),
-    discount(gam)
+    discount(gam),
+    episodesPast(0),
+    sumOfTrainRewards(0),
+    sumOfTestRewards(0)
 {
     lastAction = NOACTION;
 }

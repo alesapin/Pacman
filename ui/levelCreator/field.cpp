@@ -313,8 +313,8 @@ void Field::resize(int w, int h, int cs)
     currentScene->setCellSize(cellSize);
     currentScene->setWidth(width);
     currentScene->setHeight(height);
-    for(int i = 0;i<data.size();++i){
-        for(int j = 0;j<data[0].size();++j){
+    for(std::size_t i = 0;i<data.size();++i){
+        for(std::size_t j = 0;j<data[0].size();++j){
             if((i==0 || j==0 || i==data.size()-1 || j == data[0].size()-1 || j>=width-1 || i>=height-1) && data[i][j]!=EMPTY){
                 data[i][j]=EMPTY;
                 scene()->removeItem(items[i][j]);

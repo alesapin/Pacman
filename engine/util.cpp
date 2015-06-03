@@ -13,7 +13,7 @@ int Util::maxIndex(std::vector<double> vect)
     }
     int maxIndex = 0;
     int maxVal = vect[0];
-    for(int i=1;i<vect.size();++i){
+    for(std::size_t i=1;i<vect.size();++i){
         if(vect[i] > maxVal){
             maxVal = vect[i];
             maxIndex = i;

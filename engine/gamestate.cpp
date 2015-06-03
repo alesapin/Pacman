@@ -37,7 +37,7 @@ GameState::GameState(const Layout *lay)
     Configuration pacmanConf(pacman,STOP);
     agentStates.push_back(AgentState(pacmanConf,true));
     std::vector<QPointF> positions  = lay->getAgentsPositions();
-    for (int i =1;i<positions.size();++i){
+    for (std::size_t i =1;i<positions.size();++i){
         QPointF currentAgent = positions[i];
         Configuration agentConf(currentAgent,STOP);
         agentStates.push_back(AgentState(agentConf,false));
@@ -157,7 +157,7 @@ void GameState::removeCapsule(QPointF pos)
 
 void GameState::scaryGhosts(int time)
 {
-    for(int i = 1;i<agentStates.size();++i){
+    for(std::size_t i = 1;i<agentStates.size();++i){
         agentStates[i].setScarryTimer(time);
     }
 }
@@ -251,20 +251,20 @@ bool GameState::operator==(const GameState &other)const
     if(score!=other.score) return false;
     if(food.size()!=other.food.size()) return false;
     if(food[0].size()!=other.food[0].size()) return false;
-    for(int i = 0;i<food.size();++i){
-        for(int j =0;j<food[0].size();++j){
+    for(std::size_t i = 0;i<food.size();++i){
+        for(std::size_t j =0;j<food[0].size();++j){
             if(food[i][j]!=other.food[i][j]) return false;
         }
     }
     if(agentStates.size()!=other.agentStates.size()) return false;
-    for(int i =0;i<agentStates.size();++i){
+    for(std::size_t i =0;i<agentStates.size();++i){
         AgentState our = agentStates[i];
         AgentState their = other.agentStates[i];
         if(our.getPosition()!= their.getPosition()) return false;
         if(our.getDireciton()!=their.getDireciton()) return false;
     }
     if(capsules.size()!=other.capsules.size()) return false;
-    for(int i=0;i<capsules.size();++i){
+    for(std::size_t i=0;i<capsules.size();++i){
         if(capsules[i]!=other.capsules[i])return false;
     }
     return true;

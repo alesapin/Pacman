@@ -17,10 +17,10 @@ public:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 private:
+    std::vector<std::vector<bool> > walls;
+    double cellSize;
     QColor color;
     double penWidth;
-    double cellSize;
-    std::vector<std::vector<bool> > walls;
     ElemType checkCell(int i,int j);
     QPainter* painter;
     QPixmap* staticItem;

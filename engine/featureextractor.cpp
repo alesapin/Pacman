@@ -6,7 +6,7 @@ std::map<std::string, double> FeatureExtractor::getFeatures(GameState &state, Di
     std::vector<std::vector<bool>> food = state.getFood();
     std::vector<std::vector<bool>> walls = state.getLayout()->getWalls();
     std::vector<QPointF> ghosts;
-    for(int i = 1;i<state.getAgentStates().size();++i){
+    for(std::size_t i = 1;i<state.getAgentStates().size();++i){
         ghosts.push_back(state.getAgentPosition(i));
     }
     std::map<std::string,double> features;

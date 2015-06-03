@@ -37,7 +37,7 @@ Game::Game(std::vector<Agent *> agents, Layout *lay,bool learn,bool orig):
 
 void Game::setGhostsToScatter(std::vector<Agent *> ghosts)
 {
-    for(int i = 1;i<ghosts.size();++i){
+    for(std::size_t i = 1;i<ghosts.size();++i){
         DirectionalGhostAgent* agent = static_cast<DirectionalGhostAgent*>(ghosts[i]);
         agent->setMode(SCATTER);
     }
@@ -152,7 +152,7 @@ void Game::switchMode()
 {
     ghostModeTimer->stop();
     DirectionalGhostAgent* ghost;
-    for(int i = 1; i<agents.size();++i){
+    for(std::size_t i = 1; i<agents.size();++i){
         ghost =  static_cast<DirectionalGhostAgent*>(agents[i]);
         ghost->changeMode();
     }
@@ -189,11 +189,11 @@ Game *Game::parseOptions(GameOptions& opts)
     }
 
     if(opts.ghostAgent == Game::RUSH){
-        for(int i = 1;i<lay->getAgentsPositions().size();++i){
+        for(std::size_t i = 1;i<lay->getAgentsPositions().size();++i){
             agents.push_back(new RushGhostAgent(i));
         }
     } else if(opts.ghostAgent == Game::RANDOM){
-        for(int i = 1;i<lay->getAgentsPositions().size();++i){
+        for(std::size_t i = 1;i<lay->getAgentsPositions().size();++i){
             agents.push_back(new RandomGhostAgent(i));
         }
     } else if (opts.ghostAgent == Game::ORIGINAL){
@@ -219,7 +219,7 @@ Game *Game::parseOptions(GameOptions& opts)
         }
         orig = true;
     }else if (opts.ghostAgent == Game::DIRECTIONAL){
-        for(int i = 1;i<lay->getAgentsPositions().size();++i){
+        for(std::size_t i = 1;i<lay->getAgentsPositions().size();++i){
             agents.push_back(new DirectionalGhostAgent(i));
         }
     }

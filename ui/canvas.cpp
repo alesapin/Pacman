@@ -67,7 +67,7 @@ void Canvas::drawState(GameState *state)
     QPointF pos = state->getAgentPosition(0);
 
     pacman->moveToPoint(QPointF(pos.y()*cellSize,pos.x()*cellSize),state->getAgentState(0).getDireciton());
-    for(int i = 0;i<ghosts.size();++i){
+    for(std::size_t i = 0;i<ghosts.size();++i){
         GhostItem* currentGhost = ghosts[i];
         QPointF ghostPos = state->getAgentPosition(i+1);
         currentGhost->moveToPoint(QPointF(ghostPos.y()*cellSize,ghostPos.x()*cellSize),state->getAgentState(i+1).getDireciton());
@@ -215,7 +215,6 @@ QRectF Canvas::countSceneRect(Layout *lay)
 QPointF Canvas::countRestartRect(Layout *lay)
 {
     int width = lay->getWalls().size();
-    int height = lay->getWalls()[0].size();
     int dy = width*cellSize;
     int dx = cellSize/3;
     return QPointF(dx,dy);
@@ -246,8 +245,8 @@ void Canvas::setFoodMap(std::vector<std::vector<bool> > foodTable)
             delete iter->second;
         }
     }
-    for(int i=0;i<foodTable.size();++i){
-        for(int j=0;j<foodTable[0].size();++j){
+    for(std::size_t i=0;i<foodTable.size();++i){
+        for(std::size_t j=0;j<foodTable[0].size();++j){
             if(foodTable[i][j]){
                 QPointF p(i,j);
                 foodMap[p] = new QGraphicsEllipseItem(p.y()*cellSize+cellSize/2,p.x()*cellSize+cellSize/2,cellSize/5,cellSize/5);
@@ -275,7 +274,7 @@ void Canvas::setAgents(Layout *layout)
     pacman = new PacmanItem(layout->getPacmanPosition(),cellSize,agentTime);
     scene()->addItem(pacman);
     std::vector<QPointF> agentPositions = layout->getAgentsPositions();
-    for(int i = 1; i< agentPositions.size();++i){
+    for(std::size_t i = 1; i< agentPositions.size();++i){
         GhostItem* ghost = new GhostItem(agentPositions[i],cellSize,agentTime,i);
         scene()->addItem(ghost);
         ghosts.push_back(ghost);
@@ -349,7 +348,7 @@ void Canvas::saveScore()
     while (values.size() > 10) {
         values.pop_back();
     }
-    for(int i=1;i<=values.size();++i){
+    for(std::size_t i=1;i<=values.size();++i){
         settings->setValue(QString::number(i),values[i-1]);
     }
 }

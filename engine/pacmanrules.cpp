@@ -20,7 +20,7 @@ void PacmanRules::applyAction(GameState& state, Direction dir)
         bool nflag = false;
         bool wflag = false;
         bool eflag = false;
-        for(auto i =0;i<legal.size()-1;++i){
+        for(std::size_t i =0;i<legal.size()-1;++i){
             switch(legal[i]){
             case SOUTH:
                 sflag = true;

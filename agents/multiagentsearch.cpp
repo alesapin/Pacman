@@ -11,8 +11,8 @@ double MultiAgentSearch::evaluationFunction(GameState &state)
 {
     double result = 0;
     QPointF pacmanPosition = state.getPacmanPosition();
-    int totalFood = state.getLayout()->getTotalFood();
-    int size = (state.getLayout()->getWalls()[0].size())*(state.getLayout()->getWalls().size());
+//    int totalFood = state.getLayout()->getTotalFood();
+//    int size = (state.getLayout()->getWalls()[0].size())*(state.getLayout()->getWalls().size());
 
     double distToFood = Util::closestFood(pacmanPosition,state.getFood(),state.getLayout()->getWalls());
     if(distToFood == -1){
@@ -21,7 +21,7 @@ double MultiAgentSearch::evaluationFunction(GameState &state)
         result += ((1./ (distToFood+1))*10);
     }
     double minDist = std::numeric_limits<double>::infinity();
-    for(int i = 1;i<state.getAgentStates().size();++i){
+    for(std::size_t i = 1;i<state.getAgentStates().size();++i){
         QPointF ghostPosition = state.getAgentPosition(i);
         minDist = std::min(minDist,Util::manhattanDistance(pacmanPosition,ghostPosition));
     }

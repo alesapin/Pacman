@@ -60,7 +60,7 @@ void GhostRules::checkDeath(GameState &state, int agentIndex)
     QPointF pacmanPos = state.getPacmanPosition();
     if(agentIndex==0){
         std::vector<AgentState> agentStates = state.getAgentStates();
-        for(int i = 1;i < agentStates.size();++i){
+        for(std::size_t i = 1;i < agentStates.size();++i){
             AgentState ghostState = agentStates[i];
             QPointF ghostPosition = ghostState.getConfiguration().getPosition();
             if(GhostRules::canKill(ghostPosition,pacmanPos)){

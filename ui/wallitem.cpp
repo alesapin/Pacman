@@ -22,7 +22,7 @@ WallItem::WallItem(std::vector<std::vector<bool> > w, double cs, QColor c, doubl
     if (pw == -1) {
         penWidth = cellSize / 26;
     }
-    for(int i=0;i<w.size();++i){
+    for(std::size_t i=0;i<w.size();++i){
         std::reverse(w[i].begin(),w[i].end());
     }
     walls = std::vector<std::vector<bool>>(w);
@@ -46,8 +46,8 @@ void WallItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     painter->rotate(90);
     ElemPainter* elemPainter = new ElemPainter(cellSize,cellSize,painter);
 
-    for (int i = 0;i<walls.size();++i){
-        for (int j=0;j<walls[0].size();++j){
+    for (std::size_t i = 0;i<walls.size();++i){
+        for (std::size_t j=0;j<walls[0].size();++j){
             elemPainter->drawElem(i*cellSize,j*cellSize,checkCell(i,j));
         }
     }
@@ -70,28 +70,30 @@ ElemType WallItem::checkCell(int i,int j)
     bool ruCell = false;//walls[i+1][j-1];
     bool ldCell =false; //walls[i-1][j+1];
     bool rdCell = false;//walls[i+1][j+1];
+    int width = walls.size();
+    int height = walls[0].size();
     if(up >= 0){
         upCell = walls[i][up];
         if(left >= 0){
             luCell = walls[i-1][j-1];
         }
-        if(right < walls.size()){
+        if(right < width){
             ruCell = walls[i+1][j-1];
         }
     }
-    if(down < walls[0].size()){
+    if(down < height){
         downCell = walls[i][down];
         if(left >= 0){
             ldCell = walls[i-1][j+1];
         }
-        if(right < walls.size()){
+        if(right < width){
             rdCell = walls[i+1][j+1];
         }
     }
     if(left >= 0){
         leftCell = walls[left][j];
     }
-    if(right < walls.size()){
+    if(right < width){
         rightCell = walls[right][j];
     }
 
