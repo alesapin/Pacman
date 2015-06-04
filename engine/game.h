@@ -45,9 +45,12 @@ public:
     int getCurrentIter() const;
     int getTotalIters() const;
     int trainStep();
- public slots:
+    bool getPause() const;
+    void setPause(bool value);
+
+public slots:
     void switchMode();
- private:
+private:
     GameState* currentGameState;
     GameState* startState;
     int scatterTime;
@@ -61,6 +64,7 @@ public:
     bool learn;
     bool originalMode;
     QTimer* ghostModeTimer;
+    bool pause;
     void setGhostsToScatter(std::vector<Agent*> ghosts);
 };
 

@@ -101,10 +101,10 @@ void Canvas::drawState(GameState *state)
 void Canvas::keyPressEvent(QKeyEvent *event)
 {
     if(event->key() == Qt::Key_Escape){
-        this->setDisabled(true);
+        setDisabled(true);
         GamePauseMenu* p = new GamePauseMenu(this);
         pause = false;
-        this->pauseGame();
+        pauseGame();
         p->show();
     }else{
         game->keyBoardEvent(event);
@@ -129,6 +129,7 @@ void Canvas::unpause()
 {
     pause = false;
     if(!gameOver) timer->start(generalTime);
+    game->setPause(false);
     pauseButton->setText("pause");
 }
 
@@ -164,9 +165,11 @@ void Canvas::pauseGame()
     if(pause){
         pauseButton->setText("pause");
         if(!gameOver) timer->start(generalTime);
+        game->setPause(false);
     }else{
         pauseButton->setText("unpause");
         timer->stop();
+        game->setPause(true);
     }
     pause = !pause;
 }

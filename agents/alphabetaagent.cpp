@@ -8,7 +8,8 @@ Direction AlphaBetaAgent::getAction(GameState &state)
     return std::get<0>(result);
 }
 
-std::tuple<Direction, double> AlphaBetaAgent::minimax(GameState &state, int dpth, int agentNum, double alpha, double beta)
+std::tuple<Direction, double> AlphaBetaAgent::minimax(GameState &state,
+                                                      int dpth, int agentNum, double alpha, double beta)
 {
     if(dpth == depth || state.isWin() || state.isLose()){
         return std::make_tuple (NOACTION,evaluationFunction(state));

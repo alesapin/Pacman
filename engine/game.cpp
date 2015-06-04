@@ -24,7 +24,7 @@ Game::Game(std::vector<Agent *> agents, Layout *lay,bool learn,bool orig):
     layout = lay;
     currentGameState = new GameState(layout);
     startState = currentGameState;
-
+    pause = false;
     if(orig){
         ghostModeTimer = new QTimer();
         connect(ghostModeTimer,SIGNAL(timeout()),this,SLOT(switchMode()));
@@ -34,6 +34,28 @@ Game::Game(std::vector<Agent *> agents, Layout *lay,bool learn,bool orig):
     }
 
 }
+bool Game::getPause() const
+{
+    return pause;
+}
+
+void Game::setPause(bool value)
+{
+    pause = value;
+    if(originalMode){
+        if(pause){
+            ghostModeTimer->stop();
+        }else{
+            DirectionalGhostAgent* ghost =  static_cast<DirectionalGhostAgent*>(agents[1]);
+            if(ghost->getMode() == SCATTER){
+                ghostModeTimer->start(scatterTime);
+            }else{
+                ghostModeTimer->start(chaseTime);
+            }
+        }
+    }
+}
+
 
 void Game::setGhostsToScatter(std::vector<Agent *> ghosts)
 {
@@ -151,21 +173,23 @@ int Game::trainStep()
 void Game::switchMode()
 {
     ghostModeTimer->stop();
-    DirectionalGhostAgent* ghost;
-    for(std::size_t i = 1; i<agents.size();++i){
-        ghost =  static_cast<DirectionalGhostAgent*>(agents[i]);
-        ghost->changeMode();
-    }
-    qDebug()<<"MODE SWITCHED TO "<< ghost->getMode();
-    if(scatterTime <= 0 && ghost->getMode() == CHASE){
-        return;
-    }
-    chaseTime+=1000;
-    scatterTime-=1000;
-    if(ghost->getMode() == CHASE){
-        ghostModeTimer->start(chaseTime);
-    }else{
-        ghostModeTimer->start(scatterTime);
+    if(!pause){
+        DirectionalGhostAgent* ghost;
+        for(std::size_t i = 1; i<agents.size();++i){
+            ghost =  static_cast<DirectionalGhostAgent*>(agents[i]);
+            ghost->changeMode();
+        }
+        qDebug()<<"MODE SWITCHED TO "<< ghost->getMode();
+        if(scatterTime <= 0 && ghost->getMode() == CHASE){
+            return;
+        }
+        chaseTime+=1000;
+        scatterTime-=1000;
+        if(ghost->getMode() == CHASE){
+            ghostModeTimer->start(chaseTime);
+        }else{
+            ghostModeTimer->start(scatterTime);
+        }
     }
 }
 
