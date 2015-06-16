@@ -49,11 +49,33 @@ QPointF Util::nearestIntPoint(QPointF p)
     return QPointF((int)(p.x()+0.5),(int)(p.y()+0.5));
 }
 
-double Util::closestFood(QPointF currentPosition, const std::vector<std::vector<bool> > &food, const std::vector<std::vector<bool> > &walls)
+double Util::closestFood(QPointF currentPosition, const GameState &state)
+{
+    return closestObject(currentPosition,state,[&](QPointF p){return state.getFood()[p.x()][p.y()];});
+}
+
+double Util::closestCapsule(QPointF currentPosition, const GameState &state)
+{
+    return closestObject(currentPosition,state,[&](QPointF p){
+        std::vector<QPointF> capsules = state.getCapsules();
+        return (std::find(capsules.begin(),capsules.end(),p) != capsules.end());
+    });
+
+}
+
+double Util::distToGhost(QPointF currentPosition, const GameState &state, QPointF ghostPos)
+{
+    return closestObject(currentPosition,state,[&](QPointF p){
+        return currentPosition == ghostPos;
+    });
+}
+
+double Util::closestObject(QPointF currentPosition, const GameState &state, std::function<bool (QPointF)> predicate)
 {
     std::deque<std::tuple<QPointF,double>> fringe;
     fringe.push_back(std::make_tuple(currentPosition,0));
     std::set<QPointF,PointComparator> expanded;
+    auto walls = state.getLayout()->getWalls();
     while(!fringe.empty()){
         std::tuple<QPointF,double> current = fringe.front();
         fringe.pop_front();
@@ -63,7 +85,7 @@ double Util::closestFood(QPointF currentPosition, const std::vector<std::vector<
             continue;
         }
         expanded.insert(pos);
-        if(food[pos.x()][pos.y()]){
+        if(predicate(pos)){
             return dist;
         }
         std::vector<QPointF> nbrs = Actions::getLegalNeighbours(pos,walls);

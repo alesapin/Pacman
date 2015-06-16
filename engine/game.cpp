@@ -104,7 +104,7 @@ void Game::restartGame()
     if(keyboard!=0){
         keyboard->setDirection(STOP);
     }
-    if(originalMode){
+    if(originalMode && !isLearning()){
         scatterTime = 5000;
         chaseTime = 20000;
         setGhostsToScatter(agents);
@@ -173,7 +173,7 @@ int Game::trainStep()
 void Game::switchMode()
 {
     ghostModeTimer->stop();
-    if(!pause){
+    if(!pause && !isLearning()){
         DirectionalGhostAgent* ghost;
         for(std::size_t i = 1; i<agents.size();++i){
             ghost =  static_cast<DirectionalGhostAgent*>(agents[i]);
